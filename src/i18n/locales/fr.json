@@ -36,7 +36,9 @@
     "Activity": "Activité",
     "Meal": "Repas",
     "Travel": "Voyage",
-    "Transportation": "Transport"
+    "Transportation": "Transport",
+    "Airport": "Aéroport",
+    "Hotel": "Hôtel"
   },
   "time": {
     "Morning": "Matin",

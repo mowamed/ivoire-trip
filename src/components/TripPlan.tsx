@@ -9,11 +9,12 @@ import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon,
 interface ItineraryItem {
   time: string;
   description: string;
-  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel';
+  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel' | 'Airport' | 'Hotel';
   details?: Activity | Restaurant | Transportation;
   duration?: number;
   cost?: number;
   city?: string;
+  icon?: string;
 }
 
 interface DailyPlan {
@@ -50,6 +51,12 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
         return <Utensils className="h-4 w-4" />;
       case 'Travel':
         return <Plane className="h-4 w-4" />;
+      case 'Airport':
+        return <Plane className="h-4 w-4" />;
+      case 'Hotel':
+        return <HotelIcon className="h-4 w-4" />;
+      case 'Transportation':
+        return <MapPin className="h-4 w-4" />;
       default:
         return <MapPin className="h-4 w-4" />;
     }

@@ -36,7 +36,9 @@
     "Activity": "Activity",
     "Meal": "Meal",
     "Travel": "Travel",
-    "Transportation": "Transportation"
+    "Transportation": "Transportation",
+    "Airport": "Airport",
+    "Hotel": "Hotel"
   },
   "time": {
     "Morning": "Morning",
