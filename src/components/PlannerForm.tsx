@@ -14,32 +14,32 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-      <h2 className="text-2xl font-bold mb-4">Plan Your Trip to Ivory Coast</h2>
+    <div className="bg-white shadow-lg rounded-xl p-8 mb-4">
+      <h2 className="text-3xl font-bold text-dark mb-6">Plan Your Trip</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="duration" className="block text-gray-700 font-bold mb-2">Duration (days)</label>
           <input
             type="number"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary"
             id="duration"
             value={duration}
             onChange={(e) => setDuration(parseInt(e.target.value))}
             min="1"
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="budget" className="block text-gray-700 font-bold mb-2">Budget ($)</label>
           <input
             type="number"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-sm appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-primary"
             id="budget"
             value={budget}
             onChange={(e) => setBudget(parseInt(e.target.value))}
             min="100"
           />
         </div>
-        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+        <button type="submit" className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg w-full transition duration-300 ease-in-out transform hover:scale-105">
           Generate Plan
         </button>
       </form>

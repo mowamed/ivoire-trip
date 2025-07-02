@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import PlannerForm from './components/PlannerForm';
 import TripPlan from './components/TripPlan';
@@ -45,27 +46,27 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-light min-h-screen font-sans">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-900">Ivoire Trip Planner</h1>
-          <p className="mt-2 text-lg text-gray-600">Your personalized adventure in Ivory Coast awaits</p>
+        <header className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-dark">Ivoire Trip Planner</h1>
+          <p className="mt-3 text-lg text-gray-600">Your personalized adventure in Ivory Coast awaits</p>
         </header>
         <main>
-          <div className="flex flex-col lg:flex-row lg:space-x-8">
+          <div className="flex flex-col lg:flex-row lg:space-x-12">
             <div className="lg:w-1/3">
               <PlannerForm onPlanRequest={generatePlan} />
             </div>
             <div className="lg:w-2/3">
               {plan ? <TripPlan plan={plan} /> : (
-                <div className="bg-white shadow-md rounded-lg p-6 text-center">
+                <div className="bg-white shadow-lg rounded-xl p-8 text-center">
                   <p className="text-gray-500">Enter your trip details to generate a plan.</p>
                 </div>
               )}
             </div>
           </div>
         </main>
-        <footer className="text-center mt-8">
+        <footer className="text-center mt-12">
           <p className="text-gray-500">Made with ❤️ for a memorable trip</p>
         </footer>
       </div>
