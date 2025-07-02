@@ -37,6 +37,7 @@ const AppContent: React.FC = () => {
     restaurants: Restaurant[];
     totalCost: number;
     totalDuration: number;
+    budget?: number;
   } | null>(null);
 
   // Utility function to calculate distance between two points using Haversine formula
@@ -106,52 +107,97 @@ const AppContent: React.FC = () => {
     // Add a small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Determine budget category based on budget per day
-    const budgetPerDay = budget / duration;
-    let budgetCategory: 'Budget' | 'Mid-Range' | 'Luxury';
-    if (budgetPerDay < 150) {
-      budgetCategory = 'Budget';
-    } else if (budgetPerDay < 300) {
-      budgetCategory = 'Mid-Range';
-    } else {
-      budgetCategory = 'Luxury';
-    }
+    try {
+      // Determine budget category based on budget per day
+      const budgetPerDay = budget / duration;
+      let budgetCategory: 'Budget' | 'Mid-Range' | 'Luxury';
+      if (budgetPerDay < 150) {
+        budgetCategory = 'Budget';
+      } else if (budgetPerDay < 300) {
+        budgetCategory = 'Mid-Range';
+      } else {
+        budgetCategory = 'Luxury';
+      }
 
-    // Plan cities to visit based on duration
-    const citiesToVisit = planCitiesRoute(duration);
-    
-    // Select hotel in main city (Abidjan)
-    const selectedHotel = hotels.find(h => h.city === 'Abidjan' && h.budget === budgetCategory) || 
-                         hotels.find(h => h.city === 'Abidjan') || hotels[0];
-
-    const dailyPlans: DailyPlan[] = [];
-    let totalCost = selectedHotel.cost * duration; // Hotel cost for all nights
-    let totalDuration = 0;
-    const visitedActivities: string[] = [];
-
-    for (let day = 1; day <= duration; day++) {
-      const cityForDay = citiesToVisit[day - 1];
-      const dayPlan = generateDayPlan(day, duration, cityForDay, budgetCategory, visitedActivities, citiesToVisit);
+      // Plan cities to visit based on duration
+      const citiesToVisit = planCitiesRoute(duration);
       
-      dailyPlans.push(dayPlan);
-      totalCost += dayPlan.totalCost;
-      totalDuration += dayPlan.totalDuration;
+      // Select hotel within budget
+      const availableHotels = hotels.filter(h => h.city === 'Abidjan').sort((a, b) => a.cost - b.cost);
+      let selectedHotel = availableHotels.find(h => h.budget === budgetCategory);
       
-      // Add visited activities to avoid repetition
-      dayPlan.schedule.forEach(item => {
-        if (item.type === 'Activity' && item.details) {
-          visitedActivities.push(item.details.name);
-        }
-      });
-    }
+      // If no hotel in budget category, find the most affordable option
+      if (!selectedHotel) {
+        selectedHotel = availableHotels.find(h => h.cost * duration <= budget * 0.6); // Max 60% of budget for accommodation
+      }
+      
+      // Fallback to cheapest hotel if still over budget
+      if (!selectedHotel) {
+        selectedHotel = availableHotels[0];
+      }
 
-    setPlan({
-      hotel: selectedHotel,
-      dailyPlans,
-      restaurants: restaurants.filter(r => r.budget === budgetCategory),
-      totalCost,
-      totalDuration,
-    });
+      const hotelCost = selectedHotel.cost * duration;
+      let remainingBudget = budget - hotelCost;
+      const dailyBudget = remainingBudget / duration;
+
+      // If hotel cost exceeds 70% of budget, adjust to a cheaper option
+      if (hotelCost > budget * 0.7) {
+        selectedHotel = availableHotels.find(h => h.cost * duration <= budget * 0.5) || availableHotels[0];
+        remainingBudget = budget - (selectedHotel.cost * duration);
+      }
+
+      const dailyPlans: DailyPlan[] = [];
+      let totalCost = selectedHotel.cost * duration;
+      let totalDuration = 0;
+      const visitedActivities: string[] = [];
+
+      for (let day = 1; day <= duration; day++) {
+        const cityForDay = citiesToVisit[day - 1];
+        const availableBudgetForDay = Math.max(dailyBudget, 50); // Minimum $50 per day for activities
+        
+        const dayPlan = generateDayPlanWithBudget(
+          day, 
+          duration, 
+          cityForDay, 
+          budgetCategory, 
+          visitedActivities, 
+          citiesToVisit,
+          availableBudgetForDay,
+          remainingBudget
+        );
+        
+        dailyPlans.push(dayPlan);
+        totalCost += dayPlan.totalCost;
+        totalDuration += dayPlan.totalDuration;
+        remainingBudget -= dayPlan.totalCost;
+        
+        // Add visited activities to avoid repetition
+        dayPlan.schedule.forEach(item => {
+          if (item.type === 'Activity' && item.details) {
+            visitedActivities.push(item.details.name);
+          }
+        });
+      }
+
+      // Final budget check - if over budget, optimize the plan
+      if (totalCost > budget) {
+        const optimizedPlan = optimizePlanForBudget(dailyPlans, selectedHotel, budget, duration);
+        setPlan(optimizedPlan);
+      } else {
+        setPlan({
+          hotel: selectedHotel,
+          dailyPlans,
+          restaurants: restaurants.filter(r => r.budget === budgetCategory),
+          totalCost,
+          totalDuration,
+          budget,
+        });
+      }
+    } catch (error) {
+      console.error('Error generating plan:', error);
+      // Fallback to a basic plan if something goes wrong
+      generateBasicPlan(duration, budget);
+    }
     
     setIsLoading(false);
   };
@@ -185,20 +231,23 @@ const AppContent: React.FC = () => {
     return route;
   };
 
-  // Helper function to generate a single day plan
-  const generateDayPlan = (
+  // Helper function to generate a budget-aware day plan
+  const generateDayPlanWithBudget = (
     day: number, 
     totalDays: number, 
     city: string, 
     budgetCategory: string, 
     visitedActivities: string[],
-    citiesToVisit: string[]
+    citiesToVisit: string[],
+    dailyBudget: number,
+    remainingBudget: number
   ): DailyPlan => {
     const schedule: ItineraryItem[] = [];
     let currentTime = 8; // Start earlier for first day (airport arrival)
     let dailyCost = 0;
     let dailyDuration = 0;
     let lastActivityLocation: Geolocation | null = null;
+    let budgetUsed = 0;
 
     // First day: Airport arrival
     if (day === 1) {
@@ -214,17 +263,19 @@ const AppContent: React.FC = () => {
       dailyDuration += 1;
 
       // Transfer to hotel
+      const transferCost = Math.min(30, dailyBudget * 0.2); // Max 20% of daily budget for airport transfer
       schedule.push({
         time: `${currentTime}:00`,
         description: 'Transfer from airport to hotel',
         type: 'Transportation',
         duration: 1,
-        cost: 30,
+        cost: transferCost,
         city: 'Abidjan',
       });
       currentTime += 1;
       dailyDuration += 1;
-      dailyCost += 30;
+      dailyCost += transferCost;
+      budgetUsed += transferCost;
 
       // Hotel check-in
       schedule.push({
@@ -251,19 +302,27 @@ const AppContent: React.FC = () => {
         );
         
         if (morningActivities.length > 0) {
-          const activity = morningActivities[Math.floor(Math.random() * morningActivities.length)];
-          schedule.push({
-            time: `${currentTime}:00`,
-            description: activity.name,
-            type: 'Activity',
-            details: activity,
-            duration: activity.durationHours,
-            cost: activity.cost,
-            city: city,
-          });
-          currentTime += activity.durationHours;
-          dailyDuration += activity.durationHours;
-          dailyCost += activity.cost;
+          // Filter activities that fit within remaining budget
+          const affordableActivities = morningActivities.filter(a => 
+            a.cost <= (dailyBudget - budgetUsed) && a.cost <= remainingBudget
+          );
+          
+          if (affordableActivities.length > 0) {
+            const activity = affordableActivities[Math.floor(Math.random() * affordableActivities.length)];
+            schedule.push({
+              time: `${currentTime}:00`,
+              description: activity.name,
+              type: 'Activity',
+              details: activity,
+              duration: activity.durationHours,
+              cost: activity.cost,
+              city: city,
+            });
+            currentTime += activity.durationHours;
+            dailyDuration += activity.durationHours;
+            dailyCost += activity.cost;
+            budgetUsed += activity.cost;
+          }
         }
       }
 
@@ -347,26 +406,34 @@ const AppContent: React.FC = () => {
       }
       
       if (morningActivities.length > 0) {
-        // Group activities by proximity to optimize travel time
-        const activityGroups = groupActivitiesByProximity(morningActivities, 3); // 3km radius
-        const selectedGroup = activityGroups[Math.floor(Math.random() * activityGroups.length)];
-        const activity = selectedGroup[0]; // Start with the first activity in the group
+        // Filter activities that fit within remaining budget
+        const affordableActivities = morningActivities.filter(a => 
+          a.cost <= (dailyBudget - budgetUsed) && a.cost <= remainingBudget
+        );
         
-        schedule.push({
-          time: `${currentTime}:00`,
-          description: activity.name,
-          type: 'Activity',
-          details: activity,
-          duration: activity.durationHours,
-          cost: activity.cost,
-          city: city,
-        });
-        currentTime += activity.durationHours;
-        dailyDuration += activity.durationHours;
-        dailyCost += activity.cost;
-        
-        // Store the current location for finding nearby lunch options
-        lastActivityLocation = activity.geolocation;
+        if (affordableActivities.length > 0) {
+          // Group activities by proximity to optimize travel time
+          const activityGroups = groupActivitiesByProximity(affordableActivities, 3); // 3km radius
+          const selectedGroup = activityGroups[Math.floor(Math.random() * activityGroups.length)];
+          const activity = selectedGroup[0]; // Start with the first activity in the group
+          
+          schedule.push({
+            time: `${currentTime}:00`,
+            description: activity.name,
+            type: 'Activity',
+            details: activity,
+            duration: activity.durationHours,
+            cost: activity.cost,
+            city: city,
+          });
+          currentTime += activity.durationHours;
+          dailyDuration += activity.durationHours;
+          dailyCost += activity.cost;
+          budgetUsed += activity.cost;
+          
+          // Store the current location for finding nearby lunch options
+          lastActivityLocation = activity.geolocation;
+        }
       }
     }
 
@@ -390,7 +457,7 @@ const AppContent: React.FC = () => {
         restaurant = lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
       }
       
-      if (restaurant) {
+      if (restaurant && restaurant.cost <= (dailyBudget - budgetUsed) && restaurant.cost <= remainingBudget) {
         schedule.push({
           time: `${currentTime}:00`,
           description: `Lunch at ${restaurant.name}`,
@@ -403,6 +470,7 @@ const AppContent: React.FC = () => {
         currentTime += 1.5;
         dailyDuration += 1.5;
         dailyCost += restaurant.cost;
+        budgetUsed += restaurant.cost;
         
         // Update location for afternoon activities
         lastActivityLocation = restaurant.geolocation;
@@ -445,21 +513,24 @@ const AppContent: React.FC = () => {
           selectedActivity = afternoonActivities[Math.floor(Math.random() * afternoonActivities.length)];
         }
         
-        schedule.push({
-          time: `${currentTime}:00`,
-          description: selectedActivity.name,
-          type: 'Activity',
-          details: selectedActivity,
-          duration: selectedActivity.durationHours,
-          cost: selectedActivity.cost,
-          city: city,
-        });
-        currentTime += selectedActivity.durationHours;
-        dailyDuration += selectedActivity.durationHours;
-        dailyCost += selectedActivity.cost;
-        
-        // Update location for evening activities
-        lastActivityLocation = selectedActivity.geolocation;
+        if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+          schedule.push({
+            time: `${currentTime}:00`,
+            description: selectedActivity.name,
+            type: 'Activity',
+            details: selectedActivity,
+            duration: selectedActivity.durationHours,
+            cost: selectedActivity.cost,
+            city: city,
+          });
+          currentTime += selectedActivity.durationHours;
+          dailyDuration += selectedActivity.durationHours;
+          dailyCost += selectedActivity.cost;
+          budgetUsed += selectedActivity.cost;
+          
+          // Update location for evening activities
+          lastActivityLocation = selectedActivity.geolocation;
+        }
       }
     }
 
@@ -496,7 +567,7 @@ const AppContent: React.FC = () => {
           restaurant = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
         }
         
-        if (restaurant) {
+        if (restaurant && restaurant.cost <= (dailyBudget - budgetUsed) && restaurant.cost <= remainingBudget) {
           schedule.push({
             time: `${Math.max(currentTime, 18)}:00`,
             description: `Dinner at ${restaurant.name}`,
@@ -509,6 +580,7 @@ const AppContent: React.FC = () => {
           currentTime = Math.max(currentTime + 1.5, 19.5);
           dailyDuration += 1.5;
           dailyCost += restaurant.cost;
+          budgetUsed += restaurant.cost;
           
           // Update location for nightlife activities
           lastActivityLocation = restaurant.geolocation;
@@ -535,17 +607,20 @@ const AppContent: React.FC = () => {
             selectedActivity = nightlifeActivities[Math.floor(Math.random() * nightlifeActivities.length)];
           }
           
-          schedule.push({
-            time: `${Math.max(currentTime, 21)}:00`,
-            description: selectedActivity.name,
-            type: 'Activity',
-            details: selectedActivity,
-            duration: selectedActivity.durationHours,
-            cost: selectedActivity.cost,
-            city: city,
-          });
-          dailyDuration += selectedActivity.durationHours;
-          dailyCost += selectedActivity.cost;
+          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+            schedule.push({
+              time: `${Math.max(currentTime, 21)}:00`,
+              description: selectedActivity.name,
+              type: 'Activity',
+              details: selectedActivity,
+              duration: selectedActivity.durationHours,
+              cost: selectedActivity.cost,
+              city: city,
+            });
+            dailyDuration += selectedActivity.durationHours;
+            dailyCost += selectedActivity.cost;
+            budgetUsed += selectedActivity.cost;
+          }
         } else if (eveningActivities.length > 0) {
           // Fallback to other evening activities (also consider proximity)
           let selectedActivity: Activity;
@@ -564,18 +639,21 @@ const AppContent: React.FC = () => {
             selectedActivity = eveningActivities[Math.floor(Math.random() * eveningActivities.length)];
           }
           
-          schedule.push({
-            time: `${currentTime}:00`,
-            description: selectedActivity.name,
-            type: 'Activity',
-            details: selectedActivity,
-            duration: selectedActivity.durationHours,
-            cost: selectedActivity.cost,
-            city: city,
-          });
-          currentTime += selectedActivity.durationHours;
-          dailyDuration += selectedActivity.durationHours;
-          dailyCost += selectedActivity.cost;
+          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+            schedule.push({
+              time: `${currentTime}:00`,
+              description: selectedActivity.name,
+              type: 'Activity',
+              details: selectedActivity,
+              duration: selectedActivity.durationHours,
+              cost: selectedActivity.cost,
+              city: city,
+            });
+            currentTime += selectedActivity.durationHours;
+            dailyDuration += selectedActivity.durationHours;
+            dailyCost += selectedActivity.cost;
+            budgetUsed += selectedActivity.cost;
+          }
         }
       }
     }
@@ -604,6 +682,135 @@ const AppContent: React.FC = () => {
       default:
         return baseCost;
     }
+  };
+
+  // Function to optimize plan when over budget
+  const optimizePlanForBudget = (
+    dailyPlans: DailyPlan[], 
+    hotel: Hotel, 
+    budget: number, 
+    duration: number
+  ) => {
+    let totalCost = hotel.cost * duration;
+    const optimizedPlans = dailyPlans.map(plan => ({ ...plan }));
+    
+    // Calculate current total cost
+    optimizedPlans.forEach(plan => {
+      totalCost += plan.totalCost;
+    });
+    
+    // If still over budget, remove expensive activities
+    if (totalCost > budget) {
+      const excessAmount = totalCost - budget;
+      let savedAmount = 0;
+      
+      for (const plan of optimizedPlans) {
+        if (savedAmount >= excessAmount) break;
+        
+        // Sort activities by cost (highest first) and remove expensive ones
+        const expensiveActivities = plan.schedule
+          .filter(item => item.type === 'Activity' && item.cost && item.cost > 50)
+          .sort((a, b) => (b.cost || 0) - (a.cost || 0));
+        
+        for (const activity of expensiveActivities) {
+          if (savedAmount >= excessAmount) break;
+          
+          // Remove this activity
+          const index = plan.schedule.indexOf(activity);
+          if (index > -1) {
+            plan.schedule.splice(index, 1);
+            plan.totalCost -= activity.cost || 0;
+            savedAmount += activity.cost || 0;
+          }
+        }
+      }
+    }
+    
+    // Recalculate total cost
+    totalCost = hotel.cost * duration;
+    optimizedPlans.forEach(plan => {
+      totalCost += plan.totalCost;
+    });
+    
+    return {
+      hotel,
+      dailyPlans: optimizedPlans,
+      restaurants: restaurants.filter(r => r.budget === 'Budget'), // Use budget restaurants
+      totalCost,
+      totalDuration: optimizedPlans.reduce((sum, plan) => sum + plan.totalDuration, 0),
+      budget,
+    };
+  };
+
+  // Fallback function for basic plan generation
+  const generateBasicPlan = (duration: number, budget: number) => {
+    
+    // Select cheapest hotel
+    const cheapestHotel = hotels
+      .filter(h => h.city === 'Abidjan')
+      .sort((a, b) => a.cost - b.cost)[0];
+    
+    const dailyPlans: DailyPlan[] = [];
+    const remainingBudgetPerDay = Math.max((budget - cheapestHotel.cost * duration) / duration, 30);
+    
+    for (let day = 1; day <= duration; day++) {
+      const basicSchedule: ItineraryItem[] = [];
+      let dailyCost = 0;
+      
+      // Add basic activities within budget
+      const affordableActivities = activities
+        .filter(a => a.city === 'Abidjan' && a.cost <= remainingBudgetPerDay * 0.7)
+        .sort((a, b) => a.cost - b.cost);
+      
+      if (affordableActivities.length > 0) {
+        const activity = affordableActivities[0];
+        basicSchedule.push({
+          time: '10:00',
+          description: activity.name,
+          type: 'Activity',
+          details: activity,
+          duration: activity.durationHours,
+          cost: activity.cost,
+          city: 'Abidjan',
+        });
+        dailyCost += activity.cost;
+      }
+      
+      // Add affordable meal
+      const affordableRestaurant = restaurants
+        .filter(r => r.city === 'Abidjan' && r.cost <= remainingBudgetPerDay * 0.3)
+        .sort((a, b) => a.cost - b.cost)[0];
+      
+      if (affordableRestaurant) {
+        basicSchedule.push({
+          time: '12:00',
+          description: `Lunch at ${affordableRestaurant.name}`,
+          type: 'Meal',
+          details: affordableRestaurant,
+          duration: 1,
+          cost: affordableRestaurant.cost,
+          city: 'Abidjan',
+        });
+        dailyCost += affordableRestaurant.cost;
+      }
+      
+      dailyPlans.push({
+        day,
+        city: 'Abidjan',
+        schedule: basicSchedule,
+        totalCost: dailyCost,
+        totalDuration: basicSchedule.reduce((sum, item) => sum + (item.duration || 0), 0),
+      });
+    }
+    
+    setPlan({
+      hotel: cheapestHotel,
+      dailyPlans,
+      restaurants: restaurants.filter(r => r.budget === 'Budget'),
+      totalCost: cheapestHotel.cost * duration + dailyPlans.reduce((sum, plan) => sum + plan.totalCost, 0),
+      totalDuration: dailyPlans.reduce((sum, plan) => sum + plan.totalDuration, 0),
+      budget,
+    });
   };
 
   return (

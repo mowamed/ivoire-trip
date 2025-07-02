@@ -4,6 +4,7 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import type { Hotel, Activity, Restaurant, Transportation, Geolocation } from '../data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
+import { BudgetAlert } from './ui/budget-alert';
 import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon, Calendar, Waves, Music } from 'lucide-react';
 
 interface ItineraryItem {
@@ -32,6 +33,7 @@ interface Props {
     restaurants: Restaurant[];
     totalCost: number;
     totalDuration: number;
+    budget?: number;
   } | null;
 }
 
@@ -119,6 +121,14 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
           {t('plan.subtitle')}
         </p>
       </div>
+
+      {plan.budget && (
+        <BudgetAlert 
+          totalCost={plan.totalCost} 
+          budget={plan.budget} 
+          currency="USD" 
+        />
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
