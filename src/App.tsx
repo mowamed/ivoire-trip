@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PlannerForm from './components/PlannerForm';
 import TripPlan from './components/TripPlan';
-import { hotels, activities, restaurants, travelTimes, Hotel, Activity, Restaurant } from './data';
+import { hotels, activities, restaurants, travelTimes } from './data';
+import type { Hotel, Activity, Restaurant } from './data';
 import './App.css';
 
 interface ItineraryItem {
@@ -32,7 +33,6 @@ const App: React.FC = () => {
   } | null>(null);
 
   const generatePlan = (duration: number, budget: number) => {
-    const budgetPerDay = budget / duration;
     let currentCity = 'Abidjan';
     let remainingBudget = budget;
     const visitedCities: string[] = ['Abidjan'];
@@ -150,9 +150,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <PlannerForm onPlanRequest={generatePlan} />
-      <TripPlan plan={plan} />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Ivory Coast Trip Planner
+          </h1>
+          <p className="text-lg text-gray-600">
+            Discover the beauty and culture of Côte d'Ivoire with our personalized travel planner
+          </p>
+        </div>
+        <PlannerForm onPlanRequest={generatePlan} />
+        <TripPlan plan={plan} />
+      </div>
     </div>
   );
 };
