@@ -1,12 +1,15 @@
 
 export interface Hotel {
   name: string;
+  city: string;
   budget: 'Budget' | 'Mid-Range' | 'Luxury';
   description: string;
+  cost: number;
 }
 
 export interface Activity {
   name: string;
+  city: string;
   type: 'Beach' | 'Mountain' | 'Culture' | 'Nightlife' | 'Exploration';
   description: string;
   budget: 'Budget' | 'Mid-Range' | 'Luxury';
@@ -14,13 +17,16 @@ export interface Activity {
   videoUrl?: string;
   durationHours: number;
   bestTime: 'Morning' | 'Afternoon' | 'Evening';
+  cost: number;
 }
 
 export interface Restaurant {
   name: string;
+  city: string;
   cuisine: string;
   budget: 'Budget' | 'Mid-Range' | 'Luxury';
   bestTime: 'Breakfast' | 'Lunch' | 'Dinner';
+  cost: number;
 }
 
 export interface Transportation {
@@ -30,39 +36,43 @@ export interface Transportation {
 }
 
 export const hotels: Hotel[] = [
-  { name: 'Hotel Ivoire', budget: 'Luxury', description: 'A luxurious hotel with a pool and a view of the lagoon.' },
-  { name: 'Pullman Abidjan', budget: 'Luxury', description: 'A 5-star hotel in the heart of the business district.' },
-  { name: 'Sofitel Abidjan Hotel Ivoire', budget: 'Luxury', description: 'An iconic hotel with luxurious rooms, a spa, and multiple restaurants.' },
-  { name: 'Seen Hotel Abidjan Plateau', budget: 'Mid-Range', description: 'A modern and stylish hotel in the city center.' },
-  { name: 'Ibis Abidjan Plateau', budget: 'Budget', description: 'A comfortable and affordable hotel.' },
-  { name: 'Azalaï Hotel Abidjan', budget: 'Mid-Range', description: 'A popular choice for business and leisure travelers, with a rooftop pool.' },
-  { name: 'Leparticulier Hotel', budget: 'Budget', description: 'A charming boutique hotel with a unique design.' },
+  { name: 'Hotel Ivoire', city: 'Abidjan', budget: 'Luxury', description: 'A luxurious hotel with a pool and a view of the lagoon.', cost: 300 },
+  { name: 'Pullman Abidjan', city: 'Abidjan', budget: 'Luxury', description: 'A 5-star hotel in the heart of the business district.', cost: 250 },
+  { name: 'Sofitel Abidjan Hotel Ivoire', city: 'Abidjan', budget: 'Luxury', description: 'An iconic hotel with luxurious rooms, a spa, and multiple restaurants.', cost: 400 },
+  { name: 'Seen Hotel Abidjan Plateau', city: 'Abidjan', budget: 'Mid-Range', description: 'A modern and stylish hotel in the city center.', cost: 150 },
+  { name: 'Ibis Abidjan Plateau', city: 'Abidjan', budget: 'Budget', description: 'A comfortable and affordable hotel.', cost: 80 },
+  { name: 'Azalaï Hotel Abidjan', city: 'Abidjan', budget: 'Mid-Range', description: 'A popular choice for business and leisure travelers, with a rooftop pool.', cost: 180 },
+  { name: 'Leparticulier Hotel', city: 'Abidjan', budget: 'Budget', description: 'A charming boutique hotel with a unique design.', cost: 100 },
+  { name: 'Hotel President', city: 'Yamoussoukro', budget: 'Luxury', description: 'A grand hotel with a golf course and impressive architecture.', cost: 280 },
+  { name: 'Le Rocher', city: 'Man', budget: 'Mid-Range', description: 'A hotel with stunning views of the surrounding mountains.', cost: 120 },
 ];
 
 export const activities: Activity[] = [
-  { name: 'Assinie-Mafia Beach', type: 'Beach', description: 'A beautiful beach resort town, perfect for relaxation and water sports.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/assinie/400/300', videoUrl: 'https://www.youtube.com/embed/7_n4_s4fKxM', durationHours: 6, bestTime: 'Morning' },
-  { name: 'Grand-Bassam Historic Town', type: 'Culture', description: 'Explore the historic colonial architecture and vibrant art scene.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/bassam/400/300', durationHours: 4, bestTime: 'Morning' },
-  { name: 'Mount Tonkoui Hike (Man)', type: 'Mountain', description: 'Hike to the highest peak in Ivory Coast for breathtaking views.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/man/400/300', durationHours: 8, bestTime: 'Morning' },
-  { name: 'Basilica of Our Lady of Peace (Yamoussoukro)', type: 'Culture', description: "Visit the world's largest church, a stunning architectural marvel.", budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/yamoussoukro/400/300', durationHours: 3, bestTime: 'Afternoon' },
-  { name: 'Taï National Park Safari', type: 'Exploration', description: 'Discover diverse wildlife, including pygmy hippos, in this UNESCO site.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/tai/400/300', durationHours: 10, bestTime: 'Morning' },
-  { name: 'Zone 4 Nightlife', type: 'Nightlife', description: "Experience the vibrant bars, clubs, and live music of Abidjan's entertainment district.", budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/zone4/400/300', durationHours: 4, bestTime: 'Evening' },
-  { name: "St. Paul's Cathedral Abidjan", type: 'Culture', description: "Admire the unique and modern architecture of Abidjan's iconic cathedral.", budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cathedral/400/300', durationHours: 2, bestTime: 'Afternoon' },
-  { name: 'Jardin Botanique de Bingerville', type: 'Exploration', description: 'Enjoy a peaceful stroll through this beautiful botanical garden.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/jardin/400/300', durationHours: 3, bestTime: 'Morning' },
-    { name: 'Sassandra Beaches', type: 'Beach', description: 'Relax on the pristine beaches and visit the historic Governor\'s Palace.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/sassandra/400/300', durationHours: 5, bestTime: 'Morning' },
-  { name: 'Banco National Park', type: 'Exploration', description: 'A rainforest park within Abidjan, great for a quick nature escape.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/banco/400/300', durationHours: 3, bestTime: 'Afternoon' },
-  { name: 'Marché de Treichville', type: 'Culture', description: 'Immerse yourself in the bustling local market, a sensory experience.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/treichville/400/300', durationHours: 2, bestTime: 'Morning' },
-  { name: 'Cocody Residential Area', type: 'Exploration', description: 'Drive through or walk around the upscale residential area with beautiful villas.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cocody/400/300', durationHours: 2, bestTime: 'Afternoon' },
+  { name: 'Assinie-Mafia Beach', city: 'Assinie', type: 'Beach', description: 'A beautiful beach resort town, perfect for relaxation and water sports.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/assinie/400/300', videoUrl: 'https://www.youtube.com/embed/7_n4_s4fKxM', durationHours: 6, bestTime: 'Morning', cost: 50 },
+  { name: 'Grand-Bassam Historic Town', city: 'Grand-Bassam', type: 'Culture', description: 'Explore the historic colonial architecture and vibrant art scene.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/bassam/400/300', durationHours: 4, bestTime: 'Morning', cost: 20 },
+  { name: 'Mount Tonkoui Hike', city: 'Man', type: 'Mountain', description: 'Hike to the highest peak in Ivory Coast for breathtaking views.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/man/400/300', durationHours: 8, bestTime: 'Morning', cost: 30 },
+  { name: 'Basilica of Our Lady of Peace', city: 'Yamoussoukro', type: 'Culture', description: "Visit the world's largest church, a stunning architectural marvel.", budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/yamoussoukro/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 15 },
+  { name: 'Taï National Park Safari', city: 'Taï', type: 'Exploration', description: 'Discover diverse wildlife, including pygmy hippos, in this UNESCO site.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/tai/400/300', durationHours: 10, bestTime: 'Morning', cost: 100 },
+  { name: 'Zone 4 Nightlife', city: 'Abidjan', type: 'Nightlife', description: "Experience the vibrant bars, clubs, and live music of Abidjan's entertainment district.", budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/zone4/400/300', durationHours: 4, bestTime: 'Evening', cost: 40 },
+  { name: "St. Paul's Cathedral Abidjan", city: 'Abidjan', type: 'Culture', description: "Admire the unique and modern architecture of Abidjan's iconic cathedral.", budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cathedral/400/300', durationHours: 2, bestTime: 'Afternoon', cost: 0 },
+  { name: 'Jardin Botanique de Bingerville', city: 'Abidjan', type: 'Exploration', description: 'Enjoy a peaceful stroll through this beautiful botanical garden.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/jardin/400/300', durationHours: 3, bestTime: 'Morning', cost: 10 },
+  { name: 'Sassandra Beaches', city: 'Sassandra', type: 'Beach', description: 'Relax on the pristine beaches and visit the historic Governor\'s Palace.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/sassandra/400/300', durationHours: 5, bestTime: 'Morning', cost: 25 },
+  { name: 'Banco National Park', city: 'Abidjan', type: 'Exploration', description: 'A rainforest park within Abidjan, great for a quick nature escape.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/banco/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 5 },
+  { name: 'Marché de Treichville', city: 'Abidjan', type: 'Culture', description: 'Immerse yourself in the bustling local market, a sensory experience.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/treichville/400/300', durationHours: 2, bestTime: 'Morning', cost: 0 },
+  { name: 'Cocody Residential Area', city: 'Abidjan', type: 'Exploration', description: 'Drive through or walk around the upscale residential area with beautiful villas.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cocody/400/300', durationHours: 2, bestTime: 'Afternoon', cost: 0 },
 ];
 
 export const restaurants: Restaurant[] = [
-  { name: "Le Toit d'Abidjan", cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner' },
-  { name: 'Chez Ambroise', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch' },
-  { name: 'Maquis du Val', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner' },
-  { name: 'Le Bavarois', cuisine: 'German', budget: 'Mid-Range', bestTime: 'Dinner' },
-  { name: 'La Croisette', cuisine: 'French', budget: 'Luxury', bestTime: 'Lunch' },
-  { name: 'Abidjan Cafe', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Breakfast' },
-  { name: 'Restaurant Universitaire', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch' },
-  { name: 'La Taverne Romaine', cuisine: 'Italian', budget: 'Mid-Range', bestTime: 'Dinner' },
+  { name: "Le Toit d'Abidjan", city: 'Abidjan', cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner', cost: 100 },
+  { name: 'Chez Ambroise', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 30 },
+  { name: 'Maquis du Val', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 15 },
+  { name: 'Le Bavarois', city: 'Abidjan', cuisine: 'German', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40 },
+  { name: 'La Croisette', city: 'Abidjan', cuisine: 'French', budget: 'Luxury', bestTime: 'Lunch', cost: 80 },
+  { name: 'Abidjan Cafe', city: 'Abidjan', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Breakfast', cost: 20 },
+  { name: 'Restaurant Universitaire', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 5 },
+  { name: 'La Taverne Romaine', city: 'Abidjan', cuisine: 'Italian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 50 },
+  { name: 'Le Grand Large', city: 'Assinie', cuisine: 'Seafood', budget: 'Luxury', bestTime: 'Dinner', cost: 90 },
+  { name: 'Chez Georges', city: 'Grand-Bassam', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25 },
 ];
 
 export const transportationOptions: Transportation[] = [
@@ -70,3 +80,13 @@ export const transportationOptions: Transportation[] = [
   { type: 'VTC (Ride-sharing)', costPerTrip: 15, budget: 'Mid-Range' },
   { type: 'Private Car with Driver', costPerTrip: 50, budget: 'Luxury' },
 ];
+
+export const travelTimes: { [key: string]: { [key: string]: number } } = {
+  Abidjan: { 'Grand-Bassam': 1, Assinie: 2, Yamoussoukro: 3, Man: 8, Taï: 10, Sassandra: 6 },
+  'Grand-Bassam': { Abidjan: 1, Assinie: 1, Yamoussoukro: 4, Man: 9, Taï: 11, Sassandra: 7 },
+  Assinie: { Abidjan: 2, 'Grand-Bassam': 1, Yamoussoukro: 5, Man: 10, Taï: 12, Sassandra: 8 },
+  Yamoussoukro: { Abidjan: 3, 'Grand-Bassam': 4, Assinie: 5, Man: 5, Taï: 7, Sassandra: 9 },
+  Man: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Taï: 6, Sassandra: 12 },
+  Taï: { Abidjan: 10, 'Grand-Bassam': 11, Assinie: 12, Yamoussoukro: 7, Man: 6, Sassandra: 14 },
+  Sassandra: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 9, Man: 12, Taï: 14 },
+};
