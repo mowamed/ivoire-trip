@@ -49,10 +49,13 @@ export const hotels: Hotel[] = [
   { name: 'Heden Golf Hotel', city: 'Abidjan', budget: 'Luxury', description: 'A serene resort-style hotel with a large pool complex and golf course access.', cost: 220, geolocation: { lat: 5.3345, lng: -3.9870 } },
   { name: 'Radisson Blu Hotel, Abidjan Airport', city: 'Abidjan', budget: 'Luxury', description: 'Conveniently located by the airport with high-end amenities and a pool.', cost: 300, geolocation: { lat: 5.2575, lng: -3.9301 } },
   { name: 'La Maison Palmier', city: 'Abidjan', budget: 'Luxury', description: 'A chic and intimate boutique hotel known for its design and personalized service.', cost: 350, geolocation: { lat: 5.3412, lng: -3.9998 } },
+  { name: 'Noom Hotel Abidjan Plateau', city: 'Abidjan', budget: 'Luxury', description: 'A contemporary 5-star hotel known for its vibrant atmosphere, nightclub, and outdoor pool.', cost: 280, geolocation: { lat: 5.3267, lng: -4.0211 } },
+  { name: 'Mövenpick Hotel Abidjan', city: 'Abidjan', budget: 'Luxury', description: 'Offers Swiss hospitality and premium services in a prime central location in Le Plateau.', cost: 320, geolocation: { lat: 5.3271, lng: -4.0235 } },
   { name: 'Azalaï Hotel Abidjan', city: 'Abidjan', budget: 'Mid-Range', description: 'A popular choice for business and leisure travelers, with a rooftop pool.', cost: 180, geolocation: { lat: 5.3089, lng: -3.9934 } },
   { name: 'Seen Hotel Abidjan Plateau', city: 'Abidjan', budget: 'Mid-Range', description: 'A modern and stylish hotel in the city center.', cost: 150, geolocation: { lat: 5.3258, lng: -4.0197 } },
   { name: 'Hotel Particulier', city: 'Abidjan', budget: 'Mid-Range', description: 'A stylish and intimate boutique hotel in the heart of Cocody.', cost: 160, geolocation: { lat: 5.3408, lng: -3.9985 } },
   { name: 'Villa Jaddis', city: 'Abidjan', budget: 'Mid-Range', description: 'A charming guesthouse with a beautiful garden and a tranquil atmosphere.', cost: 140, geolocation: { lat: 5.3488, lng: -4.0005 } },
+  { name: 'Le Wafou', city: 'Abidjan', budget: 'Mid-Range', description: 'Unique resort-like hotel with an African-themed garden, outdoor pool, and a water park.', cost: 130, geolocation: { lat: 5.2781, lng: -3.9842 } },
   { name: 'Ibis Abidjan Plateau', city: 'Abidjan', budget: 'Budget', description: 'A comfortable and affordable hotel, great for practical stays.', cost: 80, geolocation: { lat: 5.3248, lng: -4.0199 } },
   { name: 'Nomad Hotel Abidjan', city: 'Abidjan', budget: 'Budget', description: 'A trendy and affordable option in the lively Zone 4 district.', cost: 90, geolocation: { lat: 5.2977, lng: -4.0021 } },
   { name: 'The People Hostel - Abidjan', city: 'Abidjan', budget: 'Budget', description: 'A modern hostel offering both private rooms and dorms, with a friendly social vibe.', cost: 40, geolocation: { lat: 5.3155, lng: -4.0082 } },
@@ -62,6 +65,7 @@ export const hotels: Hotel[] = [
   { name: 'Le Rocher', city: 'Man', budget: 'Mid-Range', description: 'A hotel with stunning views of the surrounding mountains.', cost: 120, geolocation: { lat: 7.4110, lng: -7.5500 } },
   // Korhogo
   { name: 'Hôtel Mont Korhogo', city: 'Korhogo', budget: 'Budget', description: 'Simple and clean accommodation, a perfect base for exploring the Senufo region.', cost: 60, geolocation: { lat: 9.4450, lng: -5.6200 } },
+  { name: 'Olympe Hotel', city: 'Korhogo', budget: 'Mid-Range', description: 'A comfortable hotel with a swimming pool and restaurant, considered one of the best in the city.', cost: 75, geolocation: { lat: 9.4550, lng: -5.6300 } },
   // Grand-Bassam
   { name: 'Etoile du Sud', city: 'Grand-Bassam', budget: 'Mid-Range', description: 'A beachfront hotel with a relaxed atmosphere in the historic town.', cost: 130, geolocation: { lat: 5.2001, lng: -3.7432 } },
   { name: 'Koral Beach Hotel', city: 'Grand-Bassam', budget: 'Mid-Range', description: 'A friendly hotel with direct beach access and a popular restaurant.', cost: 110, geolocation: { lat: 5.1985, lng: -3.7401 } },
@@ -72,8 +76,12 @@ export const hotels: Hotel[] = [
   { name: 'African Queen Lodge', city: 'Assinie', budget: 'Mid-Range', description: 'A beautiful lodge with a private beach area, pool, and restaurant.', cost: 160, geolocation: { lat: 5.1355, lng: -3.3510 } },
   // San-Pédro
   { name: 'Hôtel Le Wharf', city: 'San-Pédro', budget: 'Mid-Range', description: 'A comfortable hotel known for its sea views and proximity to the port.', cost: 110, geolocation: { lat: 4.7450, lng: -6.6300 } },
+  { name: 'Hotel Palm Rock Beach', city: 'San-Pédro', budget: 'Mid-Range', description: 'A relaxing beachfront hotel with a pool and restaurant.', cost: 100, geolocation: { lat: 4.7310, lng: -6.6550 } },
   // Bouaké
   { name: 'Hotel Mon Afrik', city: 'Bouaké', budget: 'Mid-Range', description: 'A well-regarded hotel in Bouaké, offering comfortable rooms and a restaurant.', cost: 85, geolocation: { lat: 7.6880, lng: -5.0350 } },
+  // Sassandra
+  { name: 'Le Pollet', city: 'Sassandra', budget: 'Mid-Range', description: 'Charming beachfront bungalows offering a peaceful retreat with beautiful ocean views.', cost: 95, geolocation: { lat: 4.9480, lng: -6.0910 } },
+  { name: 'Hôtel La Paillote', city: 'Sassandra', budget: 'Budget', description: 'Simple and clean accommodation, perfectly located for exploring the historic town and beaches.', cost: 50, geolocation: { lat: 4.9525, lng: -6.0820 } },
 ];
 
 export const activities: Activity[] = [
@@ -104,10 +112,14 @@ export const activities: Activity[] = [
   { name: 'Marahoué National Park', city: 'Bouaflé', type: 'Exploration', description: 'A critical conservation area transitioning from coastal forest to interior savanna.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/marahoue/400/300', durationHours: 8, bestTime: 'Morning', cost: 80, geolocation: { lat: 7.0833, lng: -6.0500 } },
   // Korhogo
   { name: 'Village des Tisserands', city: 'Korhogo', type: 'Culture', description: 'Visit the weavers\' village of Waraniéné to see artisans create famous Senufo textiles.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/korhogo/400/300', durationHours: 3, bestTime: 'Morning', cost: 5, geolocation: { lat: 9.3800, lng: -5.6000 } },
+  { name: 'Senufo Artisan Villages', city: 'Korhogo', type: 'Culture', description: 'Explore the villages around Korhogo to see blacksmiths, painters, and other traditional Senufo artisans at work.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/senufo/400/300', durationHours: 4, bestTime: 'Morning', cost: 15, geolocation: { lat: 9.4200, lng: -5.6500 } },
   // Bouaké
   { name: 'Grand Marché de Bouaké', city: 'Bouaké', type: 'Culture', description: 'Experience one of the largest and most vibrant markets in Côte d\'Ivoire.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/bouakemarket/400/300', durationHours: 2, bestTime: 'Morning', cost: 0, geolocation: { lat: 7.6895, lng: -5.0290 } },
   // Tiassalé
   { name: 'Bandama River Boat Trip', city: 'Tiassalé', type: 'Exploration', description: 'Take a scenic boat trip on the Bandama River, observing local life and nature.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/bandama/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 30, geolocation: { lat: 5.8980, lng: -4.8250 } },
+  // Sassandra
+  { name: 'Sassandra Beaches', city: 'Sassandra', type: 'Beach', description: 'Explore the stunning and historic beaches, known for their natural beauty and tranquility.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/sassandrabeach/400/300', durationHours: 5, bestTime: 'Morning', cost: 0, geolocation: { lat: 4.9500, lng: -6.0800 } },
+  { name: 'Fanti Fishermen Village', city: 'Sassandra', type: 'Culture', description: 'Visit a traditional Fanti fishing village to see the local way of life and the colorful fishing boats.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/fanti/400/300', durationHours: 2, bestTime: 'Morning', cost: 5, geolocation: { lat: 4.9555, lng: -6.0750 } },
 ];
 
 export const restaurants: Restaurant[] = [
@@ -116,10 +128,14 @@ export const restaurants: Restaurant[] = [
   { name: 'Le Marlin Bleu', city: 'Abidjan', cuisine: 'Seafood', budget: 'Luxury', bestTime: 'Dinner', cost: 95, geolocation: { lat: 5.2760, lng: -3.9660 } },
   { name: 'Le Méchoui', city: 'Abidjan', cuisine: 'Lebanese', budget: 'Luxury', bestTime: 'Dinner', cost: 80, geolocation: { lat: 5.2975, lng: -4.0080 } },
   { name: 'La Case d\'Ivoire', city: 'Abidjan', cuisine: 'African', budget: 'Luxury', bestTime: 'Dinner', cost: 75, geolocation: { lat: 5.3395, lng: -3.9955 } },
+  { name: 'Le Jardin Gourmand', city: 'Abidjan', cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner', cost: 60, geolocation: { lat: 5.2945, lng: -3.9998 } },
   { name: 'Saakan', city: 'Abidjan', cuisine: 'African', budget: 'Mid-Range', bestTime: 'Dinner', cost: 45, geolocation: { lat: 5.3250, lng: -4.0180 } },
   { name: 'Chez Ambroise', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 30, geolocation: { lat: 5.2934, lng: -4.0016 } },
   { name: 'Nushi.sushi', city: 'Abidjan', cuisine: 'Japanese', budget: 'Mid-Range', bestTime: 'Dinner', cost: 55, geolocation: { lat: 5.3142, lng: -4.0048 } },
   { name: 'Le Grand Large', city: 'Abidjan', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Lunch', cost: 40, geolocation: { lat: 5.2755, lng: -3.9655 } },
+  { name: 'Kaiten', city: 'Abidjan', cuisine: 'Japanese', budget: 'Mid-Range', bestTime: 'Dinner', cost: 50, geolocation: { lat: 5.2968, lng: -4.0071 } },
+  { name: 'Norima', city: 'Abidjan', cuisine: 'American-Asian Fusion', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 5.2965, lng: -4.0065 } },
+  { name: 'Chez Hélène', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 12, geolocation: { lat: 5.3188, lng: -4.0102 } },
   { name: 'Chez Tantie Alice', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 5.3360, lng: -4.0850 } },
   { name: 'Maquis du Val', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 15, geolocation: { lat: 5.3198, lng: -3.9855 } },
   { name: 'Allo-Co', city: 'Abidjan', cuisine: 'Street Food', budget: 'Budget', bestTime: 'Lunch', cost: 5, geolocation: { lat: 5.3011, lng: -4.0123 } },
@@ -135,6 +151,10 @@ export const restaurants: Restaurant[] = [
   { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 7.4050, lng: -7.5540 } },
   // Bouaké
   { name: 'Maquis Le Bafing', city: 'Bouaké', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 12, geolocation: { lat: 7.6855, lng: -5.0310 } },
+  // Sassandra
+  { name: 'Restaurant Le Wharf', city: 'Sassandra', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25, geolocation: { lat: 4.9510, lng: -6.0830 } },
+  // San-Pédro
+  { name: 'Le Rive Gauche', city: 'San-Pédro', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 4.7480, lng: -6.6350 } },
 ];
 
 export const transportationOptions: Transportation[] = [
@@ -146,6 +166,7 @@ export const transportationOptions: Transportation[] = [
   { type: 'Sotra Bateau-Bus (Abidjan Lagoon)', costPerTrip: 1, budget: 'Budget' },
   { type: 'Woro-Woro (Shared Taxi)', costPerTrip: 2, budget: 'Budget' },
 ];
+
 
 // Travel times in hours by road between major locations
 export const travelTimes: { [key: string]: { [key: string]: number } } = {
