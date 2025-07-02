@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PlannerForm from './components/PlannerForm';
 import TripPlan from './components/TripPlan';
 import SettingsPanel from './components/SettingsPanel';
+import { Loading } from './components/ui/loading';
 import { CurrencyProvider } from './contexts/CurrencyContext';
 import { hotels, activities, restaurants, travelTimes } from './data';
 import type { Hotel, Activity, Restaurant, Geolocation } from './data';
@@ -29,6 +30,7 @@ interface DailyPlan {
 
 const AppContent: React.FC = () => {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
   const [plan, setPlan] = useState<{
     hotel: Hotel | null;
     dailyPlans: DailyPlan[];
@@ -98,7 +100,12 @@ const AppContent: React.FC = () => {
     return closest;
   };
 
-  const generatePlan = (duration: number, budget: number) => {
+  const generatePlan = async (duration: number, budget: number) => {
+    setIsLoading(true);
+    
+    // Add a small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     // Determine budget category based on budget per day
     const budgetPerDay = budget / duration;
     let budgetCategory: 'Budget' | 'Mid-Range' | 'Luxury';
@@ -145,6 +152,8 @@ const AppContent: React.FC = () => {
       totalCost,
       totalDuration,
     });
+    
+    setIsLoading(false);
   };
 
   // Helper function to plan the route through cities (prioritizing beach destinations)
@@ -617,8 +626,12 @@ const AppContent: React.FC = () => {
       <div className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
         <div className="space-y-6 md:space-y-8">
           <SettingsPanel />
-          <PlannerForm onPlanRequest={generatePlan} />
-          <TripPlan plan={plan} />
+          <PlannerForm onPlanRequest={generatePlan} isLoading={isLoading} />
+          {isLoading ? (
+            <Loading message={t('form.generating', 'Generating your perfect trip...')} />
+          ) : (
+            <TripPlan plan={plan} />
+          )}
         </div>
       </div>
 

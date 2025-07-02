@@ -11,7 +11,8 @@
     "budget": "Budget",
     "budgetHelp": "Total budget for your trip",
     "currency": "Currency",
-    "generateButton": "Generate My Trip Plan"
+    "generateButton": "Generate My Trip Plan",
+    "generating": "Generating your perfect trip..."
   },
   "plan": {
     "title": "Your Custom Itinerary",

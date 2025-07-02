@@ -11,7 +11,8 @@
     "budget": "Budget",
     "budgetHelp": "Budget total pour votre voyage",
     "currency": "Devise",
-    "generateButton": "Générer Mon Plan de Voyage"
+    "generateButton": "Générer Mon Plan de Voyage",
+    "generating": "Génération de votre voyage parfait..."
   },
   "plan": {
     "title": "Votre Itinéraire Personnalisé",

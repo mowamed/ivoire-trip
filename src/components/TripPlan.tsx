@@ -110,31 +110,39 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('plan.title')}</h2>
-        <p className="text-lg text-gray-600">{t('plan.subtitle')}</p>
+        <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+          {t('plan.title')}
+        </h2>
+        <p className="text-sm md:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          {t('plan.subtitle')}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <DollarSign className="h-8 w-8 text-green-600" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl">
+                <DollarSign className="h-6 w-6 md:h-8 md:w-8 text-white" />
+              </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('plan.totalCost')}</h3>
-                <p className="text-2xl font-bold text-green-600">{formatPrice(plan.totalCost)}</p>
+                <h3 className="text-sm md:text-lg font-semibold text-gray-700">{t('plan.totalCost')}</h3>
+                <p className="text-xl md:text-2xl font-bold text-green-600">{formatPrice(plan.totalCost)}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <Clock className="h-8 w-8 text-blue-600" />
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl">
+                <Clock className="h-6 w-6 md:h-8 md:w-8 text-white" />
+              </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{t('plan.totalDuration')}</h3>
-                <p className="text-2xl font-bold text-blue-600">{plan.totalDuration} {t('plan.hours')}</p>
+                <h3 className="text-sm md:text-lg font-semibold text-gray-700">{t('plan.totalDuration')}</h3>
+                <p className="text-xl md:text-2xl font-bold text-blue-600">{plan.totalDuration} {t('plan.hours')}</p>
               </div>
             </div>
           </CardContent>
@@ -142,28 +150,30 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       </div>
 
       {plan.hotel && (
-        <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HotelIcon className="h-5 w-5 text-purple-600" />
+        <Card className="bg-gradient-to-br from-purple-50 to-pink-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 pb-4">
+            <CardTitle className="flex items-center gap-3 text-lg md:text-xl">
+              <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+                <HotelIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />
+              </div>
               {t('plan.accommodation')}
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
+          <CardContent className="p-4 md:p-6">
+            <div className="space-y-4">
               <div>
-                <h4 className="text-xl font-semibold text-gray-900">{plan.hotel.name}</h4>
-                <p className="text-gray-600 flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
+                <h4 className="text-lg md:text-xl font-semibold text-gray-900">{plan.hotel.name}</h4>
+                <p className="text-sm md:text-base text-gray-600 flex items-center gap-2 mt-1">
+                  <MapPin className="h-4 w-4 text-purple-500" />
                   {translateCity(plan.hotel.city)}
                 </p>
               </div>
-              <p className="text-gray-700">{plan.hotel.description}</p>
-              <div className="flex items-center gap-3">
-                <Badge variant={getBudgetVariant(plan.hotel.budget)}>
+              <p className="text-sm md:text-base text-gray-700 leading-relaxed">{plan.hotel.description}</p>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <Badge variant={getBudgetVariant(plan.hotel.budget)} className="w-fit">
                   {translateBudget(plan.hotel.budget)}
                 </Badge>
-                <span className="text-lg font-semibold text-purple-600">
+                <span className="text-base md:text-lg font-semibold text-purple-600">
                   {formatPrice(plan.hotel.cost)} {t('plan.perNight')}
                 </span>
               </div>
@@ -173,30 +183,34 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       )}
 
       <div className="space-y-6">
-        <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Calendar className="h-6 w-6 text-primary-600" />
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+            <Calendar className="h-5 w-5 md:h-6 md:w-6 text-white" />
+          </div>
           {t('plan.dailyItinerary')}
         </h3>
         <div className="timeline">
           {plan.dailyPlans.map((dailyPlan) => (
             <div className="timeline-item" key={dailyPlan.day}>
-              <div className="timeline-marker bg-primary-600 border-white shadow-lg"></div>
+              <div className="timeline-marker bg-gradient-to-r from-blue-500 to-purple-500 border-white shadow-lg"></div>
               <div className="timeline-content">
-                <Card className="shadow-lg border-0 bg-white/90 backdrop-blur-sm">
-                  <CardHeader className="bg-gradient-to-r from-primary-50 to-blue-50">
-                    <CardTitle className="flex items-center justify-between">
-                      <span className="text-xl">{t('plan.day')} {dailyPlan.day} - {translateCity(dailyPlan.city)}</span>
-                      <Badge variant="outline" className="text-primary-600 border-primary-600">
-                        {translateCity(dailyPlan.city)}
+                <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+                  <CardHeader className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 pb-4">
+                    <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <span className="text-lg md:text-xl font-bold">
+                        {t('plan.day')} {dailyPlan.day} - {translateCity(dailyPlan.city)}
+                      </span>
+                      <Badge variant="outline" className="text-blue-600 border-blue-600 w-fit">
+                        📍 {translateCity(dailyPlan.city)}
                       </Badge>
                     </CardTitle>
-                    <CardDescription className="flex items-center gap-4 text-base">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
+                    <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm md:text-base">
+                      <span className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-blue-500" />
                         {dailyPlan.totalDuration} {t('plan.hours')}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <DollarSign className="h-4 w-4" />
+                      <span className="flex items-center gap-2">
+                        <DollarSign className="h-4 w-4 text-green-500" />
                         {formatPrice(dailyPlan.totalCost)}
                       </span>
                     </CardDescription>
@@ -206,23 +220,23 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                       {dailyPlan.schedule.map((item, index) => (
                         <div 
                           key={index}
-                          className={`p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors ${
-                            index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                          className={`p-3 md:p-4 border-b border-gray-100 last:border-b-0 hover:bg-blue-50/30 transition-colors ${
+                            index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
                           }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                            <div className="flex items-start gap-3 flex-1">
+                              <div className="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600 flex-shrink-0">
                                 {getIcon(item.type, item.details)}
                               </div>
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-semibold text-primary-600">{item.time}</span>
-                                  <span className="text-gray-400">•</span>
-                                  <span className="font-medium text-gray-900">{item.description}</span>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                                  <span className="font-bold text-blue-600 text-sm md:text-base">{item.time}</span>
+                                  <span className="hidden sm:inline text-gray-400">•</span>
+                                  <span className="font-semibold text-gray-900 text-sm md:text-base break-words">{item.description}</span>
                                 </div>
                                 {item.details && 'description' in item.details && (
-                                  <p className="text-sm text-gray-600 mt-1">{item.details.description}</p>
+                                  <p className="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">{item.details.description}</p>
                                 )}
                                 {item.details && 'geolocation' in item.details && index > 0 && (
                                   (() => {
@@ -234,9 +248,9 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                                       );
                                       if (distance <= 2) {
                                         return (
-                                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                                          <p className="text-xs text-green-600 mt-2 flex items-center gap-1 bg-green-50 px-2 py-1 rounded-lg w-fit">
                                             <MapPin className="h-3 w-3" />
-                                            Close to previous location ({distance.toFixed(1)}km)
+                                            Close to previous ({distance.toFixed(1)}km)
                                           </p>
                                         );
                                       }
@@ -246,14 +260,14 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 flex-shrink-0">
                               {item.cost && (
-                                <Badge variant="success" className="text-xs">
+                                <Badge variant="success" className="text-xs font-medium">
                                   {formatPrice(item.cost)}
                                 </Badge>
                               )}
                               {item.duration && (
-                                <Badge variant="secondary" className="text-xs">
+                                <Badge variant="secondary" className="text-xs font-medium">
                                   {item.duration}h
                                 </Badge>
                               )}
@@ -271,33 +285,39 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       </div>
 
       <div className="space-y-6">
-        <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Utensils className="h-6 w-6 text-primary-600" />
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
+            <Utensils className="h-5 w-5 md:h-6 md:w-6 text-white" />
+          </div>
           {t('plan.diningRecommendations')}
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {plan.restaurants.map((restaurant) => (
-            <Card key={restaurant.name} className="h-full hover:shadow-lg transition-shadow duration-300 border-0 bg-white/80 backdrop-blur-sm">
-              <CardContent className="p-6">
-                <div className="space-y-3">
+            <Card key={restaurant.name} className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden group">
+              <CardContent className="p-4 md:p-6">
+                <div className="space-y-4">
                   <div>
-                    <h4 className="text-lg font-semibold text-gray-900">{restaurant.name}</h4>
-                    <p className="text-gray-600 flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
+                    <h4 className="text-base md:text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">
+                      {restaurant.name}
+                    </h4>
+                    <p className="text-sm md:text-base text-gray-600 flex items-center gap-2 mt-1">
+                      <MapPin className="h-4 w-4 text-orange-500" />
                       {translateCity(restaurant.city)}
                     </p>
                   </div>
-                  <p className="text-gray-700">
-                    <span className="font-medium">{t('plan.cuisine')}:</span> {restaurant.cuisine}
-                  </p>
-                  <p className="text-gray-700">
-                    <span className="font-medium">{t('plan.bestTime')}:</span> {translateTime(restaurant.bestTime)}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <Badge variant={getBudgetVariant(restaurant.budget)}>
+                  <div className="space-y-2">
+                    <p className="text-sm md:text-base text-gray-700">
+                      <span className="font-medium text-orange-600">{t('plan.cuisine')}:</span> {restaurant.cuisine}
+                    </p>
+                    <p className="text-sm md:text-base text-gray-700">
+                      <span className="font-medium text-orange-600">{t('plan.bestTime')}:</span> {translateTime(restaurant.bestTime)}
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <Badge variant={getBudgetVariant(restaurant.budget)} className="w-fit">
                       {translateBudget(restaurant.budget)}
                     </Badge>
-                    <span className="text-lg font-semibold text-green-600">
+                    <span className="text-base md:text-lg font-bold text-green-600">
                       {formatPrice(restaurant.cost)}
                     </span>
                   </div>
