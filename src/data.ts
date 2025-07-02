@@ -62,6 +62,7 @@ export const hotels: Hotel[] = [
   // Yamoussoukro
   { name: 'Hotel President', city: 'Yamoussoukro', budget: 'Luxury', description: 'A grand hotel with a golf course and impressive architecture.', cost: 280, geolocation: { lat: 6.8041, lng: -5.2974 } },
   { name: 'Hotel Akraya', city: 'Yamoussoukro', budget: 'Mid-Range', description: 'A comfortable hotel with modern amenities and a central location.', cost: 100, geolocation: { lat: 6.8210, lng: -5.2785 } },
+  { name: 'Le Brennus', city: 'Yamoussoukro', budget: 'Mid-Range', description: 'A welcoming hotel with a restaurant and bar, known for its friendly service.', cost: 90, geolocation: { lat: 6.8195, lng: -5.2810 } },
   // Man
   { name: 'Le Rocher', city: 'Man', budget: 'Mid-Range', description: 'A hotel with stunning views of the surrounding mountains.', cost: 120, geolocation: { lat: 7.4110, lng: -7.5500 } },
   { name: 'Hôtel Les Cascades', city: 'Man', budget: 'Mid-Range', description: 'Located near the famous waterfalls, offering a scenic and relaxing stay.', cost: 110, geolocation: { lat: 7.4020, lng: -7.5590 } },
@@ -85,6 +86,12 @@ export const hotels: Hotel[] = [
   // Sassandra
   { name: 'Le Pollet', city: 'Sassandra', budget: 'Mid-Range', description: 'Charming beachfront bungalows offering a peaceful retreat with beautiful ocean views.', cost: 95, geolocation: { lat: 4.9480, lng: -6.0910 } },
   { name: 'Hôtel La Paillote', city: 'Sassandra', budget: 'Budget', description: 'Simple and clean accommodation, perfectly located for exploring the historic town and beaches.', cost: 50, geolocation: { lat: 4.9525, lng: -6.0820 } },
+  // Daloa
+  { name: 'La Résidence Hôtelière', city: 'Daloa', budget: 'Mid-Range', description: 'A modern hotel offering comfortable rooms, a restaurant, and conference facilities.', cost: 80, geolocation: { lat: 6.8850, lng: -6.4550 } },
+  // Bondoukou
+  { name: 'Hôtel Eléphant', city: 'Bondoukou', budget: 'Budget', description: 'A basic but functional hotel, providing a convenient base for exploring the historic city.', cost: 45, geolocation: { lat: 8.0400, lng: -2.8040 } },
+  // Aboisso
+  { name: 'Hotel le Rocher', city: 'Aboisso', budget: 'Budget', description: 'A simple hotel offering affordable lodging for travelers passing through the region.', cost: 40, geolocation: { lat: 5.4710, lng: -3.2100 } },
 ];
 
 export const activities: Activity[] = [
@@ -114,6 +121,7 @@ export const activities: Activity[] = [
   { name: 'Taï National Park Safari', city: 'Taï', type: 'Exploration', description: 'Discover incredible biodiversity, including chimpanzees and pygmy hippos, in this UNESCO site.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/tai/400/300', durationHours: 10, bestTime: 'Morning', cost: 100, geolocation: { lat: 5.8667, lng: -7.3500 } },
   { name: 'Comoe National Park', city: 'Bouna', type: 'Exploration', description: 'One of the largest protected areas in West Africa, with diverse ecosystems from savannah to forest.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/comoe/400/300', durationHours: 12, bestTime: 'Morning', cost: 120, geolocation: { lat: 9.0917, lng: -3.7833 } },
   { name: 'Marahoué National Park', city: 'Bouaflé', type: 'Exploration', description: 'A critical conservation area transitioning from coastal forest to interior savanna.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/marahoue/400/300', durationHours: 8, bestTime: 'Morning', cost: 80, geolocation: { lat: 7.0833, lng: -6.0500 } },
+  { name: 'Mount Nimba Strict Nature Reserve', city: 'Nimba', type: 'Mountain', description: 'A UNESCO World Heritage site, home to a unique variety of flora and fauna, including the viviparous toad.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/nimba/400/300', durationHours: 10, bestTime: 'Morning', cost: 150, geolocation: { lat: 7.6083, lng: -8.4333 } },
   // Korhogo
   { name: 'Village des Tisserands', city: 'Korhogo', type: 'Culture', description: 'Visit the weavers\' village of Waraniéné to see artisans create famous Senufo textiles.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/korhogo/400/300', durationHours: 3, bestTime: 'Morning', cost: 5, geolocation: { lat: 9.3800, lng: -5.6000 } },
   { name: 'Senufo Artisan Villages', city: 'Korhogo', type: 'Culture', description: 'Explore the villages around Korhogo to see blacksmiths, painters, and other traditional Senufo artisans at work.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/senufo/400/300', durationHours: 4, bestTime: 'Morning', cost: 15, geolocation: { lat: 9.4200, lng: -5.6500 } },
@@ -126,6 +134,10 @@ export const activities: Activity[] = [
   { name: 'Fanti Fishermen Village', city: 'Sassandra', type: 'Culture', description: 'Visit a traditional Fanti fishing village to see the local way of life and the colorful fishing boats.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/fanti/400/300', durationHours: 2, bestTime: 'Morning', cost: 5, geolocation: { lat: 4.9555, lng: -6.0750 } },
   // San-Pédro
   { name: 'Monogaga Beach', city: 'San-Pédro', type: 'Beach', description: 'A beautiful and pristine beach known for its golden sands and clear waters, perfect for a day of relaxation.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/monogaga/400/300', durationHours: 6, bestTime: 'Morning', cost: 10, geolocation: { lat: 4.9000, lng: -6.5000 } },
+  // Bondoukou
+  { name: 'La Mosquée de Samatiguila', city: 'Bondoukou', type: 'Culture', description: 'Visit a historic Sudanese-style mosque, a fine example of traditional earthen architecture in the region.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/samatiguila/400/300', durationHours: 1.5, bestTime: 'Afternoon', cost: 5, geolocation: { lat: 8.0416, lng: -2.8000 } },
+  // Daloa
+  { name: 'Marché Central de Daloa', city: 'Daloa', type: 'Culture', description: 'Immerse yourself in the bustling atmosphere of one of the region\'s most important trading hubs.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/dalomarket/400/300', durationHours: 2, bestTime: 'Morning', cost: 0, geolocation: { lat: 6.8773, lng: -6.4502 } },
 ];
 
 export const restaurants: Restaurant[] = [
@@ -155,6 +167,7 @@ export const restaurants: Restaurant[] = [
   // Yamoussoukro
   { name: 'Le Wafou', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 6.8180, lng: -5.2780 } },
   { name: 'Chez Mario', city: 'Yamoussoukro', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 6.8150, lng: -5.2760 } },
+  { name: 'Bangui', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 6.8225, lng: -5.2795 } },
   // Man
   { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 7.4050, lng: -7.5540 } },
   // Bouaké
@@ -166,6 +179,12 @@ export const restaurants: Restaurant[] = [
   { name: 'Le Rive Gauche', city: 'San-Pédro', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 4.7480, lng: -6.6350 } },
   // Korhogo
   { name: 'Le Bon Goût', city: 'Korhogo', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 7, geolocation: { lat: 9.4520, lng: -5.6280 } },
+  // Daloa
+  { name: 'Le Gôzô', city: 'Daloa', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 8, geolocation: { lat: 6.8790, lng: -6.4520 } },
+  // Bondoukou
+  { name: 'Chez Maman Africa', city: 'Bondoukou', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 6, geolocation: { lat: 8.0430, lng: -2.8010 } },
+  // Aboisso
+  { name: 'Maquis Le Bambou', city: 'Aboisso', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 9, geolocation: { lat: 5.4700, lng: -3.2085 } },
 ];
 
 export const transportationOptions: Transportation[] = [
