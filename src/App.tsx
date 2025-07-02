@@ -35,6 +35,8 @@ const App: React.FC = () => {
     const budgetPerDay = budget / duration;
     let currentCity = 'Abidjan';
     let remainingBudget = budget;
+    const visitedCities: string[] = ['Abidjan'];
+    const visitedActivities: string[] = [];
 
     const selectedHotel = hotels.find(h => h.city === currentCity && h.budget === 'Mid-Range') || hotels[0];
     remainingBudget -= selectedHotel.cost * duration;
@@ -50,8 +52,14 @@ const App: React.FC = () => {
       let currentTime = 9; // Start day at 9 AM
 
       if (day > 1) {
-        const availableCities = Object.keys(travelTimes[currentCity]).filter(city => city !== currentCity);
-        const nextCity = availableCities[Math.floor(Math.random() * availableCities.length)];
+        const availableCities = Object.keys(travelTimes[currentCity]).filter(city => !visitedCities.includes(city));
+        let nextCity;
+        if (availableCities.length > 0) {
+          nextCity = availableCities[Math.floor(Math.random() * availableCities.length)];
+        } else {
+          nextCity = 'Abidjan';
+        }
+        
         const travelTime = travelTimes[currentCity][nextCity];
 
         schedule.push({
@@ -67,11 +75,14 @@ const App: React.FC = () => {
         dailyDuration += travelTime;
         dailyCost += 50;
         currentCity = nextCity;
+        if (currentCity !== 'Abidjan') {
+          visitedCities.push(currentCity);
+        }
       }
 
-      const morningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Morning');
-      const afternoonActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Afternoon');
-      const eveningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Evening');
+      const morningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Morning' && !visitedActivities.includes(a.name));
+      const afternoonActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Afternoon' && !visitedActivities.includes(a.name));
+      const eveningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Evening' && !visitedActivities.includes(a.name));
 
       const addActivity = (activity: Activity) => {
         schedule.push({
@@ -86,6 +97,7 @@ const App: React.FC = () => {
         currentTime += activity.durationHours;
         dailyDuration += activity.durationHours;
         dailyCost += activity.cost;
+        visitedActivities.push(activity.name);
       };
 
       if (morningActivities.length > 0) {
