@@ -10,7 +10,7 @@ export interface Hotel {
 export interface Activity {
   name: string;
   city: string;
-  type: 'Beach' | 'Mountain' | 'Culture' | 'Nightlife' | 'Exploration';
+  type: 'Beach' | 'Mountain' | 'Culture' | 'Nightlife' | 'Exploration' | 'Fun';
   description: string;
   budget: 'Budget' | 'Mid-Range' | 'Luxury';
   imageUrl: string;
@@ -64,6 +64,11 @@ export const activities: Activity[] = [
   { name: 'Cocody Residential Area', city: 'Abidjan', type: 'Exploration', description: 'Drive through or walk around the upscale residential area with beautiful villas.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cocody/400/300', durationHours: 2, bestTime: 'Afternoon', cost: 0 },
   { name: 'La Cascade Waterfall', city: 'Man', type: 'Exploration', description: 'A beautiful waterfall near Man, perfect for a refreshing dip.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cascade/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 10 },
   { name: 'Comoe National Park', city: 'Bouna', type: 'Exploration', description: 'One of the largest protected areas in West Africa, with diverse ecosystems.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/comoe/400/300', durationHours: 12, bestTime: 'Morning', cost: 120 },
+  { name: 'Life Star', city: 'Abidjan', type: 'Nightlife', description: 'An upscale bar in Plateau known for its great cocktails and vibrant nightlife.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/lifestar/400/300', durationHours: 3, bestTime: 'Evening', cost: 60 },
+  { name: 'The Pharmacy Abidjan', city: 'Abidjan', type: 'Nightlife', description: 'A unique cocktail bar with an innovative drink menu and a stylish lounge atmosphere.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/pharmacy/400/300', durationHours: 2, bestTime: 'Evening', cost: 30 },
+  { name: 'Le Bar Blanc', city: 'Abidjan', type: 'Nightlife', description: 'A popular spot in Abidjan for cocktails, music, and a lively atmosphere.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/barblanc/400/300', durationHours: 3, bestTime: 'Evening', cost: 35 },
+  { name: 'Bushman Café', city: 'Abidjan', type: 'Fun', description: 'A unique establishment with a rooftop, art gallery, and live music.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/bushman/400/300', durationHours: 4, bestTime: 'Evening', cost: 45 },
+  { name: 'Doraville', city: 'Abidjan', type: 'Fun', description: 'A large amusement park with a variety of rides and attractions.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/doraville/400/300', durationHours: 5, bestTime: 'Afternoon', cost: 25 },
 ];
 
 export const restaurants: Restaurant[] = [
@@ -79,6 +84,8 @@ export const restaurants: Restaurant[] = [
   { name: 'Chez Georges', city: 'Grand-Bassam', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25 },
   { name: 'Le Wafou', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35 },
   { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10 },
+  { name: 'Saakan', city: 'Abidjan', cuisine: 'African', budget: 'Mid-Range', bestTime: 'Dinner', cost: 45 },
+  { name: 'Le Débarcadère', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 12 },
 ];
 
 export const transportationOptions: Transportation[] = [
