@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import PlannerForm from './components/PlannerForm';
+import TripPlan from './components/TripPlan';
+import { hotels, activities, restaurants, Hotel, Activity, Restaurant } from './data';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface TripPlanData {
+  hotel: Hotel | null;
+  itinerary: { day: number; activity: Activity }[];
+  restaurants: Restaurant[];
 }
 
-export default App
+const App: React.FC = () => {
+  const [plan, setPlan] = useState<TripPlanData | null>(null);
+
+  const generatePlan = (duration: number, budget: number) => {
+    const budgetPerDay = budget / duration;
+
+    let budgetCategory: 'Budget' | 'Mid-Range' | 'Luxury';
+    if (budgetPerDay < 100) {
+      budgetCategory = 'Budget';
+    } else if (budgetPerDay < 200) {
+      budgetCategory = 'Mid-Range';
+    } else {
+      budgetCategory = 'Luxury';
+    }
+
+    const selectedHotel = hotels.find(h => h.budget === budgetCategory) || null;
+    const suitableActivities = activities.filter(a => a.budget === budgetCategory);
+    const selectedRestaurants = restaurants.filter(r => r.budget === budgetCategory);
+
+    const itinerary = [];
+    for (let i = 0; i < duration; i++) {
+      itinerary.push({
+        day: i + 1,
+        activity: suitableActivities[i % suitableActivities.length],
+      });
+    }
+
+    setPlan({
+      hotel: selectedHotel,
+      itinerary,
+      restaurants: selectedRestaurants,
+    });
+  };
+
+  return (
+    <div className="bg-gray-100 min-h-screen">
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-900">Ivoire Trip Planner</h1>
+          <p className="mt-2 text-lg text-gray-600">Your personalized adventure in Ivory Coast awaits</p>
+        </header>
+        <main>
+          <div className="flex flex-col lg:flex-row lg:space-x-8">
+            <div className="lg:w-1/3">
+              <PlannerForm onPlanRequest={generatePlan} />
+            </div>
+            <div className="lg:w-2/3">
+              {plan ? <TripPlan plan={plan} /> : (
+                <div className="bg-white shadow-md rounded-lg p-6 text-center">
+                  <p className="text-gray-500">Enter your trip details to generate a plan.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+        <footer className="text-center mt-8">
+          <p className="text-gray-500">Made with ❤️ for a memorable trip</p>
+        </footer>
+      </div>
+    </div>
+  );
+};
+
+export default App;
