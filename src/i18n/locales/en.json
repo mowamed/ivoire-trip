@@ -29,7 +29,11 @@
     "bestTime": "Best time",
     "beachDay": "Beach Day",
     "nightlifeExperience": "Nightlife Experience",
-    "clubbing": "Clubbing & Entertainment"
+    "clubbing": "Clubbing & Entertainment",
+    "exportPdf": "Export PDF",
+    "exporting": "Exporting...",
+    "exportSuccess": "PDF exported successfully!",
+    "exportError": "Failed to export PDF. Please try again."
   },
   "budget": {
     "Budget": "Budget",

@@ -5,6 +5,7 @@ import type { Hotel, Activity, Restaurant, Transportation, Geolocation } from '.
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { BudgetAlert } from './ui/budget-alert';
+import { ExportButton } from './ui/export-button';
 import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon, Calendar, Waves, Music } from 'lucide-react';
 
 interface ItineraryItem {
@@ -120,6 +121,16 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
         <p className="text-sm md:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
           {t('plan.subtitle')}
         </p>
+        
+        {/* Export Button */}
+        <div className="mt-6">
+          <ExportButton 
+            plan={plan} 
+            variant="outline" 
+            size="lg"
+            className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-blue-200 hover:border-blue-300"
+          />
+        </div>
       </div>
 
       {plan.budget && (
@@ -129,6 +140,9 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
           currency="USD" 
         />
       )}
+
+      {/* PDF Export Content Wrapper */}
+      <div id="trip-plan-content" className="space-y-6 md:space-y-8 bg-white p-6 rounded-2xl">
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
@@ -337,6 +351,8 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
           ))}
         </div>
       </div>
+      
+      </div> {/* End PDF Export Content Wrapper */}
     </div>
   );
 };
