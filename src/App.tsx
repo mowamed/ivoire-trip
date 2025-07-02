@@ -50,7 +50,8 @@ const App: React.FC = () => {
       let currentTime = 9; // Start day at 9 AM
 
       if (day > 1) {
-        const nextCity = Object.keys(travelTimes[currentCity]).reduce((a, b) => travelTimes[currentCity][a] < travelTimes[currentCity][b] ? a : b);
+        const availableCities = Object.keys(travelTimes[currentCity]).filter(city => city !== currentCity);
+        const nextCity = availableCities[Math.floor(Math.random() * availableCities.length)];
         const travelTime = travelTimes[currentCity][nextCity];
 
         schedule.push({
@@ -68,23 +69,30 @@ const App: React.FC = () => {
         currentCity = nextCity;
       }
 
-      const morningActivity = activities.find(a => a.city === currentCity && a.bestTime === 'Morning' && a.budget === 'Mid-Range');
-      if (morningActivity) {
+      const morningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Morning');
+      const afternoonActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Afternoon');
+      const eveningActivities = activities.filter(a => a.city === currentCity && a.bestTime === 'Evening');
+
+      const addActivity = (activity: Activity) => {
         schedule.push({
           time: `${currentTime}:00`,
-          description: morningActivity.name,
+          description: activity.name,
           type: 'Activity',
-          details: morningActivity,
-          duration: morningActivity.durationHours,
-          cost: morningActivity.cost,
+          details: activity,
+          duration: activity.durationHours,
+          cost: activity.cost,
           city: currentCity,
         });
-        currentTime += morningActivity.durationHours;
-        dailyDuration += morningActivity.durationHours;
-        dailyCost += morningActivity.cost;
+        currentTime += activity.durationHours;
+        dailyDuration += activity.durationHours;
+        dailyCost += activity.cost;
+      };
+
+      if (morningActivities.length > 0) {
+        addActivity(morningActivities[Math.floor(Math.random() * morningActivities.length)]);
       }
 
-      const lunch = restaurants.find(r => r.city === currentCity && r.bestTime === 'Lunch' && r.budget === 'Mid-Range');
+      const lunch = restaurants.find(r => r.city === currentCity && r.bestTime === 'Lunch');
       if (lunch) {
         schedule.push({
           time: `${currentTime}:00`,
@@ -100,20 +108,12 @@ const App: React.FC = () => {
         dailyCost += lunch.cost;
       }
 
-      const afternoonActivity = activities.find(a => a.city === currentCity && a.bestTime === 'Afternoon' && a.budget === 'Mid-Range');
-      if (afternoonActivity) {
-        schedule.push({
-          time: `${currentTime}:00`,
-          description: afternoonActivity.name,
-          type: 'Activity',
-          details: afternoonActivity,
-          duration: afternoonActivity.durationHours,
-          cost: afternoonActivity.cost,
-          city: currentCity,
-        });
-        currentTime += afternoonActivity.durationHours;
-        dailyDuration += afternoonActivity.durationHours;
-        dailyCost += afternoonActivity.cost;
+      if (afternoonActivities.length > 0) {
+        addActivity(afternoonActivities[Math.floor(Math.random() * afternoonActivities.length)]);
+      }
+
+      if (eveningActivities.length > 0 && currentTime < 20) {
+        addActivity(eveningActivities[Math.floor(Math.random() * eveningActivities.length)]);
       }
 
       dailyPlans.push({

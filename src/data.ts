@@ -45,6 +45,8 @@ export const hotels: Hotel[] = [
   { name: 'Leparticulier Hotel', city: 'Abidjan', budget: 'Budget', description: 'A charming boutique hotel with a unique design.', cost: 100 },
   { name: 'Hotel President', city: 'Yamoussoukro', budget: 'Luxury', description: 'A grand hotel with a golf course and impressive architecture.', cost: 280 },
   { name: 'Le Rocher', city: 'Man', budget: 'Mid-Range', description: 'A hotel with stunning views of the surrounding mountains.', cost: 120 },
+  { name: 'Etoile du Sud', city: 'Grand-Bassam', budget: 'Mid-Range', description: 'A beachfront hotel with a relaxed atmosphere.', cost: 130 },
+  { name: 'La Maison de la Lagune', city: 'Assinie', budget: 'Luxury', description: 'An exclusive resort on the shores of the Aby Lagoon.', cost: 350 },
 ];
 
 export const activities: Activity[] = [
@@ -60,6 +62,8 @@ export const activities: Activity[] = [
   { name: 'Banco National Park', city: 'Abidjan', type: 'Exploration', description: 'A rainforest park within Abidjan, great for a quick nature escape.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/banco/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 5 },
   { name: 'Marché de Treichville', city: 'Abidjan', type: 'Culture', description: 'Immerse yourself in the bustling local market, a sensory experience.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/treichville/400/300', durationHours: 2, bestTime: 'Morning', cost: 0 },
   { name: 'Cocody Residential Area', city: 'Abidjan', type: 'Exploration', description: 'Drive through or walk around the upscale residential area with beautiful villas.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cocody/400/300', durationHours: 2, bestTime: 'Afternoon', cost: 0 },
+  { name: 'La Cascade Waterfall', city: 'Man', type: 'Exploration', description: 'A beautiful waterfall near Man, perfect for a refreshing dip.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cascade/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 10 },
+  { name: 'Comoe National Park', city: 'Bouna', type: 'Exploration', description: 'One of the largest protected areas in West Africa, with diverse ecosystems.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/comoe/400/300', durationHours: 12, bestTime: 'Morning', cost: 120 },
 ];
 
 export const restaurants: Restaurant[] = [
@@ -73,20 +77,23 @@ export const restaurants: Restaurant[] = [
   { name: 'La Taverne Romaine', city: 'Abidjan', cuisine: 'Italian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 50 },
   { name: 'Le Grand Large', city: 'Assinie', cuisine: 'Seafood', budget: 'Luxury', bestTime: 'Dinner', cost: 90 },
   { name: 'Chez Georges', city: 'Grand-Bassam', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25 },
+  { name: 'Le Wafou', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35 },
+  { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10 },
 ];
 
 export const transportationOptions: Transportation[] = [
-  { type: 'Taxi', costPerTrip: 10, budget: 'Budget' },
-  { type: 'VTC (Ride-sharing)', costPerTrip: 15, budget: 'Mid-Range' },
-  { type: 'Private Car with Driver', costPerTrip: 50, budget: 'Luxury' },
+  { type: 'Taxi', costPerTrip: 15, budget: 'Budget' },
+  { type: 'VTC (Ride-sharing)', costPerTrip: 20, budget: 'Mid-Range' },
+  { type: 'Private Car with Driver', costPerTrip: 70, budget: 'Luxury' },
 ];
 
 export const travelTimes: { [key: string]: { [key: string]: number } } = {
-  Abidjan: { 'Grand-Bassam': 1, Assinie: 2, Yamoussoukro: 3, Man: 8, Taï: 10, Sassandra: 6 },
-  'Grand-Bassam': { Abidjan: 1, Assinie: 1, Yamoussoukro: 4, Man: 9, Taï: 11, Sassandra: 7 },
-  Assinie: { Abidjan: 2, 'Grand-Bassam': 1, Yamoussoukro: 5, Man: 10, Taï: 12, Sassandra: 8 },
-  Yamoussoukro: { Abidjan: 3, 'Grand-Bassam': 4, Assinie: 5, Man: 5, Taï: 7, Sassandra: 9 },
-  Man: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Taï: 6, Sassandra: 12 },
-  Taï: { Abidjan: 10, 'Grand-Bassam': 11, Assinie: 12, Yamoussoukro: 7, Man: 6, Sassandra: 14 },
-  Sassandra: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 9, Man: 12, Taï: 14 },
+  Abidjan: { 'Grand-Bassam': 1, Assinie: 2, Yamoussoukro: 3, Man: 8, Taï: 10, Sassandra: 6, Bouna: 9 },
+  'Grand-Bassam': { Abidjan: 1, Assinie: 1, Yamoussoukro: 4, Man: 9, Taï: 11, Sassandra: 7, Bouna: 10 },
+  Assinie: { Abidjan: 2, 'Grand-Bassam': 1, Yamoussoukro: 5, Man: 10, Taï: 12, Sassandra: 8, Bouna: 11 },
+  Yamoussoukro: { Abidjan: 3, 'Grand-Bassam': 4, Assinie: 5, Man: 5, Taï: 7, Sassandra: 9, Bouna: 6 },
+  Man: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Taï: 6, Sassandra: 12, Bouna: 11 },
+  Taï: { Abidjan: 10, 'Grand-Bassam': 11, Assinie: 12, Yamoussoukro: 7, Man: 6, Sassandra: 14, Bouna: 13 },
+  Sassandra: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 9, Man: 12, Taï: 14, Bouna: 15 },
+  Bouna: { Abidjan: 9, 'Grand-Bassam': 10, Assinie: 11, Yamoussoukro: 6, Man: 11, Taï: 13, Sassandra: 15 },
 };
