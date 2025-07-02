@@ -465,7 +465,7 @@ const AppContent: React.FC = () => {
 
     // Evening activity (prioritize nightlife/clubbing) or dinner
     if (currentTime < 22) {
-      let eveningActivities = activities.filter(a => 
+      const eveningActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Evening' && 
         !visitedActivities.includes(a.name) &&
@@ -646,8 +646,8 @@ const AppContent: React.FC = () => {
       {/* Footer */}
       <footer className="bg-white/60 backdrop-blur-md border-t border-white/20 mt-16">
         <div className="container mx-auto px-4 py-8 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-            {/* About */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left"> 
+            {/* About *
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">About</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
@@ -656,7 +656,7 @@ const AppContent: React.FC = () => {
               </p>
             </div>
             
-            {/* Features */}
+            {/* Features 
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Features</h3>
               <ul className="text-sm text-gray-600 space-y-1">
@@ -667,7 +667,7 @@ const AppContent: React.FC = () => {
               </ul>
             </div>
             
-            {/* Contact */}
+            {/* Contact 
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Contact</h3>
               <div className="space-y-2">
@@ -686,13 +686,18 @@ const AppContent: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div>*/}
           
           {/* Bottom Bar */}
           <div className="border-t border-gray-200 mt-6 pt-6 text-center">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-sm text-gray-600">
-                © 2024 Ivory Coast Trip Planner. Made with ❤️ for travelers exploring Côte d'Ivoire.
+                © 2024 Ivory Coast Trip Planner. Made with ❤️ by <a 
+                  href="mailto:mowamedbakus@gmail.com" 
+                  className="gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  Moh
+                </a> for travelers exploring Côte d'Ivoire.
               </p>
               <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
                 <span>🇨🇮 Proudly supporting Ivorian tourism</span>
