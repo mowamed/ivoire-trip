@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../contexts/CurrencyContext';
 import type { Hotel, Activity, Restaurant, Transportation } from '../data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -33,6 +35,9 @@ interface Props {
 }
 
 const TripPlan: React.FC<Props> = ({ plan }) => {
+  const { t } = useTranslation();
+  const { formatPrice } = useCurrency();
+  
   if (!plan) {
     return null;
   }
@@ -63,11 +68,24 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
     }
   };
 
+  const translateBudget = (budget: string) => {
+    return t(`budget.${budget}`);
+  };
+
+  const translateCity = (city: string) => {
+    return t(`cities.${city}`, city);
+  };
+
+
+  const translateTime = (time: string) => {
+    return t(`time.${time}`, time);
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Your Custom Itinerary</h2>
-        <p className="text-lg text-gray-600">A personalized travel plan for your Ivory Coast adventure</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('plan.title')}</h2>
+        <p className="text-lg text-gray-600">{t('plan.subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -76,8 +94,8 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
             <div className="flex items-center gap-3">
               <DollarSign className="h-8 w-8 text-green-600" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Total Cost</h3>
-                <p className="text-2xl font-bold text-green-600">${plan.totalCost.toFixed(2)}</p>
+                <h3 className="text-lg font-semibold text-gray-900">{t('plan.totalCost')}</h3>
+                <p className="text-2xl font-bold text-green-600">{formatPrice(plan.totalCost)}</p>
               </div>
             </div>
           </CardContent>
@@ -87,8 +105,8 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
             <div className="flex items-center gap-3">
               <Clock className="h-8 w-8 text-blue-600" />
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Total Duration</h3>
-                <p className="text-2xl font-bold text-blue-600">{plan.totalDuration} hours</p>
+                <h3 className="text-lg font-semibold text-gray-900">{t('plan.totalDuration')}</h3>
+                <p className="text-2xl font-bold text-blue-600">{plan.totalDuration} {t('plan.hours')}</p>
               </div>
             </div>
           </CardContent>
@@ -100,7 +118,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HotelIcon className="h-5 w-5 text-purple-600" />
-              Accommodation
+              {t('plan.accommodation')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -109,16 +127,16 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                 <h4 className="text-xl font-semibold text-gray-900">{plan.hotel.name}</h4>
                 <p className="text-gray-600 flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
-                  {plan.hotel.city}
+                  {translateCity(plan.hotel.city)}
                 </p>
               </div>
               <p className="text-gray-700">{plan.hotel.description}</p>
               <div className="flex items-center gap-3">
                 <Badge variant={getBudgetVariant(plan.hotel.budget)}>
-                  {plan.hotel.budget}
+                  {translateBudget(plan.hotel.budget)}
                 </Badge>
                 <span className="text-lg font-semibold text-purple-600">
-                  ${plan.hotel.cost} per night
+                  {formatPrice(plan.hotel.cost)} {t('plan.perNight')}
                 </span>
               </div>
             </div>
@@ -129,7 +147,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       <div className="space-y-6">
         <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
           <Calendar className="h-6 w-6 text-primary-600" />
-          Daily Itinerary
+          {t('plan.dailyItinerary')}
         </h3>
         <div className="timeline">
           {plan.dailyPlans.map((dailyPlan) => (
@@ -139,19 +157,19 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                 <Card className="shadow-lg border-0 bg-white/90 backdrop-blur-sm">
                   <CardHeader className="bg-gradient-to-r from-primary-50 to-blue-50">
                     <CardTitle className="flex items-center justify-between">
-                      <span className="text-xl">Day {dailyPlan.day} - {dailyPlan.city}</span>
+                      <span className="text-xl">{t('plan.day')} {dailyPlan.day} - {translateCity(dailyPlan.city)}</span>
                       <Badge variant="outline" className="text-primary-600 border-primary-600">
-                        {dailyPlan.city}
+                        {translateCity(dailyPlan.city)}
                       </Badge>
                     </CardTitle>
                     <CardDescription className="flex items-center gap-4 text-base">
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
-                        {dailyPlan.totalDuration} hours
+                        {dailyPlan.totalDuration} {t('plan.hours')}
                       </span>
                       <span className="flex items-center gap-1">
                         <DollarSign className="h-4 w-4" />
-                        ${dailyPlan.totalCost.toFixed(2)}
+                        {formatPrice(dailyPlan.totalCost)}
                       </span>
                     </CardDescription>
                   </CardHeader>
@@ -183,7 +201,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                             <div className="flex items-center gap-2">
                               {item.cost && (
                                 <Badge variant="success" className="text-xs">
-                                  ${item.cost}
+                                  {formatPrice(item.cost)}
                                 </Badge>
                               )}
                               {item.duration && (
@@ -207,7 +225,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       <div className="space-y-6">
         <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
           <Utensils className="h-6 w-6 text-primary-600" />
-          Dining Recommendations
+          {t('plan.diningRecommendations')}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {plan.restaurants.map((restaurant) => (
@@ -218,21 +236,21 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                     <h4 className="text-lg font-semibold text-gray-900">{restaurant.name}</h4>
                     <p className="text-gray-600 flex items-center gap-1">
                       <MapPin className="h-4 w-4" />
-                      {restaurant.city}
+                      {translateCity(restaurant.city)}
                     </p>
                   </div>
                   <p className="text-gray-700">
-                    <span className="font-medium">Cuisine:</span> {restaurant.cuisine}
+                    <span className="font-medium">{t('plan.cuisine')}:</span> {restaurant.cuisine}
                   </p>
                   <p className="text-gray-700">
-                    <span className="font-medium">Best time:</span> {restaurant.bestTime}
+                    <span className="font-medium">{t('plan.bestTime')}:</span> {translateTime(restaurant.bestTime)}
                   </p>
                   <div className="flex items-center justify-between">
                     <Badge variant={getBudgetVariant(restaurant.budget)}>
-                      {restaurant.budget}
+                      {translateBudget(restaurant.budget)}
                     </Badge>
                     <span className="text-lg font-semibold text-green-600">
-                      ${restaurant.cost}
+                      {formatPrice(restaurant.cost)}
                     </span>
                   </div>
                 </div>

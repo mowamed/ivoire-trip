@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../contexts/CurrencyContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -10,6 +12,8 @@ interface Props {
 }
 
 const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
+  const { t } = useTranslation();
+  const { currency } = useCurrency();
   const [duration, setDuration] = React.useState(7);
   const [budget, setBudget] = React.useState(1000);
 
@@ -23,10 +27,10 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
       <CardHeader className="text-center">
         <CardTitle className="flex items-center justify-center gap-2 text-2xl">
           <MapPin className="h-6 w-6 text-primary-600" />
-          Plan Your Adventure
+          {t('form.title')}
         </CardTitle>
         <CardDescription className="text-base">
-          Customize your perfect journey through Ivory Coast
+          {t('form.subtitle')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -35,7 +39,7 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
             <div className="space-y-2">
               <Label htmlFor="duration" className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                Duration (days)
+                {t('form.duration')}
               </Label>
               <Input
                 type="number"
@@ -46,12 +50,12 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
                 max="30"
                 className="text-lg"
               />
-              <p className="text-sm text-gray-500">How many days will you be traveling?</p>
+              <p className="text-sm text-gray-500">{t('form.durationHelp')}</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="budget" className="flex items-center gap-2">
                 <DollarSign className="h-4 w-4" />
-                Budget (USD)
+                {t('form.budget')} ({currency})
               </Label>
               <Input
                 type="number"
@@ -62,11 +66,13 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest }) => {
                 step="50"
                 className="text-lg"
               />
-              <p className="text-sm text-gray-500">Total budget for your trip</p>
+              <p className="text-sm text-gray-500">
+                {t('form.budgetHelp')} - {t('form.currency')}: {currency}
+              </p>
             </div>
           </div>
           <Button type="submit" className="w-full text-lg py-6 bg-gradient-to-r from-primary-600 to-blue-600 hover:from-primary-700 hover:to-blue-700">
-            Generate My Trip Plan
+            {t('form.generateButton')}
           </Button>
         </form>
       </CardContent>

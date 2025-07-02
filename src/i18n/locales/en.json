@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Ivory Coast Trip Planner",
+    "subtitle": "Discover the beauty and culture of Côte d'Ivoire with our personalized travel planner"
+  },
+  "form": {
+    "title": "Plan Your Adventure",
+    "subtitle": "Customize your perfect journey through Ivory Coast",
+    "duration": "Duration (days)",
+    "durationHelp": "How many days will you be traveling?",
+    "budget": "Budget",
+    "budgetHelp": "Total budget for your trip",
+    "currency": "Currency",
+    "generateButton": "Generate My Trip Plan"
+  },
+  "plan": {
+    "title": "Your Custom Itinerary",
+    "subtitle": "A personalized travel plan for your Ivory Coast adventure",
+    "totalCost": "Total Cost",
+    "totalDuration": "Total Duration",
+    "hours": "hours",
+    "accommodation": "Accommodation",
+    "perNight": "per night",
+    "dailyItinerary": "Daily Itinerary",
+    "day": "Day",
+    "diningRecommendations": "Dining Recommendations",
+    "cuisine": "Cuisine",
+    "bestTime": "Best time"
+  },
+  "budget": {
+    "Budget": "Budget",
+    "Mid-Range": "Mid-Range",
+    "Luxury": "Luxury"
+  },
+  "activities": {
+    "Activity": "Activity",
+    "Meal": "Meal",
+    "Travel": "Travel",
+    "Transportation": "Transportation"
+  },
+  "time": {
+    "Morning": "Morning",
+    "Afternoon": "Afternoon",
+    "Evening": "Evening",
+    "Breakfast": "Breakfast",
+    "Lunch": "Lunch",
+    "Dinner": "Dinner"
+  },
+  "cities": {
+    "Abidjan": "Abidjan",
+    "Grand-Bassam": "Grand-Bassam",
+    "Assinie": "Assinie",
+    "Yamoussoukro": "Yamoussoukro",
+    "Man": "Man",
+    "Taï": "Taï",
+    "Sassandra": "Sassandra",
+    "Bouna": "Bouna"
+  },
+  "language": "Language",
+  "settings": "Settings"
+}

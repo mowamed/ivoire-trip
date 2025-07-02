@@ -1,0 +1,61 @@
+{
+  "app": {
+    "title": "Planificateur de Voyage en Côte d'Ivoire",
+    "subtitle": "Découvrez la beauté et la culture de la Côte d'Ivoire avec notre planificateur de voyage personnalisé"
+  },
+  "form": {
+    "title": "Planifiez Votre Aventure",
+    "subtitle": "Personnalisez votre voyage parfait à travers la Côte d'Ivoire",
+    "duration": "Durée (jours)",
+    "durationHelp": "Combien de jours allez-vous voyager ?",
+    "budget": "Budget",
+    "budgetHelp": "Budget total pour votre voyage",
+    "currency": "Devise",
+    "generateButton": "Générer Mon Plan de Voyage"
+  },
+  "plan": {
+    "title": "Votre Itinéraire Personnalisé",
+    "subtitle": "Un plan de voyage personnalisé pour votre aventure en Côte d'Ivoire",
+    "totalCost": "Coût Total",
+    "totalDuration": "Durée Totale",
+    "hours": "heures",
+    "accommodation": "Hébergement",
+    "perNight": "par nuit",
+    "dailyItinerary": "Itinéraire Quotidien",
+    "day": "Jour",
+    "diningRecommendations": "Recommandations Culinaires",
+    "cuisine": "Cuisine",
+    "bestTime": "Meilleur moment"
+  },
+  "budget": {
+    "Budget": "Économique",
+    "Mid-Range": "Moyen de Gamme",
+    "Luxury": "Luxe"
+  },
+  "activities": {
+    "Activity": "Activité",
+    "Meal": "Repas",
+    "Travel": "Voyage",
+    "Transportation": "Transport"
+  },
+  "time": {
+    "Morning": "Matin",
+    "Afternoon": "Après-midi",
+    "Evening": "Soir",
+    "Breakfast": "Petit-déjeuner",
+    "Lunch": "Déjeuner",
+    "Dinner": "Dîner"
+  },
+  "cities": {
+    "Abidjan": "Abidjan",
+    "Grand-Bassam": "Grand-Bassam",
+    "Assinie": "Assinie",
+    "Yamoussoukro": "Yamoussoukro",
+    "Man": "Man",
+    "Taï": "Taï",
+    "Sassandra": "Sassandra",
+    "Bouna": "Bouna"
+  },
+  "language": "Langue",
+  "settings": "Paramètres"
+}

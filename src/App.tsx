@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PlannerForm from './components/PlannerForm';
 import TripPlan from './components/TripPlan';
+import SettingsPanel from './components/SettingsPanel';
+import { CurrencyProvider } from './contexts/CurrencyContext';
 import { hotels, activities, restaurants, travelTimes } from './data';
 import type { Hotel, Activity, Restaurant } from './data';
 import './App.css';
@@ -23,7 +26,8 @@ interface DailyPlan {
   totalDuration: number;
 }
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { t } = useTranslation();
   const [plan, setPlan] = useState<{
     hotel: Hotel | null;
     dailyPlans: DailyPlan[];
@@ -154,16 +158,25 @@ const App: React.FC = () => {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Ivory Coast Trip Planner
+            {t('app.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            Discover the beauty and culture of Côte d'Ivoire with our personalized travel planner
+            {t('app.subtitle')}
           </p>
         </div>
+        <SettingsPanel />
         <PlannerForm onPlanRequest={generatePlan} />
         <TripPlan plan={plan} />
       </div>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <CurrencyProvider>
+      <AppContent />
+    </CurrencyProvider>
   );
 };
 
