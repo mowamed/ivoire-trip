@@ -43,8 +43,8 @@ A modern, intelligent trip planning application for Côte d'Ivoire (Ivory Coast)
 
 ```bash
 # Clone the repository
-git clone https://github.com/mowamed/ivory-coast-trip-planner.git
-cd ivory-coast-trip-planner
+git clone https://github.com/mowamed/ivoire-trip.git
+cd ivoire-trip
 
 # Install dependencies
 npm install
@@ -236,8 +236,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support, questions, or suggestions:
 - 📧 Email: [mowamedbakus@gmail.com](mailto:mowamedbakus@gmail.com)
-- 🐛 Issues: [GitHub Issues](https://github.com/mowamed/ivory-coast-trip-planner/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/mowamed/ivory-coast-trip-planner/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/mowamed/ivoire-trip/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/mowamed/ivoire-trip/discussions)
 
 ---
 
