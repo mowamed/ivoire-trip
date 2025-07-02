@@ -609,7 +609,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 max-w-6xl">
           <div className="text-center">
             <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
@@ -620,28 +620,84 @@ const AppContent: React.FC = () => {
             </p>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
+      <main className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
         <div className="space-y-6 md:space-y-8">
-          <SettingsPanel />
-          <PlannerForm onPlanRequest={generatePlan} isLoading={isLoading} />
+          <section aria-label="Settings">
+            <SettingsPanel />
+          </section>
+          <section aria-label="Trip Planning Form">
+            <PlannerForm onPlanRequest={generatePlan} isLoading={isLoading} />
+          </section>
           {isLoading ? (
-            <Loading message={t('form.generating', 'Generating your perfect trip...')} />
+            <section aria-label="Loading" aria-live="polite">
+              <Loading message={t('form.generating', 'Generating your perfect trip...')} />
+            </section>
           ) : (
-            <TripPlan plan={plan} />
+            <section aria-label="Trip Itinerary">
+              <TripPlan plan={plan} />
+            </section>
           )}
         </div>
-      </div>
+      </main>
 
       {/* Footer */}
       <footer className="bg-white/60 backdrop-blur-md border-t border-white/20 mt-16">
-        <div className="container mx-auto px-4 py-6 max-w-6xl">
-          <div className="text-center text-gray-600">
-            <p className="text-sm">
-              Discover the beauty of Côte d'Ivoire with intelligent trip planning
-            </p>
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+            {/* About */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">About</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Discover the beauty of Côte d'Ivoire with our intelligent trip planning platform. 
+                Experience beaches, culture, and nightlife with optimized itineraries.
+              </p>
+            </div>
+            
+            {/* Features */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Features</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>🗺️ Geolocation-based planning</li>
+                <li>💱 Multi-currency support</li>
+                <li>🌍 Bilingual interface</li>
+                <li>🏖️ Beach & nightlife experiences</li>
+              </ul>
+            </div>
+            
+            {/* Contact */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Contact</h3>
+              <div className="space-y-2">
+                <a 
+                  href="mailto:contact@ivorycoasttrips.com" 
+                  className="flex items-center justify-center md:justify-start gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  contact@ivorycoasttrips.com
+                </a>
+                <p className="text-xs text-gray-500">
+                  For support, suggestions, or partnerships
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-200 mt-6 pt-6 text-center">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <p className="text-sm text-gray-600">
+                © 2024 Ivory Coast Trip Planner. Made with ❤️ for travelers exploring Côte d'Ivoire.
+              </p>
+              <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
+                <span>🇨🇮 Proudly supporting Ivorian tourism</span>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
