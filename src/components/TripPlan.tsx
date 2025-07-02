@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCurrency } from '../contexts/CurrencyContext';
-import type { Hotel, Activity, Restaurant, Transportation } from '../data';
+import type { Hotel, Activity, Restaurant, Transportation, Geolocation } from '../data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon, Calendar, Waves, Music } from 'lucide-react';
@@ -42,6 +42,19 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
   if (!plan) {
     return null;
   }
+
+  // Utility function to calculate distance between two points
+  const calculateDistance = (point1: Geolocation, point2: Geolocation): number => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = (point2.lat - point1.lat) * Math.PI / 180;
+    const dLng = (point2.lng - point1.lng) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(point1.lat * Math.PI / 180) * Math.cos(point2.lat * Math.PI / 180) * 
+      Math.sin(dLng/2) * Math.sin(dLng/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in kilometers
+  };
 
   const getIcon = (type: string, details?: any) => {
     // Check if it's a beach or nightlife activity
@@ -210,6 +223,26 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                                 </div>
                                 {item.details && 'description' in item.details && (
                                   <p className="text-sm text-gray-600 mt-1">{item.details.description}</p>
+                                )}
+                                {item.details && 'geolocation' in item.details && index > 0 && (
+                                  (() => {
+                                    const prevItem = dailyPlan.schedule[index - 1];
+                                    if (prevItem.details && 'geolocation' in prevItem.details) {
+                                      const distance = calculateDistance(
+                                        prevItem.details.geolocation,
+                                        item.details.geolocation
+                                      );
+                                      if (distance <= 2) {
+                                        return (
+                                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                                            <MapPin className="h-3 w-3" />
+                                            Close to previous location ({distance.toFixed(1)}km)
+                                          </p>
+                                        );
+                                      }
+                                    }
+                                    return null;
+                                  })()
                                 )}
                               </div>
                             </div>
