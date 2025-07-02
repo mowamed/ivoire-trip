@@ -147,36 +147,48 @@ export const restaurants: Restaurant[] = [
   { name: 'Le Méchoui', city: 'Abidjan', cuisine: 'Lebanese', budget: 'Luxury', bestTime: 'Dinner', cost: 80, geolocation: { lat: 5.2975, lng: -4.0080 } },
   { name: 'La Case d\'Ivoire', city: 'Abidjan', cuisine: 'African', budget: 'Luxury', bestTime: 'Dinner', cost: 75, geolocation: { lat: 5.3395, lng: -3.9955 } },
   { name: 'Le Jardin Gourmand', city: 'Abidjan', cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner', cost: 60, geolocation: { lat: 5.2945, lng: -3.9998 } },
+  { name: 'La Gourmandise', city: 'Abidjan', cuisine: 'International', budget: 'Luxury', bestTime: 'Dinner', cost: 70, geolocation: { lat: 5.3288, lng: -4.0418 } },
+  { name: 'Le Montparnasse', city: 'Abidjan', cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner', cost: 85, geolocation: { lat: 5.3265, lng: -4.0225 } },
   { name: 'Saakan', city: 'Abidjan', cuisine: 'African', budget: 'Mid-Range', bestTime: 'Dinner', cost: 45, geolocation: { lat: 5.3250, lng: -4.0180 } },
   { name: 'Chez Ambroise', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Lunch', cost: 30, geolocation: { lat: 5.2934, lng: -4.0016 } },
   { name: 'Nushi.sushi', city: 'Abidjan', cuisine: 'Japanese', budget: 'Mid-Range', bestTime: 'Dinner', cost: 55, geolocation: { lat: 5.3142, lng: -4.0048 } },
   { name: 'Le Grand Large', city: 'Abidjan', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Lunch', cost: 40, geolocation: { lat: 5.2755, lng: -3.9655 } },
   { name: 'Kaiten', city: 'Abidjan', cuisine: 'Japanese', budget: 'Mid-Range', bestTime: 'Dinner', cost: 50, geolocation: { lat: 5.2968, lng: -4.0071 } },
   { name: 'Norima', city: 'Abidjan', cuisine: 'American-Asian Fusion', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 5.2965, lng: -4.0065 } },
+  { name: 'La Taverne Romaine', city: 'Abidjan', cuisine: 'Italian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 5.2980, lng: -4.0090 } },
+  { name: 'Oishii Sushi', city: 'Abidjan', cuisine: 'Japanese', budget: 'Mid-Range', bestTime: 'Dinner', cost: 45, geolocation: { lat: 5.3050, lng: -4.0020 } },
+  { name: 'Le Pêcheur', city: 'Abidjan', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Lunch', cost: 35, geolocation: { lat: 5.3080, lng: -4.0300 } },
   { name: 'Chez Hélène', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 12, geolocation: { lat: 5.3188, lng: -4.0102 } },
   { name: 'Chez Tantie Alice', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 5.3360, lng: -4.0850 } },
   { name: 'Maquis du Val', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 15, geolocation: { lat: 5.3198, lng: -3.9855 } },
   { name: 'Allo-Co', city: 'Abidjan', cuisine: 'Street Food', budget: 'Budget', bestTime: 'Lunch', cost: 5, geolocation: { lat: 5.3011, lng: -4.0123 } },
+  { name: 'Maquis Le Cailcedrat', city: 'Abidjan', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 10, geolocation: { lat: 5.3590, lng: -4.0050 } },
   // Assinie
   { name: 'Le Carre Blanc', city: 'Assinie', cuisine: 'Seafood', budget: 'Luxury', bestTime: 'Dinner', cost: 90, geolocation: { lat: 5.1330, lng: -3.2870 } },
+  { name: 'La Voile Blanche', city: 'Assinie', cuisine: 'French', budget: 'Luxury', bestTime: 'Dinner', cost: 80, geolocation: { lat: 5.1345, lng: -3.3210 } },
   { name: 'Le Quai', city: 'Assinie', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Lunch', cost: 45, geolocation: { lat: 5.1365, lng: -3.3820 } },
   // Grand-Bassam
   { name: 'L\'Annexe Plage', city: 'Grand-Bassam', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Lunch', cost: 35, geolocation: { lat: 5.1975, lng: -3.7388 } },
+  { name: 'Le Wharf du Bicot', city: 'Grand-Bassam', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Lunch', cost: 30, geolocation: { lat: 5.1955, lng: -3.7365 } },
   { name: 'La Paillote', city: 'Grand-Bassam', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 15, geolocation: { lat: 5.1980, lng: -3.7395 } },
   { name: 'Le Quai', city: 'Grand-Bassam', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 5.1960, lng: -3.7370 } },
   // Yamoussoukro
   { name: 'Le Wafou', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 6.8180, lng: -5.2780 } },
   { name: 'Chez Mario', city: 'Yamoussoukro', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 6.8150, lng: -5.2760 } },
   { name: 'Bangui', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 6.8225, lng: -5.2795 } },
+  { name: 'La Brise', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 8, geolocation: { lat: 6.8170, lng: -5.2820 } },
   // Man
   { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 7.4050, lng: -7.5540 } },
+  { name: 'Chez Tonton', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 7, geolocation: { lat: 7.4080, lng: -7.5520 } },
   // Bouaké
+  { name: 'Le Calao', city: 'Bouaké', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Dinner', cost: 25, geolocation: { lat: 7.6900, lng: -5.0300 } },
   { name: 'Maquis Le Bafing', city: 'Bouaké', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 12, geolocation: { lat: 7.6855, lng: -5.0310 } },
   { name: 'L\'Escale', city: 'Bouaké', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 8, geolocation: { lat: 7.6870, lng: -5.0280 } },
   // Sassandra
   { name: 'Restaurant Le Wharf', city: 'Sassandra', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25, geolocation: { lat: 4.9510, lng: -6.0830 } },
   // San-Pédro
   { name: 'Le Rive Gauche', city: 'San-Pédro', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 4.7480, lng: -6.6350 } },
+  { name: 'Le Marlin Bleu', city: 'San-Pédro', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 4.7460, lng: -6.6320 } },
   // Korhogo
   { name: 'Le Bon Goût', city: 'Korhogo', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 7, geolocation: { lat: 9.4520, lng: -5.6280 } },
   // Daloa
@@ -197,19 +209,21 @@ export const transportationOptions: Transportation[] = [
   { type: 'Woro-Woro (Shared Taxi)', costPerTrip: 2, budget: 'Budget' },
 ];
 
-
 // Travel times in hours by road between major locations
 export const travelTimes: { [key: string]: { [key: string]: number } } = {
-  Abidjan: { 'Grand-Bassam': 1, Assinie: 2, Yamoussoukro: 3, Man: 8, Taï: 10, Sassandra: 6, 'San-Pédro': 5, Bouna: 9, Korhogo: 8, Bouaké: 4.5, Tiassalé: 2 },
-  'Grand-Bassam': { Abidjan: 1, Assinie: 1, Yamoussoukro: 4, Man: 9, Taï: 11, Sassandra: 7, 'San-Pédro': 6, Bouna: 10, Korhogo: 9, Bouaké: 5.5, Tiassalé: 3 },
-  Assinie: { Abidjan: 2, 'Grand-Bassam': 1, Yamoussoukro: 5, Man: 10, Taï: 12, Sassandra: 8, 'San-Pédro': 7, Bouna: 11, Korhogo: 10, Bouaké: 6.5, Tiassalé: 4 },
-  Yamoussoukro: { Abidjan: 3, 'Grand-Bassam': 4, Assinie: 5, Man: 5, Taï: 7, Sassandra: 9, 'San-Pédro': 8, Bouna: 6, Korhogo: 5, Bouaké: 1.5, Tiassalé: 2 },
-  Man: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Taï: 6, Sassandra: 12, 'San-Pédro': 11, Bouna: 11, Korhogo: 6, Bouaké: 6.5, Tiassalé: 7 },
-  Taï: { Abidjan: 10, 'Grand-Bassam': 11, Assinie: 12, Yamoussoukro: 7, Man: 6, Sassandra: 8, 'San-Pédro': 7, Bouna: 13, Korhogo: 12, Bouaké: 8.5, Tiassalé: 9 },
-  Sassandra: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 9, Man: 12, Taï: 8, 'San-Pédro': 1, Bouna: 15, Korhogo: 14, Bouaké: 10, Tiassalé: 7 },
-  'San-Pédro': { Abidjan: 5, 'Grand-Bassam': 6, Assinie: 7, Yamoussoukro: 8, Man: 11, Taï: 7, Sassandra: 1, Bouna: 14, Korhogo: 13, Bouaké: 9, Tiassalé: 6 },
-  Bouna: { Abidjan: 9, 'Grand-Bassam': 10, Assinie: 11, Yamoussoukro: 6, Man: 11, Taï: 13, Sassandra: 15, 'San-Pédro': 14, Korhogo: 5, Bouaké: 4.5, Tiassalé: 8 },
-  Korhogo: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Man: 6, Taï: 12, Sassandra: 14, 'San-Pédro': 13, Bouna: 5, Bouaké: 3.5, Tiassalé: 7 },
-  Bouaké: { Abidjan: 4.5, 'Grand-Bassam': 5.5, Assinie: 6.5, Yamoussoukro: 1.5, Man: 6.5, Taï: 8.5, Sassandra: 10, 'San-Pédro': 9, Bouna: 4.5, Korhogo: 3.5, Tiassalé: 3.5 },
-  Tiassalé: { Abidjan: 2, 'Grand-Bassam': 3, Assinie: 4, Yamoussoukro: 2, Man: 7, Taï: 9, Sassandra: 7, 'San-Pédro': 6, Bouna: 8, Korhogo: 7, Bouaké: 3.5 },
+  Abidjan: { 'Grand-Bassam': 1, Assinie: 2, Yamoussoukro: 3, Man: 8, Taï: 10, Sassandra: 6, 'San-Pédro': 5, Bouna: 9, Korhogo: 8, Bouaké: 4.5, Tiassalé: 2, Daloa: 6, Bondoukou: 7, Aboisso: 2.5 },
+  'Grand-Bassam': { Abidjan: 1, Assinie: 1, Yamoussoukro: 4, Man: 9, Taï: 11, Sassandra: 7, 'San-Pédro': 6, Bouna: 10, Korhogo: 9, Bouaké: 5.5, Tiassalé: 3, Daloa: 7, Bondoukou: 8, Aboisso: 1.5 },
+  Assinie: { Abidjan: 2, 'Grand-Bassam': 1, Yamoussoukro: 5, Man: 10, Taï: 12, Sassandra: 8, 'San-Pédro': 7, Bouna: 11, Korhogo: 10, Bouaké: 6.5, Tiassalé: 4, Daloa: 8, Bondoukou: 9, Aboisso: 0.5 },
+  Yamoussoukro: { Abidjan: 3, 'Grand-Bassam': 4, Assinie: 5, Man: 5, Taï: 7, Sassandra: 9, 'San-Pédro': 8, Bouna: 6, Korhogo: 5, Bouaké: 1.5, Tiassalé: 2, Daloa: 2.5, Bondoukou: 4, Aboisso: 5.5 },
+  Man: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Taï: 6, Sassandra: 12, 'San-Pédro': 11, Bouna: 11, Korhogo: 6, Bouaké: 6.5, Tiassalé: 7, Daloa: 3, Bondoukou: 11, Aboisso: 10.5 },
+  Taï: { Abidjan: 10, 'Grand-Bassam': 11, Assinie: 12, Yamoussoukro: 7, Man: 6, Sassandra: 8, 'San-Pédro': 7, Bouna: 13, Korhogo: 12, Bouaké: 8.5, Tiassalé: 9, Daloa: 5, Bondoukou: 13, Aboisso: 12.5 },
+  Sassandra: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 9, Man: 12, Taï: 8, 'San-Pédro': 1, Bouna: 15, Korhogo: 14, Bouaké: 10, Tiassalé: 7, Daloa: 7, Bondoukou: 15, Aboisso: 8.5 },
+  'San-Pédro': { Abidjan: 5, 'Grand-Bassam': 6, Assinie: 7, Yamoussoukro: 8, Man: 11, Taï: 7, Sassandra: 1, Bouna: 14, Korhogo: 13, Bouaké: 9, Tiassalé: 6, Daloa: 6, Bondoukou: 14, Aboisso: 7.5 },
+  Bouna: { Abidjan: 9, 'Grand-Bassam': 10, Assinie: 11, Yamoussoukro: 6, Man: 11, Taï: 13, Sassandra: 15, 'San-Pédro': 14, Korhogo: 5, Bouaké: 4.5, Tiassalé: 8, Daloa: 8.5, Bondoukou: 2, Aboisso: 11.5 },
+  Korhogo: { Abidjan: 8, 'Grand-Bassam': 9, Assinie: 10, Yamoussoukro: 5, Man: 6, Taï: 12, Sassandra: 14, 'San-Pédro': 13, Bouna: 5, Bouaké: 3.5, Tiassalé: 7, Daloa: 7.5, Bondoukou: 7, Aboisso: 10.5 },
+  Bouaké: { Abidjan: 4.5, 'Grand-Bassam': 5.5, Assinie: 6.5, Yamoussoukro: 1.5, Man: 6.5, Taï: 8.5, Sassandra: 10, 'San-Pédro': 9, Bouna: 4.5, Korhogo: 3.5, Tiassalé: 3.5, Daloa: 4, Bondoukou: 5.5, Aboisso: 7 },
+  Tiassalé: { Abidjan: 2, 'Grand-Bassam': 3, Assinie: 4, Yamoussoukro: 2, Man: 7, Taï: 9, Sassandra: 7, 'San-Pédro': 6, Bouna: 8, Korhogo: 7, Bouaké: 3.5, Daloa: 4, Bondoukou: 6, Aboisso: 4.5 },
+  Daloa: { Abidjan: 6, 'Grand-Bassam': 7, Assinie: 8, Yamoussoukro: 2.5, Man: 3, Taï: 5, Sassandra: 7, 'San-Pédro': 6, Bouna: 8.5, Korhogo: 7.5, Bouaké: 4, Tiassalé: 4, Bondoukou: 6.5, Aboisso: 8.5 },
+  Bondoukou: { Abidjan: 7, 'Grand-Bassam': 8, Assinie: 9, Yamoussoukro: 4, Man: 11, Taï: 13, Sassandra: 15, 'San-Pédro': 14, Bouna: 2, Korhogo: 7, Bouaké: 5.5, Tiassalé: 6, Daloa: 6.5, Aboisso: 9.5 },
+  Aboisso: { Abidjan: 2.5, 'Grand-Bassam': 1.5, Assinie: 0.5, Yamoussoukro: 5.5, Man: 10.5, Taï: 12.5, Sassandra: 8.5, 'San-Pédro': 7.5, Bouna: 11.5, Korhogo: 10.5, Bouaké: 7, Tiassalé: 4.5, Daloa: 8.5, Bondoukou: 9.5 },
 };
