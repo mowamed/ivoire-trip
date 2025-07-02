@@ -598,20 +598,40 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            {t('app.title')}
-          </h1>
-          <p className="text-lg text-gray-600">
-            {t('app.subtitle')}
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      {/* Header */}
+      <div className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 max-w-6xl">
+          <div className="text-center">
+            <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              {t('app.title')}
+            </h1>
+            <p className="text-sm md:text-lg text-gray-600 max-w-3xl mx-auto">
+              {t('app.subtitle')}
+            </p>
+          </div>
         </div>
-        <SettingsPanel />
-        <PlannerForm onPlanRequest={generatePlan} />
-        <TripPlan plan={plan} />
       </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
+        <div className="space-y-6 md:space-y-8">
+          <SettingsPanel />
+          <PlannerForm onPlanRequest={generatePlan} />
+          <TripPlan plan={plan} />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-white/60 backdrop-blur-md border-t border-white/20 mt-16">
+        <div className="container mx-auto px-4 py-6 max-w-6xl">
+          <div className="text-center text-gray-600">
+            <p className="text-sm">
+              Discover the beauty of Côte d'Ivoire with intelligent trip planning
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
