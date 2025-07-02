@@ -61,8 +61,10 @@ export const hotels: Hotel[] = [
   { name: 'The People Hostel - Abidjan', city: 'Abidjan', budget: 'Budget', description: 'A modern hostel offering both private rooms and dorms, with a friendly social vibe.', cost: 40, geolocation: { lat: 5.3155, lng: -4.0082 } },
   // Yamoussoukro
   { name: 'Hotel President', city: 'Yamoussoukro', budget: 'Luxury', description: 'A grand hotel with a golf course and impressive architecture.', cost: 280, geolocation: { lat: 6.8041, lng: -5.2974 } },
+  { name: 'Hotel Akraya', city: 'Yamoussoukro', budget: 'Mid-Range', description: 'A comfortable hotel with modern amenities and a central location.', cost: 100, geolocation: { lat: 6.8210, lng: -5.2785 } },
   // Man
   { name: 'Le Rocher', city: 'Man', budget: 'Mid-Range', description: 'A hotel with stunning views of the surrounding mountains.', cost: 120, geolocation: { lat: 7.4110, lng: -7.5500 } },
+  { name: 'Hôtel Les Cascades', city: 'Man', budget: 'Mid-Range', description: 'Located near the famous waterfalls, offering a scenic and relaxing stay.', cost: 110, geolocation: { lat: 7.4020, lng: -7.5590 } },
   // Korhogo
   { name: 'Hôtel Mont Korhogo', city: 'Korhogo', budget: 'Budget', description: 'Simple and clean accommodation, a perfect base for exploring the Senufo region.', cost: 60, geolocation: { lat: 9.4450, lng: -5.6200 } },
   { name: 'Olympe Hotel', city: 'Korhogo', budget: 'Mid-Range', description: 'A comfortable hotel with a swimming pool and restaurant, considered one of the best in the city.', cost: 75, geolocation: { lat: 9.4550, lng: -5.6300 } },
@@ -79,6 +81,7 @@ export const hotels: Hotel[] = [
   { name: 'Hotel Palm Rock Beach', city: 'San-Pédro', budget: 'Mid-Range', description: 'A relaxing beachfront hotel with a pool and restaurant.', cost: 100, geolocation: { lat: 4.7310, lng: -6.6550 } },
   // Bouaké
   { name: 'Hotel Mon Afrik', city: 'Bouaké', budget: 'Mid-Range', description: 'A well-regarded hotel in Bouaké, offering comfortable rooms and a restaurant.', cost: 85, geolocation: { lat: 7.6880, lng: -5.0350 } },
+  { name: 'Hôtel Le Bahut', city: 'Bouaké', budget: 'Budget', description: 'A simple and affordable option for travelers visiting Bouaké.', cost: 55, geolocation: { lat: 7.6910, lng: -5.0320 } },
   // Sassandra
   { name: 'Le Pollet', city: 'Sassandra', budget: 'Mid-Range', description: 'Charming beachfront bungalows offering a peaceful retreat with beautiful ocean views.', cost: 95, geolocation: { lat: 4.9480, lng: -6.0910 } },
   { name: 'Hôtel La Paillote', city: 'Sassandra', budget: 'Budget', description: 'Simple and clean accommodation, perfectly located for exploring the historic town and beaches.', cost: 50, geolocation: { lat: 4.9525, lng: -6.0820 } },
@@ -106,6 +109,7 @@ export const activities: Activity[] = [
   // Man
   { name: 'Mount Tonkoui Hike', city: 'Man', type: 'Mountain', description: 'Hike to the highest peak in Ivory Coast for breathtaking views of the lush landscape.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/man/400/300', durationHours: 8, bestTime: 'Morning', cost: 30, geolocation: { lat: 7.4567, lng: -7.6333 } },
   { name: 'Gbêpleu Monkey Forest', city: 'Man', type: 'Exploration', description: 'A sacred forest where you can interact with and feed friendly monkeys.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/monkeys/400/300', durationHours: 2, bestTime: 'Morning', cost: 10, geolocation: { lat: 7.3500, lng: -7.5833 } },
+  { name: 'La Cascade de Man', city: 'Man', type: 'Exploration', description: 'Visit the beautiful waterfall near the city of Man, a perfect spot for a refreshing swim.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/cascade/400/300', durationHours: 3, bestTime: 'Afternoon', cost: 5, geolocation: { lat: 7.4000, lng: -7.5600 } },
   // National Parks
   { name: 'Taï National Park Safari', city: 'Taï', type: 'Exploration', description: 'Discover incredible biodiversity, including chimpanzees and pygmy hippos, in this UNESCO site.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/tai/400/300', durationHours: 10, bestTime: 'Morning', cost: 100, geolocation: { lat: 5.8667, lng: -7.3500 } },
   { name: 'Comoe National Park', city: 'Bouna', type: 'Exploration', description: 'One of the largest protected areas in West Africa, with diverse ecosystems from savannah to forest.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/comoe/400/300', durationHours: 12, bestTime: 'Morning', cost: 120, geolocation: { lat: 9.0917, lng: -3.7833 } },
@@ -120,6 +124,8 @@ export const activities: Activity[] = [
   // Sassandra
   { name: 'Sassandra Beaches', city: 'Sassandra', type: 'Beach', description: 'Explore the stunning and historic beaches, known for their natural beauty and tranquility.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/sassandrabeach/400/300', durationHours: 5, bestTime: 'Morning', cost: 0, geolocation: { lat: 4.9500, lng: -6.0800 } },
   { name: 'Fanti Fishermen Village', city: 'Sassandra', type: 'Culture', description: 'Visit a traditional Fanti fishing village to see the local way of life and the colorful fishing boats.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/fanti/400/300', durationHours: 2, bestTime: 'Morning', cost: 5, geolocation: { lat: 4.9555, lng: -6.0750 } },
+  // San-Pédro
+  { name: 'Monogaga Beach', city: 'San-Pédro', type: 'Beach', description: 'A beautiful and pristine beach known for its golden sands and clear waters, perfect for a day of relaxation.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/monogaga/400/300', durationHours: 6, bestTime: 'Morning', cost: 10, geolocation: { lat: 4.9000, lng: -6.5000 } },
 ];
 
 export const restaurants: Restaurant[] = [
@@ -145,16 +151,21 @@ export const restaurants: Restaurant[] = [
   // Grand-Bassam
   { name: 'L\'Annexe Plage', city: 'Grand-Bassam', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Lunch', cost: 35, geolocation: { lat: 5.1975, lng: -3.7388 } },
   { name: 'La Paillote', city: 'Grand-Bassam', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 15, geolocation: { lat: 5.1980, lng: -3.7395 } },
+  { name: 'Le Quai', city: 'Grand-Bassam', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 5.1960, lng: -3.7370 } },
   // Yamoussoukro
   { name: 'Le Wafou', city: 'Yamoussoukro', cuisine: 'Ivorian', budget: 'Mid-Range', bestTime: 'Dinner', cost: 35, geolocation: { lat: 6.8180, lng: -5.2780 } },
+  { name: 'Chez Mario', city: 'Yamoussoukro', cuisine: 'International', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 6.8150, lng: -5.2760 } },
   // Man
   { name: 'Le Maquis', city: 'Man', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 10, geolocation: { lat: 7.4050, lng: -7.5540 } },
   // Bouaké
   { name: 'Maquis Le Bafing', city: 'Bouaké', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 12, geolocation: { lat: 7.6855, lng: -5.0310 } },
+  { name: 'L\'Escale', city: 'Bouaké', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 8, geolocation: { lat: 7.6870, lng: -5.0280 } },
   // Sassandra
   { name: 'Restaurant Le Wharf', city: 'Sassandra', cuisine: 'Seafood', budget: 'Mid-Range', bestTime: 'Lunch', cost: 25, geolocation: { lat: 4.9510, lng: -6.0830 } },
   // San-Pédro
   { name: 'Le Rive Gauche', city: 'San-Pédro', cuisine: 'French', budget: 'Mid-Range', bestTime: 'Dinner', cost: 40, geolocation: { lat: 4.7480, lng: -6.6350 } },
+  // Korhogo
+  { name: 'Le Bon Goût', city: 'Korhogo', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Lunch', cost: 7, geolocation: { lat: 9.4520, lng: -5.6280 } },
 ];
 
 export const transportationOptions: Transportation[] = [
