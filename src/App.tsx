@@ -86,26 +86,27 @@ const AppContent: React.FC = () => {
     });
   };
 
-  // Helper function to plan the route through cities
+  // Helper function to plan the route through cities (prioritizing beach destinations)
   const planCitiesRoute = (duration: number): string[] => {
     const route: string[] = [];
     
     if (duration <= 3) {
-      // Short trip: Stay in Abidjan with day trips
-      for (let i = 0; i < duration; i++) {
-        if (i === 0) route.push('Abidjan');
-        else if (i === 1) route.push('Grand-Bassam');
-        else route.push('Assinie');
-      }
+      // Short trip: Focus on Abidjan and nearby beaches
+      route.push('Abidjan'); // Start in Abidjan for nightlife
+      if (duration > 1) route.push('Grand-Bassam'); // Beach day
+      if (duration > 2) route.push('Assinie'); // Premium beach experience
     } else if (duration <= 7) {
-      // Medium trip: Abidjan + 2-3 other cities
-      route.push('Abidjan', 'Grand-Bassam', 'Yamoussoukro', 'Man');
-      while (route.length < duration) {
-        route.push('Abidjan'); // Return to Abidjan for remaining days
-      }
+      // Medium trip: Mix of beaches, nightlife, and culture
+      route.push('Abidjan'); // Nightlife and city experience
+      route.push('Grand-Bassam'); // Historic beach town
+      route.push('Assinie'); // Luxury beach resort
+      if (duration > 3) route.push('Abidjan'); // Return for more nightlife
+      if (duration > 4) route.push('Yamoussoukro'); // Cultural experience
+      if (duration > 5) route.push('Sassandra'); // More beaches
+      if (duration > 6) route.push('Abidjan'); // Final night out
     } else {
-      // Long trip: Visit more cities
-      const cities = ['Abidjan', 'Grand-Bassam', 'Assinie', 'Yamoussoukro', 'Man', 'Sassandra', 'Taï'];
+      // Long trip: Comprehensive tour with emphasis on beaches and nightlife
+      const cities = ['Abidjan', 'Grand-Bassam', 'Assinie', 'Abidjan', 'Sassandra', 'Yamoussoukro', 'Man', 'Abidjan'];
       for (let i = 0; i < duration; i++) {
         route.push(cities[i % cities.length]);
       }
@@ -259,14 +260,20 @@ const AppContent: React.FC = () => {
       dailyCost += travelCost;
     }
 
-    // Morning activity
+    // Morning activity (prioritize beach activities)
     if (currentTime < 12) {
-      const morningActivities = activities.filter(a => 
+      let morningActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Morning' && 
         !visitedActivities.includes(a.name) &&
         a.budget === budgetCategory
       );
+      
+      // Prioritize beach activities in the morning
+      const beachActivities = morningActivities.filter(a => a.type === 'Beach');
+      if (beachActivities.length > 0) {
+        morningActivities = beachActivities;
+      }
       
       if (morningActivities.length > 0) {
         const activity = morningActivities[Math.floor(Math.random() * morningActivities.length)];
@@ -310,14 +317,23 @@ const AppContent: React.FC = () => {
       }
     }
 
-    // Afternoon activity
+    // Afternoon activity (continue beach or cultural activities)
     if (currentTime < 17) {
-      const afternoonActivities = activities.filter(a => 
+      let afternoonActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Afternoon' && 
         !visitedActivities.includes(a.name) &&
         a.budget === budgetCategory
       );
+      
+      // If in a beach city, prioritize beach activities
+      const isBeachCity = ['Assinie', 'Grand-Bassam', 'Sassandra'].includes(city);
+      if (isBeachCity) {
+        const beachActivities = afternoonActivities.filter(a => a.type === 'Beach');
+        if (beachActivities.length > 0) {
+          afternoonActivities = beachActivities;
+        }
+      }
       
       if (afternoonActivities.length > 0) {
         const activity = afternoonActivities[Math.floor(Math.random() * afternoonActivities.length)];
@@ -336,31 +352,21 @@ const AppContent: React.FC = () => {
       }
     }
 
-    // Evening activity or dinner
-    if (currentTime < 20) {
-      const eveningActivities = activities.filter(a => 
+    // Evening activity (prioritize nightlife/clubbing) or dinner
+    if (currentTime < 22) {
+      let eveningActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Evening' && 
         !visitedActivities.includes(a.name) &&
         a.budget === budgetCategory
       );
       
-      if (eveningActivities.length > 0 && currentTime < 19) {
-        const activity = eveningActivities[Math.floor(Math.random() * eveningActivities.length)];
-        schedule.push({
-          time: `${currentTime}:00`,
-          description: activity.name,
-          type: 'Activity',
-          details: activity,
-          duration: activity.durationHours,
-          cost: activity.cost,
-          city: city,
-        });
-        currentTime += activity.durationHours;
-        dailyDuration += activity.durationHours;
-        dailyCost += activity.cost;
-      } else {
-        // Dinner
+      // Prioritize nightlife activities in the evening, especially in Abidjan
+      const nightlifeActivities = eveningActivities.filter(a => a.type === 'Nightlife');
+      const isNightlifeCity = city === 'Abidjan' || city === 'Grand-Bassam';
+      
+      if (currentTime < 19) {
+        // Early evening: dinner first
         const dinnerOptions = restaurants.filter(r => 
           r.city === city && 
           r.bestTime === 'Dinner' &&
@@ -370,16 +376,50 @@ const AppContent: React.FC = () => {
         if (dinnerOptions.length > 0) {
           const restaurant = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
           schedule.push({
-            time: `${Math.max(currentTime, 19)}:00`,
+            time: `${Math.max(currentTime, 18)}:00`,
             description: `Dinner at ${restaurant.name}`,
             type: 'Meal',
             details: restaurant,
-            duration: 2,
+            duration: 1.5,
             cost: restaurant.cost,
             city: city,
           });
-          dailyDuration += 2;
+          currentTime = Math.max(currentTime + 1.5, 19.5);
+          dailyDuration += 1.5;
           dailyCost += restaurant.cost;
+        }
+      }
+      
+      // Late evening: nightlife activities (especially in nightlife cities)
+      if (currentTime >= 19 && currentTime < 22) {
+        if (isNightlifeCity && nightlifeActivities.length > 0) {
+          const activity = nightlifeActivities[Math.floor(Math.random() * nightlifeActivities.length)];
+          schedule.push({
+            time: `${Math.max(currentTime, 21)}:00`,
+            description: activity.name,
+            type: 'Activity',
+            details: activity,
+            duration: activity.durationHours,
+            cost: activity.cost,
+            city: city,
+          });
+          dailyDuration += activity.durationHours;
+          dailyCost += activity.cost;
+        } else if (eveningActivities.length > 0) {
+          // Fallback to other evening activities
+          const activity = eveningActivities[Math.floor(Math.random() * eveningActivities.length)];
+          schedule.push({
+            time: `${currentTime}:00`,
+            description: activity.name,
+            type: 'Activity',
+            details: activity,
+            duration: activity.durationHours,
+            cost: activity.cost,
+            city: city,
+          });
+          currentTime += activity.durationHours;
+          dailyDuration += activity.durationHours;
+          dailyCost += activity.cost;
         }
       }
     }

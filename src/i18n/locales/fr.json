@@ -15,7 +15,7 @@
   },
   "plan": {
     "title": "Votre Itinéraire Personnalisé",
-    "subtitle": "Un plan de voyage personnalisé pour votre aventure en Côte d'Ivoire",
+    "subtitle": "Un plan de voyage personnalisé pour votre aventure en Côte d'Ivoire avec plages, vie nocturne et expériences culturelles",
     "totalCost": "Coût Total",
     "totalDuration": "Durée Totale",
     "hours": "heures",
@@ -25,7 +25,10 @@
     "day": "Jour",
     "diningRecommendations": "Recommandations Culinaires",
     "cuisine": "Cuisine",
-    "bestTime": "Meilleur moment"
+    "bestTime": "Meilleur moment",
+    "beachDay": "Journée Plage",
+    "nightlifeExperience": "Expérience Nocturne",
+    "clubbing": "Clubbing et Divertissement"
   },
   "budget": {
     "Budget": "Économique",

@@ -15,7 +15,7 @@
   },
   "plan": {
     "title": "Your Custom Itinerary",
-    "subtitle": "A personalized travel plan for your Ivory Coast adventure",
+    "subtitle": "A personalized travel plan for your Ivory Coast adventure featuring beaches, nightlife, and cultural experiences",
     "totalCost": "Total Cost",
     "totalDuration": "Total Duration",
     "hours": "hours",
@@ -25,7 +25,10 @@
     "day": "Day",
     "diningRecommendations": "Dining Recommendations",
     "cuisine": "Cuisine",
-    "bestTime": "Best time"
+    "bestTime": "Best time",
+    "beachDay": "Beach Day",
+    "nightlifeExperience": "Nightlife Experience",
+    "clubbing": "Clubbing & Entertainment"
   },
   "budget": {
     "Budget": "Budget",

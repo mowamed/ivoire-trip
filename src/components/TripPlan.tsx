@@ -4,7 +4,7 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import type { Hotel, Activity, Restaurant, Transportation } from '../data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon, Calendar } from 'lucide-react';
+import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon, Calendar, Waves, Music } from 'lucide-react';
 
 interface ItineraryItem {
   time: string;
@@ -43,7 +43,15 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
     return null;
   }
 
-  const getIcon = (type: string) => {
+  const getIcon = (type: string, details?: any) => {
+    // Check if it's a beach or nightlife activity
+    if (details && details.type === 'Beach') {
+      return <Waves className="h-4 w-4 text-blue-500" />;
+    }
+    if (details && details.type === 'Nightlife') {
+      return <Music className="h-4 w-4 text-purple-500" />;
+    }
+    
     switch (type) {
       case 'Activity':
         return <Camera className="h-4 w-4" />;
@@ -192,7 +200,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600">
-                                {getIcon(item.type)}
+                                {getIcon(item.type, item.details)}
                               </div>
                               <div>
                                 <div className="flex items-center gap-2">

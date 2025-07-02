@@ -69,6 +69,23 @@ export const activities: Activity[] = [
   { name: 'Le Bar Blanc', city: 'Abidjan', type: 'Nightlife', description: 'A popular spot in Abidjan for cocktails, music, and a lively atmosphere.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/barblanc/400/300', durationHours: 3, bestTime: 'Evening', cost: 35 },
   { name: 'Bushman Café', city: 'Abidjan', type: 'Fun', description: 'A unique establishment with a rooftop, art gallery, and live music.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/bushman/400/300', durationHours: 4, bestTime: 'Evening', cost: 45 },
   { name: 'Doraville', city: 'Abidjan', type: 'Fun', description: 'A large amusement park with a variety of rides and attractions.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/doraville/400/300', durationHours: 5, bestTime: 'Afternoon', cost: 25 },
+  
+  // Additional Beach Activities
+  { name: 'Grand-Bassam Beach', city: 'Grand-Bassam', type: 'Beach', description: 'Historic coastal town with beautiful beaches and colonial architecture.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/gbbeach/400/300', durationHours: 4, bestTime: 'Morning', cost: 15 },
+  { name: 'Assinie Beach Resort', city: 'Assinie', type: 'Beach', description: 'Luxury beach resort with water sports, spa, and beachfront dining.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/assinieresort/400/300', durationHours: 8, bestTime: 'Morning', cost: 80 },
+  { name: 'Jacqueville Beach', city: 'Abidjan', type: 'Beach', description: 'Popular weekend beach destination with local seafood restaurants.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/jacqueville/400/300', durationHours: 6, bestTime: 'Morning', cost: 35 },
+  { name: 'Drewin Beach', city: 'Assinie', type: 'Beach', description: 'Pristine beach perfect for swimming, sunbathing, and beach volleyball.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/drewin/400/300', durationHours: 5, bestTime: 'Afternoon', cost: 40 },
+  { name: 'Monogaga Beach', city: 'Grand-Bassam', type: 'Beach', description: 'Secluded beach with crystal clear waters and palm trees.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/monogaga/400/300', durationHours: 4, bestTime: 'Afternoon', cost: 20 },
+  
+  // Additional Nightlife/Clubbing Activities
+  { name: 'Duplex Club', city: 'Abidjan', type: 'Nightlife', description: 'Premier nightclub with international DJs and VIP sections.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/duplex/400/300', durationHours: 5, bestTime: 'Evening', cost: 80 },
+  { name: 'Le Must Club', city: 'Abidjan', type: 'Nightlife', description: 'Trendy club popular with locals and expats, great music and atmosphere.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/lemust/400/300', durationHours: 4, bestTime: 'Evening', cost: 50 },
+  { name: 'Keur Samba', city: 'Abidjan', type: 'Nightlife', description: 'Live music venue featuring traditional and modern African music.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/keursamba/400/300', durationHours: 3, bestTime: 'Evening', cost: 35 },
+  { name: 'VIP Club', city: 'Abidjan', type: 'Nightlife', description: 'Exclusive nightclub with rooftop terrace and city views.', budget: 'Luxury', imageUrl: 'https://picsum.photos/seed/vipclub/400/300', durationHours: 4, bestTime: 'Evening', cost: 70 },
+  { name: 'Banana Café', city: 'Abidjan', type: 'Nightlife', description: 'Casual bar and club with live bands and dancing.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/banana/400/300', durationHours: 3, bestTime: 'Evening', cost: 25 },
+  { name: 'Sky Bar Plateau', city: 'Abidjan', type: 'Nightlife', description: 'Rooftop bar with panoramic city views and craft cocktails.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/skybar/400/300', durationHours: 3, bestTime: 'Evening', cost: 45 },
+  { name: 'Cocody Night Market', city: 'Abidjan', type: 'Nightlife', description: 'Evening market with food stalls, live music, and local crafts.', budget: 'Budget', imageUrl: 'https://picsum.photos/seed/nightmarket/400/300', durationHours: 2, bestTime: 'Evening', cost: 15 },
+  { name: 'Bassam Beach Club', city: 'Grand-Bassam', type: 'Nightlife', description: 'Beachfront club with sunset cocktails and evening entertainment.', budget: 'Mid-Range', imageUrl: 'https://picsum.photos/seed/bassamclub/400/300', durationHours: 4, bestTime: 'Evening', cost: 40 },
 ];
 
 export const restaurants: Restaurant[] = [
