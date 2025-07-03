@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './button';
 import { Download, FileText, Loader2 } from 'lucide-react';
 import { exportTripPlanToPDF, exportTripPlanToAdvancedPDF } from '../../utils/pdfExport';
@@ -16,6 +17,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
   variant = 'default',
   size = 'default'
 }) => {
+  const { t, i18n } = useTranslation();
   const [isExporting, setIsExporting] = useState(false);
   const [exportMethod, setExportMethod] = useState<'simple' | 'advanced'>('simple');
 
@@ -24,7 +26,8 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
 
     setIsExporting(true);
     try {
-      const filename = `ivory-coast-trip-${new Date().toISOString().split('T')[0]}.pdf`;
+      const baseFilename = t('export.filename', 'Ivory Coast Trip Plan');
+      const filename = `${baseFilename.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;
       
       if (exportMethod === 'advanced') {
         // Try advanced export first (with styling)
@@ -34,12 +37,12 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
         await exportTripPlanToPDF(plan, { filename });
       }
       
-      // Show success message (you could add a toast notification here)
-      console.log('PDF exported successfully!');
+      // Show success message
+      alert(t('export.success'));
     } catch (error) {
       console.error('Export failed:', error);
-      // Show error message (you could add a toast notification here)
-      alert('Failed to export PDF. Please try again.');
+      // Show error message
+      alert(t('export.error'));
     } finally {
       setIsExporting(false);
     }
@@ -61,12 +64,12 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
         {isExporting ? (
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            Exporting...
+            {t('export.exporting')}
           </>
         ) : (
           <>
             <Download className="h-4 w-4 mr-2" />
-            Export PDF
+            {t('export.button')}
           </>
         )}
       </Button>
@@ -76,7 +79,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
         variant="outline"
         size="sm"
         className="px-2"
-        title={`Switch to ${exportMethod === 'simple' ? 'styled' : 'simple'} export`}
+        title={exportMethod === 'simple' ? t('export.switchToStyled') : t('export.switchToSimple')}
       >
         <FileText className="h-4 w-4" />
       </Button>

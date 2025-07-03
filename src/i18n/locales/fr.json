@@ -63,5 +63,14 @@
     "Bouna": "Bouna"
   },
   "language": "Langue",
-  "settings": "Paramètres"
+  "settings": "Paramètres",
+  "export": {
+    "button": "Exporter PDF",
+    "exporting": "Exportation...",
+    "success": "PDF exporté avec succès !",
+    "error": "Échec de l'exportation PDF. Veuillez réessayer.",
+    "filename": "Plan de Voyage Côte d'Ivoire",
+    "switchToStyled": "Passer à l'exportation stylée",
+    "switchToSimple": "Passer à l'exportation simple"
+  }
 }

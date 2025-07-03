@@ -19,7 +19,8 @@ interface ExportOptions {
 
 export const exportTripPlanToPDF = async (
   plan: TripPlan,
-  options: ExportOptions = {}
+  options: ExportOptions = {},
+  t?: (key: string, fallback?: string) => string
 ): Promise<void> => {
   const {
     filename = 'ivory-coast-trip-plan.pdf',
@@ -76,14 +77,16 @@ export const exportTripPlanToPDF = async (
     pdf.setFontSize(24);
     pdf.setFont('helvetica', 'bold');
     pdf.setTextColor(59, 130, 246);
-    pdf.text('Ivory Coast Trip Plan', margin, currentY);
+    const title = t ? t('app.title', 'Ivory Coast Trip Planner') : 'Ivory Coast Trip Planner';
+    pdf.text(title, margin, currentY);
     currentY += 15;
 
     // Subtitle
     pdf.setFontSize(12);
     pdf.setFont('helvetica', 'normal');
     pdf.setTextColor(100, 100, 100);
-    pdf.text('Your personalized travel itinerary for Côte d\'Ivoire', margin, currentY);
+    const subtitle = t ? t('app.subtitle', 'Your personalized travel itinerary for Côte d\'Ivoire') : 'Your personalized travel itinerary for Côte d\'Ivoire';
+    pdf.text(subtitle, margin, currentY);
     currentY += 20;
 
     // Trip Summary

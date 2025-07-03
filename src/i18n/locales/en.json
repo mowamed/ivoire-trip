@@ -67,5 +67,14 @@
     "Bouna": "Bouna"
   },
   "language": "Language",
-  "settings": "Settings"
+  "settings": "Settings",
+  "export": {
+    "button": "Export PDF",
+    "exporting": "Exporting...",
+    "success": "PDF exported successfully!",
+    "error": "Failed to export PDF. Please try again.",
+    "filename": "Ivory Coast Trip Plan",
+    "switchToStyled": "Switch to styled export",
+    "switchToSimple": "Switch to simple export"
+  }
 }
