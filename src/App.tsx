@@ -11,8 +11,8 @@ import './App.css';
 interface ItineraryItem {
   time: string;
   description: string;
-  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel' | 'Airport' | 'Hotel';
-  details?: Activity | Restaurant;
+  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel' | 'Airport' | 'Hotel' | 'Return';
+  details?: Activity | Restaurant | Hotel;
   duration?: number;
   cost?: number;
   city?: string;
@@ -37,6 +37,7 @@ const AppContent: React.FC = () => {
     totalCost: number;
     totalDuration: number;
     budget?: number;
+    accommodations?: { [key: string]: Hotel }; // Track hotels for each city
   } | null>(null);
 
   // Utility function to calculate distance between two points using Haversine formula
@@ -130,32 +131,89 @@ const AppContent: React.FC = () => {
       // Plan cities to visit based on duration
       const citiesToVisit = planCitiesRoute(duration);
       
-      // Select hotel within budget
+      // Plan accommodations for each city based on overnight stays
+      const accommodations: { [key: string]: Hotel } = {};
+      let totalAccommodationCost = 0;
+      
+      // Determine overnight stays and select hotels
+      for (let day = 1; day <= duration; day++) {
+        const currentCity = citiesToVisit[day - 1];
+        const nextCity = day < duration ? citiesToVisit[day] : null;
+        const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
+        
+        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+        
+        if (stayOvernight && !accommodations[currentCity]) {
+          // Select hotel for this city
+          const cityHotels = hotels.filter(h => h.city === currentCity).sort((a, b) => a.cost - b.cost);
+          let selectedHotel = cityHotels.find(h => h.budget === budgetCategory);
+          
+          // Fallback to most affordable option
+          if (!selectedHotel && cityHotels.length > 0) {
+            selectedHotel = cityHotels[0];
+          }
+          
+          // If no hotel in this city, use Abidjan hotel as fallback
+          if (!selectedHotel) {
+            const abidjanHotels = hotels.filter(h => h.city === 'Abidjan').sort((a, b) => a.cost - b.cost);
+            selectedHotel = abidjanHotels.find(h => h.budget === budgetCategory) || abidjanHotels[0];
+          }
+          
+          if (selectedHotel) {
+            accommodations[currentCity] = selectedHotel;
+          }
+        }
+      }
+      
+      // Calculate total accommodation costs
+      for (let day = 1; day <= duration; day++) {
+        const currentCity = citiesToVisit[day - 1];
+        const nextCity = day < duration ? citiesToVisit[day] : null;
+        const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
+        
+        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+        
+        if (stayOvernight && accommodations[currentCity]) {
+          totalAccommodationCost += accommodations[currentCity].cost;
+        }
+      }
+      
+      // Select primary hotel (base hotel in Abidjan)
       const availableHotels = hotels.filter(h => h.city === 'Abidjan').sort((a, b) => a.cost - b.cost);
-      let selectedHotel = availableHotels.find(h => h.budget === budgetCategory);
+      let selectedHotel = availableHotels.find(h => h.budget === budgetCategory) || availableHotels[0];
       
-      // If no hotel in budget category, find the most affordable option
-      if (!selectedHotel) {
-        selectedHotel = availableHotels.find(h => h.cost * duration <= adjustedBudget * 0.6); // Max 60% of adjusted budget for accommodation
-      }
-      
-      // Fallback to cheapest hotel if still over budget
-      if (!selectedHotel) {
-        selectedHotel = availableHotels[0];
-      }
-
-      const hotelCost = selectedHotel.cost * duration;
-      let remainingBudget = adjustedBudget - hotelCost;
+      let remainingBudget = adjustedBudget - totalAccommodationCost;
       const dailyBudget = remainingBudget / duration;
 
-      // If hotel cost exceeds 70% of adjusted budget, adjust to a cheaper option
-      if (hotelCost > adjustedBudget * 0.7) {
-        selectedHotel = availableHotels.find(h => h.cost * duration <= adjustedBudget * 0.5) || availableHotels[0];
-        remainingBudget = adjustedBudget - (selectedHotel.cost * duration);
+      // If accommodation cost exceeds 70% of adjusted budget, optimize
+      if (totalAccommodationCost > adjustedBudget * 0.7) {
+        // Reduce to budget accommodations
+        for (const city in accommodations) {
+          const cityHotels = hotels.filter(h => h.city === city && h.budget === 'Budget').sort((a, b) => a.cost - b.cost);
+          if (cityHotels.length > 0) {
+            accommodations[city] = cityHotels[0];
+          }
+        }
+        
+        // Recalculate total accommodation cost
+        totalAccommodationCost = 0;
+        for (let day = 1; day <= duration; day++) {
+          const currentCity = citiesToVisit[day - 1];
+          const nextCity = day < duration ? citiesToVisit[day] : null;
+          const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
+          
+          const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+          
+          if (stayOvernight && accommodations[currentCity]) {
+            totalAccommodationCost += accommodations[currentCity].cost;
+          }
+        }
+        
+        remainingBudget = adjustedBudget - totalAccommodationCost;
       }
 
       const dailyPlans: DailyPlan[] = [];
-      let totalCost = selectedHotel.cost * duration;
+      let totalCost = totalAccommodationCost;
       let totalDuration = 0;
       const visitedActivities: string[] = [];
 
@@ -173,7 +231,8 @@ const AppContent: React.FC = () => {
           availableBudgetForDay,
           remainingBudget,
           transportationModes,
-          budget
+          budget,
+          accommodations
         );
         
         dailyPlans.push(dayPlan);
@@ -206,6 +265,7 @@ const AppContent: React.FC = () => {
           totalCost: finalTotalCost,
           totalDuration,
           budget,
+          accommodations,
         });
       }
     } catch (error) {
@@ -217,30 +277,64 @@ const AppContent: React.FC = () => {
     setIsLoading(false);
   };
 
+  // Helper function to determine if we should stay overnight in a city
+  const shouldStayOvernight = (currentCity: string, nextCity: string, travelTimeToNext: number, baseCity: string = 'Abidjan'): boolean => {
+    // Always stay overnight if it's the last day or if we're in the base city
+    if (currentCity === baseCity) return true;
+    
+    // Stay overnight if travel time to next city is > 3 hours
+    if (travelTimeToNext > 3) return true;
+    
+    // Stay overnight if it's a resort destination (Assinie, Sassandra)
+    if (['Assinie', 'Sassandra'].includes(currentCity)) return true;
+    
+    // Stay overnight if travel time back to base + travel time to next city > 4 hours
+    const travelTimeToBase = travelTimes[currentCity]?.[baseCity] || 2;
+    const travelTimeFromBase = travelTimes[baseCity]?.[nextCity] || 2;
+    if (travelTimeToBase + travelTimeFromBase > 4) return true;
+    
+    return false;
+  };
+
   // Helper function to plan the route through cities (prioritizing beach destinations)
   const planCitiesRoute = (duration: number): string[] => {
     const route: string[] = [];
+    const baseCity = 'Abidjan';
     
     if (duration <= 3) {
       // Short trip: Focus on Abidjan and nearby beaches
-      route.push('Abidjan'); // Start in Abidjan for nightlife
-      if (duration > 1) route.push('Grand-Bassam'); // Beach day
-      if (duration > 2) route.push('Assinie'); // Premium beach experience
+      route.push(baseCity); // Start in Abidjan
+      if (duration > 1) {
+        if (duration === 2) {
+          route.push(baseCity); // Stay in Abidjan for 2-day trip
+        } else {
+          route.push('Grand-Bassam'); // Beach day
+          route.push(baseCity); // Return to Abidjan for departure
+        }
+      }
     } else if (duration <= 7) {
       // Medium trip: Mix of beaches, nightlife, and culture
-      route.push('Abidjan'); // Nightlife and city experience
+      route.push(baseCity); // Start in Abidjan
       route.push('Grand-Bassam'); // Historic beach town
       route.push('Assinie'); // Luxury beach resort
-      if (duration > 3) route.push('Abidjan'); // Return for more nightlife
-      if (duration > 4) route.push('Yamoussoukro'); // Cultural experience
-      if (duration > 5) route.push('Sassandra'); // More beaches
-      if (duration > 6) route.push('Abidjan'); // Final night out
+      if (duration > 3) route.push('Yamoussoukro'); // Cultural experience
+      if (duration > 4) route.push('Sassandra'); // More beaches
+      if (duration > 5) route.push('Man'); // Mountain experience
+      // Always end in Abidjan for departure
+      route[duration - 1] = baseCity;
     } else {
-      // Long trip: Comprehensive tour with emphasis on beaches and nightlife
-      const cities = ['Abidjan', 'Grand-Bassam', 'Assinie', 'Abidjan', 'Sassandra', 'Yamoussoukro', 'Man', 'Abidjan'];
-      for (let i = 0; i < duration; i++) {
-        route.push(cities[i % cities.length]);
+      // Long trip: Comprehensive tour
+      const destinations = ['Grand-Bassam', 'Assinie', 'Yamoussoukro', 'Sassandra', 'Man', 'Korhogo', 'Bouaké'];
+      route.push(baseCity); // Start in Abidjan
+      
+      // Fill middle days with destinations
+      for (let i = 1; i < duration - 1; i++) {
+        const destIndex = (i - 1) % destinations.length;
+        route.push(destinations[destIndex]);
       }
+      
+      // Always end in Abidjan for departure
+      route.push(baseCity);
     }
     
     return route;
@@ -257,7 +351,8 @@ const AppContent: React.FC = () => {
     dailyBudget: number,
     remainingBudget: number,
     transportationModes: string[],
-    totalBudget: number
+    totalBudget: number,
+    accommodations: { [key: string]: Hotel }
   ): DailyPlan => {
     const schedule: ItineraryItem[] = [];
     let currentTime = 8; // Start earlier for first day (airport arrival)
@@ -422,24 +517,43 @@ const AppContent: React.FC = () => {
       };
     }
 
-    // Travel between cities (if not first day and city changed)
-    if (day > 1 && citiesToVisit[day - 2] !== city) {
-      const previousCity = citiesToVisit[day - 2];
-      const travelTime = travelTimes[previousCity]?.[city] || 2;
-      const travelResult = calculateTravelCost(previousCity, city, transportationModes, totalBudget);
+    // Determine where we're starting from today
+    let startingCity = city;
+    if (day > 1) {
+      const prevDayCity = citiesToVisit[day - 2];
+      const currentDayCity = city;
+      
+      // If we're going to a different city than yesterday
+      if (prevDayCity !== currentDayCity) {
+        // Check if we stayed overnight in the previous city or returned to Abidjan
+        const nextCityAfterPrev = day - 1 < citiesToVisit.length ? citiesToVisit[day - 1] : null;
+        const travelTimeFromPrev = nextCityAfterPrev ? (travelTimes[prevDayCity]?.[nextCityAfterPrev] || 2) : 0;
+        
+        if (shouldStayOvernight(prevDayCity, nextCityAfterPrev || '', travelTimeFromPrev)) {
+          // We stayed in the previous city
+          startingCity = prevDayCity;
+        } else {
+          // We returned to Abidjan
+          startingCity = 'Abidjan';
+        }
+        
+        // Add travel from starting city to current city
+        const travelTime = travelTimes[startingCity]?.[currentDayCity] || 2;
+        const travelResult = calculateTravelCost(startingCity, currentDayCity, transportationModes, totalBudget);
 
-      schedule.push({
-        time: `${currentTime}:00`,
-        description: `Travel from ${previousCity} to ${city} via ${travelResult.mode}`,
-        type: 'Travel',
-        duration: travelTime,
-        cost: travelResult.cost,
-        city: city,
-      });
-      currentTime += travelTime;
-      dailyDuration += travelTime;
-      dailyCost += travelResult.cost;
-      budgetUsed += travelResult.cost;
+        schedule.push({
+          time: `${currentTime}:00`,
+          description: `Travel from ${startingCity} to ${currentDayCity} via ${travelResult.mode}`,
+          type: 'Travel',
+          duration: travelTime,
+          cost: travelResult.cost,
+          city: currentDayCity,
+        });
+        currentTime += travelTime;
+        dailyDuration += travelTime;
+        dailyCost += travelResult.cost;
+        budgetUsed += travelResult.cost;
+      }
     }
 
     // Morning activity (prioritize beach activities and group by proximity)
@@ -716,6 +830,68 @@ const AppContent: React.FC = () => {
             dailyCost += selectedActivity.cost;
             budgetUsed += selectedActivity.cost;
           }
+        }
+      }
+    }
+
+    // End of day: Handle accommodation or return trip
+    if (day < totalDays) {
+      const nextCity = citiesToVisit[day];
+      const travelTimeToNext = nextCity ? (travelTimes[city]?.[nextCity] || 2) : 0;
+      const baseCity = 'Abidjan';
+      
+      const stayOvernight = shouldStayOvernight(city, nextCity, travelTimeToNext, baseCity);
+
+      if (stayOvernight) {
+        // Stay overnight in current city
+        const hotel = accommodations[city];
+        if (hotel) {
+          schedule.push({
+            time: `${Math.max(currentTime, 22)}:00`,
+            description: `Check-in at ${hotel.name}`,
+            type: 'Hotel',
+            details: hotel,
+            duration: 1,
+            cost: 0, // Hotel cost is already calculated in total accommodation cost
+            city: city,
+            icon: '🏨'
+          });
+          dailyDuration += 1;
+        }
+      } else {
+        // Return trip to base city (Abidjan) if not already there
+        if (city !== baseCity) {
+          const returnTravelTime = travelTimes[city]?.[baseCity] || 2;
+          const returnTravelResult = calculateTravelCost(city, baseCity, transportationModes, totalBudget);
+          
+          schedule.push({
+            time: `${Math.max(currentTime, 20)}:00`,
+            description: `Return trip to ${baseCity} via ${returnTravelResult.mode}`,
+            type: 'Return',
+            duration: returnTravelTime,
+            cost: returnTravelResult.cost,
+            city: baseCity,
+            icon: '🔄'
+          });
+          dailyCost += returnTravelResult.cost;
+          dailyDuration += returnTravelTime;
+          currentTime = Math.max(currentTime + returnTravelTime, 22);
+        }
+        
+        // Check-in at base hotel
+        const baseHotel = accommodations[baseCity];
+        if (baseHotel) {
+          schedule.push({
+            time: `${Math.max(currentTime, 22)}:00`,
+            description: `Check-in at ${baseHotel.name} in ${baseCity}`,
+            type: 'Hotel',
+            details: baseHotel,
+            duration: 1,
+            cost: 0, // Hotel cost already calculated
+            city: baseCity,
+            icon: '🏨'
+          });
+          dailyDuration += 1;
         }
       }
     }

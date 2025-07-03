@@ -11,8 +11,8 @@ import { MapPin, Clock, DollarSign, Camera, Utensils, Plane, Hotel as HotelIcon,
 interface ItineraryItem {
   time: string;
   description: string;
-  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel' | 'Airport' | 'Hotel';
-  details?: Activity | Restaurant | Transportation;
+  type: 'Activity' | 'Meal' | 'Transportation' | 'Travel' | 'Airport' | 'Hotel' | 'Return';
+  details?: Activity | Restaurant | Transportation | Hotel;
   duration?: number;
   cost?: number;
   city?: string;
@@ -35,6 +35,7 @@ interface Props {
     totalCost: number;
     totalDuration: number;
     budget?: number;
+    accommodations?: { [key: string]: Hotel };
   } | null;
 }
 
@@ -81,6 +82,8 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
         return <HotelIcon className="h-4 w-4" />;
       case 'Transportation':
         return <MapPin className="h-4 w-4" />;
+      case 'Return':
+        return <MapPin className="h-4 w-4 text-orange-500" />;
       default:
         return <MapPin className="h-4 w-4" />;
     }

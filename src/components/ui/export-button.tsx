@@ -17,7 +17,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
   variant = 'default',
   size = 'default'
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isExporting, setIsExporting] = useState(false);
   const [exportMethod, setExportMethod] = useState<'simple' | 'advanced'>('simple');
 
