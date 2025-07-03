@@ -182,7 +182,7 @@ const AppContent: React.FC = () => {
       const availableHotels = hotels.filter(h => h.city === 'Abidjan').sort((a, b) => a.cost - b.cost);
       let selectedHotel = availableHotels.find(h => h.budget === budgetCategory) || availableHotels[0];
       
-      let remainingBudget = adjustedBudget - totalAccommodationCost;
+      let remainingBudget = adjustedBudget;
       const dailyBudget = remainingBudget / duration;
 
       // If accommodation cost exceeds 70% of adjusted budget, optimize
@@ -208,12 +208,10 @@ const AppContent: React.FC = () => {
             totalAccommodationCost += accommodations[currentCity].cost;
           }
         }
-        
-        remainingBudget = adjustedBudget - totalAccommodationCost;
       }
 
       const dailyPlans: DailyPlan[] = [];
-      let totalCost = totalAccommodationCost;
+      let totalCost = 0; // Hotel costs will be included in daily costs now
       let totalDuration = 0;
       const visitedActivities: string[] = [];
 
@@ -852,10 +850,11 @@ const AppContent: React.FC = () => {
             type: 'Hotel',
             details: hotel,
             duration: 1,
-            cost: 0, // Hotel cost is already calculated in total accommodation cost
+            cost: hotel.cost, // Include hotel cost for this night
             city: city,
             icon: '🏨'
           });
+          dailyCost += hotel.cost;
           dailyDuration += 1;
         }
       } else {
@@ -887,10 +886,11 @@ const AppContent: React.FC = () => {
             type: 'Hotel',
             details: baseHotel,
             duration: 1,
-            cost: 0, // Hotel cost already calculated
+            cost: baseHotel.cost, // Include hotel cost for this night
             city: baseCity,
             icon: '🏨'
           });
+          dailyCost += baseHotel.cost;
           dailyDuration += 1;
         }
       }
