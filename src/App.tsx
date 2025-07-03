@@ -353,6 +353,18 @@ const AppContent: React.FC = () => {
       route.push(baseCity);
     }
     
+    // CRITICAL SAFETY CHECK: Ensure second-to-last day doesn't put us far from airport
+    if (duration > 2) {
+      const secondLastDayIndex = duration - 2;
+      const secondLastDayCity = route[secondLastDayIndex];
+      const travelTimeToBase = travelTimes[secondLastDayCity]?.[baseCity] || 2;
+      
+      // If second-to-last day city is >2h from Abidjan, replace it with Abidjan
+      if (travelTimeToBase > 2) {
+        route[secondLastDayIndex] = baseCity;
+      }
+    }
+    
     return route;
   };
 
@@ -376,6 +388,12 @@ const AppContent: React.FC = () => {
     let dailyDuration = 0;
     let lastActivityLocation: Geolocation | null = null;
     let budgetUsed = 0;
+    const MAX_DAILY_DURATION = 10; // Maximum 10 hours of activities per day
+    
+    // Helper function to check if we can add more activities without exceeding 10h limit
+    const canAddActivity = (activityDuration: number): boolean => {
+      return (dailyDuration + activityDuration) <= MAX_DAILY_DURATION;
+    };
     
     const hasPrivateCar = transportationModes.includes('Private Car with Driver');
     
@@ -577,6 +595,26 @@ const AppContent: React.FC = () => {
         
         // Add travel from starting city to current city
         const travelTime = travelTimes[startingCity]?.[currentDayCity] || 2;
+        
+        // Check if travel time would exceed daily limit
+        if (!canAddActivity(travelTime)) {
+          // If travel would exceed limit, skip this day's activities and just do minimal travel
+          return {
+            day,
+            city: currentDayCity,
+            schedule: [{
+              time: `${currentTime}:00`,
+              description: `Travel day: ${startingCity} to ${currentDayCity} (long journey)`,
+              type: 'Travel',
+              duration: Math.min(travelTime, MAX_DAILY_DURATION),
+              cost: 0,
+              city: currentDayCity,
+            }],
+            totalCost: 0,
+            totalDuration: Math.min(travelTime, MAX_DAILY_DURATION),
+          };
+        }
+        
         const travelResult = calculateTravelCost(startingCity, currentDayCity, transportationModes, totalBudget);
 
         schedule.push({
@@ -595,12 +633,13 @@ const AppContent: React.FC = () => {
     }
 
     // Morning activity (prioritize beach activities and group by proximity)
-    if (currentTime < 12) {
+    if (currentTime < 12 && canAddActivity(1)) { // Check if we have time for at least 1 hour activity
       let morningActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Morning' && 
         !visitedActivities.includes(a.name) &&
-        a.budget === budgetCategory
+        a.budget === budgetCategory &&
+        canAddActivity(a.durationHours) // Check if activity fits within daily limit
       );
       
       // Prioritize beach activities in the morning
@@ -610,9 +649,11 @@ const AppContent: React.FC = () => {
       }
       
       if (morningActivities.length > 0) {
-        // Filter activities that fit within remaining budget
+        // Filter activities that fit within remaining budget and time
         const affordableActivities = morningActivities.filter(a => 
-          a.cost <= (dailyBudget - budgetUsed) && a.cost <= remainingBudget
+          a.cost <= (dailyBudget - budgetUsed) && 
+          a.cost <= remainingBudget &&
+          canAddActivity(a.durationHours)
         );
         
         if (affordableActivities.length > 0) {
@@ -647,7 +688,7 @@ const AppContent: React.FC = () => {
     }
 
     // Lunch (find closest restaurant to last activity)
-    if (currentTime >= 12 && currentTime <= 14) {
+    if (currentTime >= 12 && currentTime <= 14 && canAddActivity(1.5)) { // Check if we have time for lunch
       const lunchOptions = restaurants.filter(r => 
         r.city === city && 
         r.bestTime === 'Lunch' &&
@@ -692,12 +733,13 @@ const AppContent: React.FC = () => {
     }
 
     // Afternoon activity (continue beach or cultural activities, consider proximity)
-    if (currentTime < 17) {
+    if (currentTime < 17 && canAddActivity(1)) { // Check if we have time for afternoon activity
       let afternoonActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Afternoon' && 
         !visitedActivities.includes(a.name) &&
-        a.budget === budgetCategory
+        a.budget === budgetCategory &&
+        canAddActivity(a.durationHours) // Check if activity fits within daily limit
       );
       
       // If in a beach city, prioritize beach activities
@@ -727,7 +769,9 @@ const AppContent: React.FC = () => {
           selectedActivity = afternoonActivities[Math.floor(Math.random() * afternoonActivities.length)];
         }
         
-        if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+        if (selectedActivity.cost <= (dailyBudget - budgetUsed) && 
+            selectedActivity.cost <= remainingBudget && 
+            canAddActivity(selectedActivity.durationHours)) {
           schedule.push({
             time: `${currentTime}:00`,
             description: selectedActivity.name,
@@ -749,12 +793,13 @@ const AppContent: React.FC = () => {
     }
 
     // Evening activity (prioritize nightlife/clubbing) or dinner
-    if (currentTime < 22) {
+    if (currentTime < 22 && canAddActivity(1)) { // Check if we have time for evening activities
       const eveningActivities = activities.filter(a => 
         a.city === city && 
         a.bestTime === 'Evening' && 
         !visitedActivities.includes(a.name) &&
-        a.budget === budgetCategory
+        a.budget === budgetCategory &&
+        canAddActivity(a.durationHours) // Check if activity fits within daily limit
       );
       
       // Prioritize nightlife activities in the evening, especially in Abidjan
@@ -781,7 +826,10 @@ const AppContent: React.FC = () => {
           restaurant = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
         }
         
-        if (restaurant && restaurant.cost <= (dailyBudget - budgetUsed) && restaurant.cost <= remainingBudget) {
+        if (restaurant && 
+            restaurant.cost <= (dailyBudget - budgetUsed) && 
+            restaurant.cost <= remainingBudget && 
+            canAddActivity(1.5)) {
           schedule.push({
             time: `${Math.max(currentTime, 18)}:00`,
             description: `Dinner at ${restaurant.name}`,
@@ -821,7 +869,9 @@ const AppContent: React.FC = () => {
             selectedActivity = nightlifeActivities[Math.floor(Math.random() * nightlifeActivities.length)];
           }
           
-          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && 
+              selectedActivity.cost <= remainingBudget && 
+              canAddActivity(selectedActivity.durationHours)) {
             schedule.push({
               time: `${Math.max(currentTime, 21)}:00`,
               description: selectedActivity.name,
@@ -853,7 +903,9 @@ const AppContent: React.FC = () => {
             selectedActivity = eveningActivities[Math.floor(Math.random() * eveningActivities.length)];
           }
           
-          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && selectedActivity.cost <= remainingBudget) {
+          if (selectedActivity.cost <= (dailyBudget - budgetUsed) && 
+              selectedActivity.cost <= remainingBudget && 
+              canAddActivity(selectedActivity.durationHours)) {
             schedule.push({
               time: `${currentTime}:00`,
               description: selectedActivity.name,
