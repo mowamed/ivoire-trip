@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PlannerWithSettings from './components/PlannerWithSettings';
 import TripPlan from './components/TripPlan';
 import { Loading } from './components/ui/loading';
-import { CurrencyProvider } from './contexts/CurrencyContext';
+import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext';
 import { hotels, activities, restaurants, travelTimes, transportationOptions } from './data';
 import type { Hotel, Activity, Restaurant, Geolocation, Transportation } from './data';
 import './App.css';
@@ -29,6 +29,13 @@ interface DailyPlan {
 
 const AppContent: React.FC = () => {
   const { t } = useTranslation();
+  const { currency } = useCurrency();
+  
+  // Helper function to convert from selected currency to USD for internal calculations
+  const convertToUSD = (amount: number): number => {
+    const exchangeRates = { USD: 1, EUR: 0.85, XOF: 600 };
+    return Math.round(amount / exchangeRates[currency]);
+  };
   const [isLoading, setIsLoading] = useState(false);
   const [plan, setPlan] = useState<{
     hotel: Hotel | null;
@@ -107,6 +114,9 @@ const AppContent: React.FC = () => {
     // Add a small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 1000));
     
+    // Convert budget from selected currency to USD for internal calculations
+    const budgetInUSD = convertToUSD(budget);
+    
     try {
       // Calculate private car cost if selected
       const hasPrivateCar = transportationModes.includes('Private Car with Driver');
@@ -115,7 +125,7 @@ const AppContent: React.FC = () => {
       const totalPrivateCarCost = privateCarCost * duration;
 
       // Adjust available budget for accommodation and activities if private car is selected
-      const adjustedBudget = hasPrivateCar ? budget - totalPrivateCarCost : budget;
+      const adjustedBudget = hasPrivateCar ? budgetInUSD - totalPrivateCarCost : budgetInUSD;
       
       // Determine budget category based on adjusted budget per day
       const budgetPerDay = adjustedBudget / duration;
@@ -232,7 +242,7 @@ const AppContent: React.FC = () => {
           availableBudgetForDay,
           remainingBudget,
           transportationModes,
-          budget,
+          budgetInUSD,
           accommodations
         );
         
@@ -253,8 +263,8 @@ const AppContent: React.FC = () => {
       // Add transportation costs to total
       const finalTotalCost = totalCost + totalPrivateCarCost;
       
-      if (finalTotalCost > budget) {
-        const optimizedPlan = optimizePlanForBudget(dailyPlans, selectedHotel, budget, duration);
+      if (finalTotalCost > budgetInUSD) {
+        const optimizedPlan = optimizePlanForBudget(dailyPlans, selectedHotel, budgetInUSD, duration);
         // Add transportation cost to optimized plan
         optimizedPlan.totalCost += totalPrivateCarCost;
         setPlan(optimizedPlan);
@@ -265,14 +275,14 @@ const AppContent: React.FC = () => {
           restaurants: restaurants.filter(r => r.budget === budgetCategory),
           totalCost: finalTotalCost,
           totalDuration,
-          budget,
+          budget: budgetInUSD, // Store the USD budget for internal use
           accommodations,
         });
       }
     } catch (error) {
       console.error('Error generating plan:', error);
       // Fallback to a basic plan if something goes wrong
-      generateBasicPlan(duration, budget, transportationModes);
+      generateBasicPlan(duration, budgetInUSD, transportationModes);
     }
     
     setIsLoading(false);

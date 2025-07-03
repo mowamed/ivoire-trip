@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { MapPin, Calendar, DollarSign, Loader2 } from 'lucide-react';
+import { MapPin, Calendar, DollarSign, Euro, Loader2 } from 'lucide-react';
 
 interface Props {
   onPlanRequest: (duration: number, budget: number) => void;
@@ -63,7 +63,11 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest, isLoading = false }) => {
             </div>
             <div className="space-y-3">
               <Label htmlFor="budget" className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <DollarSign className="h-4 w-4 text-green-500" />
+                {currency === 'EUR' ? (
+                  <Euro className="h-4 w-4 text-green-500" />
+                ) : (
+                  <DollarSign className="h-4 w-4 text-green-500" />
+                )}
                 {t('form.budget')} ({currency})
               </Label>
               <Input
