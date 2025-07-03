@@ -737,20 +737,37 @@ const AppContent: React.FC = () => {
     availableModes: string[], 
     budget: number
   ): { mode: Transportation; cost: number } | null => {
+    // Determine if this is intra-city or inter-city travel
+    const travelType: 'Intra-city' | 'Inter-city' = fromCity === toCity ? 'Intra-city' : 'Inter-city';
+    
+    // Filter transportation options by travel scope
     const availableTransportation = transportationOptions.filter(transport => 
       availableModes.includes(transport.type) &&
       transport.availableIn.includes(fromCity) &&
-      transport.availableIn.includes(toCity)
+      transport.availableIn.includes(toCity) &&
+      transport.travelScope.includes(travelType)
     );
 
     if (availableTransportation.length === 0) {
       // Fallback to walking if distance < 0.5km, otherwise use cheapest available option
       if (distance < 0.5) {
-        return { mode: { type: 'Walking', costPerTrip: 0, costPerDay: null, costPerKilometer: 0, budget: 'Budget', availableIn: [] }, cost: 0 };
+        return { 
+          mode: { 
+            type: 'Walking', 
+            costPerTrip: 0, 
+            costPerDay: null, 
+            costPerKilometer: 0, 
+            budget: 'Budget', 
+            availableIn: ['Abidjan', 'Grand-Bassam', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'San-Pédro'],
+            travelScope: ['Intra-city'] 
+          }, 
+          cost: 0 
+        };
       }
-      // Use the cheapest available transportation from any city
+      // Use the cheapest available transportation from any city that matches the travel scope
       const fallbackOptions = transportationOptions.filter(transport => 
-        availableModes.includes(transport.type)
+        availableModes.includes(transport.type) &&
+        transport.travelScope.includes(travelType)
       ).sort((a, b) => {
         const costA = a.costPerKilometer ? a.costPerKilometer * distance : (a.costPerTrip || 50);
         const costB = b.costPerKilometer ? b.costPerKilometer * distance : (b.costPerTrip || 50);
@@ -798,12 +815,15 @@ const AppContent: React.FC = () => {
       return { cost: 0, mode: 'Walking' };
     }
 
+    // Determine if this is intra-city or inter-city travel
+    const travelType = fromCity === toCity ? 'Intra-city' : 'Inter-city';
+    
     const transportOption = getBestTransportationOption(fromCity, toCity, travelDistance, availableModes, budget);
     
     if (!transportOption) {
       // Fallback calculation
       const baseCost = travelDistance * 0.1; // $0.1 per km as fallback
-      return { cost: baseCost, mode: 'Local Transport' };
+      return { cost: baseCost, mode: travelType === 'Intra-city' ? 'Local Transport' : 'Inter-city Bus' };
     }
 
     return { cost: transportOption.cost, mode: transportOption.mode.type };
