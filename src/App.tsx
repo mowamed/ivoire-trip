@@ -141,7 +141,8 @@ const AppContent: React.FC = () => {
         const nextCity = day < duration ? citiesToVisit[day] : null;
         const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
         
-        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+        const isSecondLastDay = day === duration - 1;
+        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext, 'Abidjan', isSecondLastDay);
         
         if (stayOvernight && !accommodations[currentCity]) {
           // Select hotel for this city
@@ -171,7 +172,8 @@ const AppContent: React.FC = () => {
         const nextCity = day < duration ? citiesToVisit[day] : null;
         const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
         
-        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+        const isSecondLastDay = day === duration - 1;
+        const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext, 'Abidjan', isSecondLastDay);
         
         if (stayOvernight && accommodations[currentCity]) {
           totalAccommodationCost += accommodations[currentCity].cost;
@@ -202,7 +204,8 @@ const AppContent: React.FC = () => {
           const nextCity = day < duration ? citiesToVisit[day] : null;
           const travelTimeToNext = nextCity ? (travelTimes[currentCity]?.[nextCity] || 2) : 0;
           
-          const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext);
+          const isSecondLastDay = day === duration - 1;
+          const stayOvernight = day === duration || !nextCity || shouldStayOvernight(currentCity, nextCity, travelTimeToNext, 'Abidjan', isSecondLastDay);
           
           if (stayOvernight && accommodations[currentCity]) {
             totalAccommodationCost += accommodations[currentCity].cost;
@@ -276,15 +279,30 @@ const AppContent: React.FC = () => {
   };
 
   // Helper function to determine if we should stay overnight in a city
-  const shouldStayOvernight = (currentCity: string, nextCity: string, travelTimeToNext: number, baseCity: string = 'Abidjan'): boolean => {
-    // Always stay overnight if it's the last day or if we're in the base city
+  const shouldStayOvernight = (currentCity: string, nextCity: string, travelTimeToNext: number, baseCity: string = 'Abidjan', isSecondLastDay: boolean = false): boolean => {
+    // Always stay overnight if we're in the base city
     if (currentCity === baseCity) return true;
+    
+    // CRITICAL: On the second-to-last day, if travel time back to base city > 2 hours, 
+    // we MUST return to base city to avoid missing the flight
+    if (isSecondLastDay) {
+      const travelTimeToBase = travelTimes[currentCity]?.[baseCity] || 2;
+      if (travelTimeToBase > 2) {
+        return false; // Force return to Abidjan the day before departure
+      }
+    }
     
     // Stay overnight if travel time to next city is > 3 hours
     if (travelTimeToNext > 3) return true;
     
-    // Stay overnight if it's a resort destination (Assinie, Sassandra)
-    if (['Assinie', 'Sassandra'].includes(currentCity)) return true;
+    // Stay overnight if it's a resort destination (Assinie, Sassandra) - but not on second-to-last day if far
+    if (['Assinie', 'Sassandra'].includes(currentCity)) {
+      if (isSecondLastDay) {
+        const travelTimeToBase = travelTimes[currentCity]?.[baseCity] || 2;
+        return travelTimeToBase <= 2; // Only stay if close to airport
+      }
+      return true;
+    }
     
     // Stay overnight if travel time back to base + travel time to next city > 4 hours
     const travelTimeToBase = travelTimes[currentCity]?.[baseCity] || 2;
@@ -429,10 +447,31 @@ const AppContent: React.FC = () => {
 
     // Last day: Departure preparation
     if (day === totalDays) {
-      // Morning activity if time allows
+      const baseCity = 'Abidjan';
+      
+      // If we're not in Abidjan, we need to travel there first
+      if (city !== baseCity) {
+        const travelTimeToBase = travelTimes[city]?.[baseCity] || 2;
+        const travelResult = calculateTravelCost(city, baseCity, transportationModes, totalBudget);
+        
+        schedule.push({
+          time: `${currentTime}:00`,
+          description: `Travel to ${baseCity} for departure via ${travelResult.mode}`,
+          type: 'Travel',
+          duration: travelTimeToBase,
+          cost: travelResult.cost,
+          city: baseCity,
+        });
+        currentTime += travelTimeToBase;
+        dailyDuration += travelTimeToBase;
+        dailyCost += travelResult.cost;
+        budgetUsed += travelResult.cost;
+      }
+      
+      // Morning activity if time allows (only in Abidjan since we need to depart from there)
       if (currentTime < 11) {
         const morningActivities = activities.filter(a => 
-          a.city === city && 
+          a.city === baseCity && 
           a.bestTime === 'Morning' && 
           !visitedActivities.includes(a.name) &&
           a.durationHours <= 3 // Short activity before departure
@@ -449,7 +488,7 @@ const AppContent: React.FC = () => {
             
             // Add transportation if needed (from hotel to activity)
             if (lastActivityLocation) {
-              addTransportationIfNeeded(lastActivityLocation, activity.geolocation, city, city);
+              addTransportationIfNeeded(lastActivityLocation, activity.geolocation, baseCity, baseCity);
             }
             
             schedule.push({
@@ -459,7 +498,7 @@ const AppContent: React.FC = () => {
               details: activity,
               duration: activity.durationHours,
               cost: activity.cost,
-              city: city,
+              city: baseCity,
             });
             currentTime += activity.durationHours;
             dailyDuration += activity.durationHours;
@@ -477,7 +516,7 @@ const AppContent: React.FC = () => {
         type: 'Hotel',
         duration: 1,
         cost: 0,
-        city: 'Abidjan',
+        city: baseCity,
       });
       currentTime = Math.max(currentTime + 1, 12);
       dailyDuration += 1;
@@ -489,7 +528,7 @@ const AppContent: React.FC = () => {
         type: 'Transportation',
         duration: 1,
         cost: 30,
-        city: 'Abidjan',
+        city: baseCity,
       });
       currentTime += 1;
       dailyDuration += 1;
@@ -502,13 +541,13 @@ const AppContent: React.FC = () => {
         type: 'Airport',
         duration: 2,
         cost: 0,
-        city: 'Abidjan',
+        city: baseCity,
       });
       dailyDuration += 2;
 
       return {
         day,
-        city: 'Abidjan',
+        city: baseCity,
         schedule,
         totalCost: dailyCost,
         totalDuration: dailyDuration,
@@ -527,7 +566,8 @@ const AppContent: React.FC = () => {
         const nextCityAfterPrev = day - 1 < citiesToVisit.length ? citiesToVisit[day - 1] : null;
         const travelTimeFromPrev = nextCityAfterPrev ? (travelTimes[prevDayCity]?.[nextCityAfterPrev] || 2) : 0;
         
-        if (shouldStayOvernight(prevDayCity, nextCityAfterPrev || '', travelTimeFromPrev)) {
+        const isPrevDaySecondLastDay = (day - 1) === totalDays - 1;
+        if (shouldStayOvernight(prevDayCity, nextCityAfterPrev || '', travelTimeFromPrev, 'Abidjan', isPrevDaySecondLastDay)) {
           // We stayed in the previous city
           startingCity = prevDayCity;
         } else {
@@ -838,7 +878,8 @@ const AppContent: React.FC = () => {
       const travelTimeToNext = nextCity ? (travelTimes[city]?.[nextCity] || 2) : 0;
       const baseCity = 'Abidjan';
       
-      const stayOvernight = shouldStayOvernight(city, nextCity, travelTimeToNext, baseCity);
+      const isSecondLastDay = day === totalDays - 1;
+      const stayOvernight = shouldStayOvernight(city, nextCity, travelTimeToNext, baseCity, isSecondLastDay);
 
       if (stayOvernight) {
         // Stay overnight in current city
