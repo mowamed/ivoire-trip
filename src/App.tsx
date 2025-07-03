@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PlannerForm from './components/PlannerForm';
+import PlannerWithSettings from './components/PlannerWithSettings';
 import TripPlan from './components/TripPlan';
-import SettingsPanel from './components/SettingsPanel';
 import { Loading } from './components/ui/loading';
 import { CurrencyProvider } from './contexts/CurrencyContext';
 import { hotels, activities, restaurants, travelTimes } from './data';
@@ -832,11 +831,8 @@ const AppContent: React.FC = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
         <div className="space-y-6 md:space-y-8">
-          <section aria-label="Settings">
-            <SettingsPanel />
-          </section>
-          <section aria-label="Trip Planning Form">
-            <PlannerForm onPlanRequest={generatePlan} isLoading={isLoading} />
+          <section aria-label="Trip Planning with Settings">
+            <PlannerWithSettings onPlanRequest={generatePlan} isLoading={isLoading} />
           </section>
           {isLoading ? (
             <section aria-label="Loading" aria-live="polite">
