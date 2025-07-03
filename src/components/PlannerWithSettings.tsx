@@ -29,10 +29,49 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
     setCurrency(newCurrency);
   };
 
+  const availableTransportationModes = [
+    'Private Car with Driver',
+    'VTC (Ride-sharing e.g. Yango)',
+    'Inter-city Coach (UTB, etc.)',
+    'Taxi (Metered)',
+    'Woro-Woro (Shared Taxi)',
+    'Sotra Bateau-Bus (Abidjan Lagoon)',
+    'Domestic Flight (Air Côte d\'Ivoire)'
+  ];
+
+  const handleTransportationChange = (mode: string, checked: boolean) => {
+    if (mode === 'Private Car with Driver') {
+      if (checked) {
+        // If private car is selected, only allow private car
+        setTransportationModes(['Private Car with Driver']);
+      } else {
+        // If private car is deselected, default to shared taxi
+        setTransportationModes(['Woro-Woro (Shared Taxi)']);
+      }
+    } else {
+      if (transportationModes.includes('Private Car with Driver')) {
+        // If private car is already selected, don't allow other modes
+        return;
+      }
+      
+      if (checked) {
+        setTransportationModes([...transportationModes, mode]);
+      } else {
+        const newModes = transportationModes.filter(m => m !== mode);
+        // Ensure at least one mode is selected
+        if (newModes.length === 0) {
+          setTransportationModes(['Woro-Woro (Shared Taxi)']);
+        } else {
+          setTransportationModes(newModes);
+        }
+      }
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoading) {
-      onPlanRequest(duration, budget);
+      onPlanRequest(duration, budget, transportationModes);
     }
   };
 
@@ -91,6 +130,51 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          
+          {/* Transportation Modes Section */}
+          <div className="mt-6 space-y-3">
+            <Label className="flex items-center gap-2 text-sm md:text-base font-medium">
+              <Car className="h-4 w-4 text-purple-500" />
+              Transportation Preferences
+            </Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {availableTransportationModes.map((mode) => (
+                <div key={mode} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={mode}
+                    checked={transportationModes.includes(mode)}
+                    onChange={(e) => handleTransportationChange(mode, e.target.checked)}
+                    disabled={
+                      !transportationModes.includes(mode) && 
+                      transportationModes.includes('Private Car with Driver') && 
+                      mode !== 'Private Car with Driver'
+                    }
+                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  />
+                  <label 
+                    htmlFor={mode} 
+                    className={`text-sm ${
+                      !transportationModes.includes(mode) && 
+                      transportationModes.includes('Private Car with Driver') && 
+                      mode !== 'Private Car with Driver'
+                        ? 'text-gray-400' 
+                        : 'text-gray-700'
+                    }`}
+                  >
+                    {mode}
+                  </label>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 flex items-start gap-2">
+              <span className="text-purple-500 mt-0.5">🚗</span>
+              {transportationModes.includes('Private Car with Driver') 
+                ? 'Private car selected - driver available for entire trip duration'
+                : 'Multiple transportation modes can be selected for flexibility'
+              }
+            </p>
           </div>
         </div>
 

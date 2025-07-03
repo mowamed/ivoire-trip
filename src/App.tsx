@@ -4,8 +4,8 @@ import PlannerWithSettings from './components/PlannerWithSettings';
 import TripPlan from './components/TripPlan';
 import { Loading } from './components/ui/loading';
 import { CurrencyProvider } from './contexts/CurrencyContext';
-import { hotels, activities, restaurants, travelTimes } from './data';
-import type { Hotel, Activity, Restaurant, Geolocation } from './data';
+import { hotels, activities, restaurants, travelTimes, transportationOptions } from './data';
+import type { Hotel, Activity, Restaurant, Geolocation, Transportation } from './data';
 import './App.css';
 
 interface ItineraryItem {
@@ -100,15 +100,24 @@ const AppContent: React.FC = () => {
     return closest;
   };
 
-  const generatePlan = async (duration: number, budget: number) => {
+  const generatePlan = async (duration: number, budget: number, transportationModes: string[]) => {
     setIsLoading(true);
     
     // Add a small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     try {
-      // Determine budget category based on budget per day
-      const budgetPerDay = budget / duration;
+      // Calculate private car cost if selected
+      const hasPrivateCar = transportationModes.includes('Private Car with Driver');
+      const privateCarCost = hasPrivateCar ? 
+        transportationOptions.find(t => t.type === 'Private Car with Driver')?.costPerDay || 70 : 0;
+      const totalPrivateCarCost = privateCarCost * duration;
+
+      // Adjust available budget for accommodation and activities if private car is selected
+      const adjustedBudget = hasPrivateCar ? budget - totalPrivateCarCost : budget;
+      
+      // Determine budget category based on adjusted budget per day
+      const budgetPerDay = adjustedBudget / duration;
       let budgetCategory: 'Budget' | 'Mid-Range' | 'Luxury';
       if (budgetPerDay < 150) {
         budgetCategory = 'Budget';
@@ -127,7 +136,7 @@ const AppContent: React.FC = () => {
       
       // If no hotel in budget category, find the most affordable option
       if (!selectedHotel) {
-        selectedHotel = availableHotels.find(h => h.cost * duration <= budget * 0.6); // Max 60% of budget for accommodation
+        selectedHotel = availableHotels.find(h => h.cost * duration <= adjustedBudget * 0.6); // Max 60% of adjusted budget for accommodation
       }
       
       // Fallback to cheapest hotel if still over budget
@@ -136,13 +145,13 @@ const AppContent: React.FC = () => {
       }
 
       const hotelCost = selectedHotel.cost * duration;
-      let remainingBudget = budget - hotelCost;
+      let remainingBudget = adjustedBudget - hotelCost;
       const dailyBudget = remainingBudget / duration;
 
-      // If hotel cost exceeds 70% of budget, adjust to a cheaper option
-      if (hotelCost > budget * 0.7) {
-        selectedHotel = availableHotels.find(h => h.cost * duration <= budget * 0.5) || availableHotels[0];
-        remainingBudget = budget - (selectedHotel.cost * duration);
+      // If hotel cost exceeds 70% of adjusted budget, adjust to a cheaper option
+      if (hotelCost > adjustedBudget * 0.7) {
+        selectedHotel = availableHotels.find(h => h.cost * duration <= adjustedBudget * 0.5) || availableHotels[0];
+        remainingBudget = adjustedBudget - (selectedHotel.cost * duration);
       }
 
       const dailyPlans: DailyPlan[] = [];
@@ -162,7 +171,9 @@ const AppContent: React.FC = () => {
           visitedActivities, 
           citiesToVisit,
           availableBudgetForDay,
-          remainingBudget
+          remainingBudget,
+          transportationModes,
+          budget
         );
         
         dailyPlans.push(dayPlan);
@@ -179,15 +190,20 @@ const AppContent: React.FC = () => {
       }
 
       // Final budget check - if over budget, optimize the plan
-      if (totalCost > budget) {
+      // Add transportation costs to total
+      const finalTotalCost = totalCost + totalPrivateCarCost;
+      
+      if (finalTotalCost > budget) {
         const optimizedPlan = optimizePlanForBudget(dailyPlans, selectedHotel, budget, duration);
+        // Add transportation cost to optimized plan
+        optimizedPlan.totalCost += totalPrivateCarCost;
         setPlan(optimizedPlan);
       } else {
         setPlan({
           hotel: selectedHotel,
           dailyPlans,
           restaurants: restaurants.filter(r => r.budget === budgetCategory),
-          totalCost,
+          totalCost: finalTotalCost,
           totalDuration,
           budget,
         });
@@ -195,7 +211,7 @@ const AppContent: React.FC = () => {
     } catch (error) {
       console.error('Error generating plan:', error);
       // Fallback to a basic plan if something goes wrong
-      generateBasicPlan(duration, budget);
+      generateBasicPlan(duration, budget, transportationModes);
     }
     
     setIsLoading(false);
@@ -239,7 +255,9 @@ const AppContent: React.FC = () => {
     visitedActivities: string[],
     citiesToVisit: string[],
     dailyBudget: number,
-    remainingBudget: number
+    remainingBudget: number,
+    transportationModes: string[],
+    totalBudget: number
   ): DailyPlan => {
     const schedule: ItineraryItem[] = [];
     let currentTime = 8; // Start earlier for first day (airport arrival)
@@ -247,6 +265,33 @@ const AppContent: React.FC = () => {
     let dailyDuration = 0;
     let lastActivityLocation: Geolocation | null = null;
     let budgetUsed = 0;
+    
+    const hasPrivateCar = transportationModes.includes('Private Car with Driver');
+    
+    // Helper function to add transportation between locations
+    const addTransportationIfNeeded = (fromLocation: Geolocation, toLocation: Geolocation, fromCity: string, toCity: string) => {
+      if (hasPrivateCar) return; // No need for separate transport with private car
+      
+      const distance = calculateDistance(fromLocation, toLocation);
+      if (distance < 0.5) return; // Walking distance, no transport needed
+      
+      const transportResult = calculateTravelCost(fromCity, toCity, transportationModes, totalBudget);
+      
+      schedule.push({
+        time: `${Math.floor(currentTime)}:${(currentTime % 1 * 60).toString().padStart(2, '0')}`,
+        description: `Transportation via ${transportResult.mode}`,
+        type: 'Transportation',
+        duration: 0.5, // 30 minutes for local transport
+        cost: transportResult.cost,
+        city: fromCity,
+        icon: '🚗'
+      });
+      
+      currentTime += 0.5;
+      dailyCost += transportResult.cost;
+      dailyDuration += 0.5;
+      budgetUsed += transportResult.cost;
+    };
 
     // First day: Airport arrival
     if (day === 1) {
@@ -308,6 +353,12 @@ const AppContent: React.FC = () => {
           
           if (affordableActivities.length > 0) {
             const activity = affordableActivities[Math.floor(Math.random() * affordableActivities.length)];
+            
+            // Add transportation if needed (from hotel to activity)
+            if (lastActivityLocation) {
+              addTransportationIfNeeded(lastActivityLocation, activity.geolocation, city, city);
+            }
+            
             schedule.push({
               time: `${currentTime}:00`,
               description: activity.name,
@@ -321,6 +372,7 @@ const AppContent: React.FC = () => {
             dailyDuration += activity.durationHours;
             dailyCost += activity.cost;
             budgetUsed += activity.cost;
+            lastActivityLocation = activity.geolocation;
           }
         }
       }
@@ -374,19 +426,20 @@ const AppContent: React.FC = () => {
     if (day > 1 && citiesToVisit[day - 2] !== city) {
       const previousCity = citiesToVisit[day - 2];
       const travelTime = travelTimes[previousCity]?.[city] || 2;
-      const travelCost = calculateTravelCost(previousCity, city, budgetCategory);
+      const travelResult = calculateTravelCost(previousCity, city, transportationModes, totalBudget);
 
       schedule.push({
         time: `${currentTime}:00`,
-        description: `Travel from ${previousCity} to ${city}`,
+        description: `Travel from ${previousCity} to ${city} via ${travelResult.mode}`,
         type: 'Travel',
         duration: travelTime,
-        cost: travelCost,
+        cost: travelResult.cost,
         city: city,
       });
       currentTime += travelTime;
       dailyDuration += travelTime;
-      dailyCost += travelCost;
+      dailyCost += travelResult.cost;
+      budgetUsed += travelResult.cost;
     }
 
     // Morning activity (prioritize beach activities and group by proximity)
@@ -415,6 +468,11 @@ const AppContent: React.FC = () => {
           const activityGroups = groupActivitiesByProximity(affordableActivities, 3); // 3km radius
           const selectedGroup = activityGroups[Math.floor(Math.random() * activityGroups.length)];
           const activity = selectedGroup[0]; // Start with the first activity in the group
+          
+          // Add transportation if needed (from hotel/previous location to activity)
+          if (lastActivityLocation) {
+            addTransportationIfNeeded(lastActivityLocation, activity.geolocation, city, city);
+          }
           
           schedule.push({
             time: `${currentTime}:00`,
@@ -457,6 +515,11 @@ const AppContent: React.FC = () => {
       }
       
       if (restaurant && restaurant.cost <= (dailyBudget - budgetUsed) && restaurant.cost <= remainingBudget) {
+        // Add transportation to restaurant if needed
+        if (lastActivityLocation) {
+          addTransportationIfNeeded(lastActivityLocation, restaurant.geolocation, city, city);
+        }
+        
         schedule.push({
           time: `${currentTime}:00`,
           description: `Lunch at ${restaurant.name}`,
@@ -666,21 +729,84 @@ const AppContent: React.FC = () => {
     };
   };
 
-  // Helper function to calculate travel cost based on distance and budget
-  const calculateTravelCost = (fromCity: string, toCity: string, budgetCategory: string): number => {
-    const distance = travelTimes[fromCity]?.[toCity] || 2;
-    const baseCost = distance * 15; // Base cost per hour of travel
-    
-    switch (budgetCategory) {
-      case 'Budget':
-        return baseCost * 0.7; // Public transport/shared taxi
-      case 'Mid-Range':
-        return baseCost; // Private taxi/VTC
-      case 'Luxury':
-        return baseCost * 2; // Private car with driver
-      default:
-        return baseCost;
+  // Function to get the best transportation option for a route
+  const getBestTransportationOption = (
+    fromCity: string, 
+    toCity: string, 
+    distance: number, 
+    availableModes: string[], 
+    budget: number
+  ): { mode: Transportation; cost: number } | null => {
+    const availableTransportation = transportationOptions.filter(transport => 
+      availableModes.includes(transport.type) &&
+      transport.availableIn.includes(fromCity) &&
+      transport.availableIn.includes(toCity)
+    );
+
+    if (availableTransportation.length === 0) {
+      // Fallback to walking if distance < 0.5km, otherwise use cheapest available option
+      if (distance < 0.5) {
+        return { mode: { type: 'Walking', costPerTrip: 0, costPerDay: null, costPerKilometer: 0, budget: 'Budget', availableIn: [] }, cost: 0 };
+      }
+      // Use the cheapest available transportation from any city
+      const fallbackOptions = transportationOptions.filter(transport => 
+        availableModes.includes(transport.type)
+      ).sort((a, b) => {
+        const costA = a.costPerKilometer ? a.costPerKilometer * distance : (a.costPerTrip || 50);
+        const costB = b.costPerKilometer ? b.costPerKilometer * distance : (b.costPerTrip || 50);
+        return costA - costB;
+      });
+      
+      if (fallbackOptions.length > 0) {
+        const mode = fallbackOptions[0];
+        const cost = mode.costPerKilometer ? mode.costPerKilometer * distance : (mode.costPerTrip || 50);
+        return { mode, cost };
+      }
+      return null;
     }
+
+    // Sort by cost and select the cheapest option within budget
+    const sortedOptions = availableTransportation.map(transport => {
+      let cost = 0;
+      if (transport.costPerKilometer) {
+        cost = transport.costPerKilometer * distance;
+      } else if (transport.costPerTrip) {
+        cost = transport.costPerTrip;
+      } else {
+        cost = 50; // Default fallback cost
+      }
+      return { mode: transport, cost };
+    }).sort((a, b) => a.cost - b.cost);
+
+    // Return the cheapest option that fits the budget
+    for (const option of sortedOptions) {
+      if (option.cost <= budget * 0.1) { // Don't spend more than 10% of total budget on single transport
+        return option;
+      }
+    }
+
+    // If no option fits budget constraint, return the cheapest
+    return sortedOptions[0] || null;
+  };
+
+  // Helper function to calculate travel cost based on distance and available transportation modes
+  const calculateTravelCost = (fromCity: string, toCity: string, availableModes: string[], budget: number): { cost: number; mode: string } => {
+    // Use travel time as distance proxy (convert hours to km roughly)
+    const travelDistance = (travelTimes[fromCity]?.[toCity] || 2) * 50; // Assume 50km/h average
+    
+    if (travelDistance < 0.5) {
+      return { cost: 0, mode: 'Walking' };
+    }
+
+    const transportOption = getBestTransportationOption(fromCity, toCity, travelDistance, availableModes, budget);
+    
+    if (!transportOption) {
+      // Fallback calculation
+      const baseCost = travelDistance * 0.1; // $0.1 per km as fallback
+      return { cost: baseCost, mode: 'Local Transport' };
+    }
+
+    return { cost: transportOption.cost, mode: transportOption.mode.type };
   };
 
   // Function to optimize plan when over budget
@@ -742,7 +868,7 @@ const AppContent: React.FC = () => {
   };
 
   // Fallback function for basic plan generation
-  const generateBasicPlan = (duration: number, budget: number) => {
+  const generateBasicPlan = (duration: number, budget: number, transportationModes: string[] = ['Woro-Woro (Shared Taxi)']) => {
     
     // Select cheapest hotel
     const cheapestHotel = hotels
@@ -802,11 +928,19 @@ const AppContent: React.FC = () => {
       });
     }
     
+    // Calculate transportation costs for basic plan
+    const hasPrivateCar = transportationModes.includes('Private Car with Driver');
+    const privateCarCost = hasPrivateCar ? 
+      transportationOptions.find(t => t.type === 'Private Car with Driver')?.costPerDay || 70 : 0;
+    const totalPrivateCarCost = privateCarCost * duration;
+    
+    const basePlanCost = cheapestHotel.cost * duration + dailyPlans.reduce((sum, plan) => sum + plan.totalCost, 0);
+    
     setPlan({
       hotel: cheapestHotel,
       dailyPlans,
       restaurants: restaurants.filter(r => r.budget === 'Budget'),
-      totalCost: cheapestHotel.cost * duration + dailyPlans.reduce((sum, plan) => sum + plan.totalCost, 0),
+      totalCost: basePlanCost + totalPrivateCarCost,
       totalDuration: dailyPlans.reduce((sum, plan) => sum + plan.totalDuration, 0),
       budget,
     });

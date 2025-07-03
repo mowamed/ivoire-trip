@@ -43,6 +43,7 @@ export interface Transportation {
   costPerKilometer: number | null;
   budget: 'Luxury' | 'Mid-Range' | 'Budget';
   availableIn: string[];
+  travelScope: ('Intra-city' | 'Inter-city')[];
 }
 
 export const hotels: Hotel[] = [
@@ -213,62 +214,78 @@ export const restaurants: Restaurant[] = [
   { name: 'Maquis Le Bambou', city: 'Aboisso', cuisine: 'Ivorian', budget: 'Budget', bestTime: 'Dinner', cost: 9, geolocation: { lat: 5.4700, lng: -3.2085 } },
 ];
 
+/**
+ * Represents various modes of transportation in Ivory Coast.
+ * All costs are estimates in USD.
+ * - costPerTrip: The average cost for a typical one-way journey.
+ * - costPerDay: The estimated cost for hiring the transport for a full day (8-10 hours).
+ * - costPerKilometer: The estimated cost per kilometer.
+ * - availableIn: A list of major cities where this mode of transport is readily available.
+ * - travelScope: Specifies if the transport is for travel within a city ('Intra-city') or between cities ('Inter-city').
+ */
 export const transportationOptions: Transportation[] = [
   {
     type: 'Domestic Flight (Air Côte d\'Ivoire)',
     costPerTrip: 150,
-    costPerDay: null, // Flights are not hired by the day.
-    costPerKilometer: 0.50, // Based on a route like Abidjan-San Pédro (~300km).
+    costPerDay: null,
+    costPerKilometer: 0.50,
     budget: 'Luxury',
-    availableIn: ['Abidjan', 'Yamoussoukro', 'Man', 'Korhogo', 'Bouaké', 'San-Pédro']
+    availableIn: ['Abidjan', 'Yamoussoukro', 'Man', 'Korhogo', 'Bouaké', 'San-Pédro'],
+    travelScope: ['Inter-city']
   },
   {
     type: 'Private Car with Driver',
-    costPerTrip: null, // Typically hired by the day or for a specific long-distance trip.
+    costPerTrip: null,
     costPerDay: 70,
-    costPerKilometer: 0.47, // Estimated based on a 150km travel day.
+    costPerKilometer: 0.47,
     budget: 'Luxury',
-    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro']
+    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro'],
+    travelScope: ['Intra-city', 'Inter-city']
   },
   {
     type: 'VTC (Ride-sharing e.g. Yango)',
-    costPerTrip: 20, // Represents a longer trip, e.g., across Abidjan.
-    costPerDay: null, // Not a standard hiring model.
-    costPerKilometer: 0.41, // Based on average Yango pricing in Abidjan.
+    costPerTrip: 20,
+    costPerDay: null,
+    costPerKilometer: 0.41,
     budget: 'Mid-Range',
-    availableIn: ['Abidjan', 'Yamoussoukro', 'Bouaké', 'Grand-Bassam']
+    availableIn: ['Abidjan', 'Yamoussoukro', 'Bouaké', 'Grand-Bassam'],
+    travelScope: ['Intra-city']
   },
   {
     type: 'Inter-city Coach (UTB, etc.)',
     costPerTrip: 15,
-    costPerDay: null, // Per-trip basis only.
-    costPerKilometer: 0.07, // Based on a route like Abidjan-Yamoussoukro (~230km).
+    costPerDay: null,
+    costPerKilometer: 0.07,
     budget: 'Mid-Range',
-    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro']
+    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro'],
+    travelScope: ['Inter-city']
   },
   {
     type: 'Taxi (Metered)',
-    costPerTrip: 10, // A typical medium-length trip within a city.
-    costPerDay: 45, // Negotiated rate for a full day is common.
-    costPerKilometer: 0.18, // Based on official metered rates in Abidjan.
+    costPerTrip: 10,
+    costPerDay: 45,
+    costPerKilometer: 0.18,
     budget: 'Budget',
-    availableIn: ['Abidjan', 'Yamoussoukro', 'Bouaké', 'San-Pédro', 'Korhogo', 'Daloa', 'Grand-Bassam', 'Man']
+    availableIn: ['Abidjan', 'Yamoussoukro', 'Bouaké', 'San-Pédro', 'Korhogo', 'Daloa', 'Grand-Bassam', 'Man'],
+    travelScope: ['Intra-city']
   },
   {
     type: 'Sotra Bateau-Bus (Abidjan Lagoon)',
     costPerTrip: 1,
-    costPerDay: null, // Per-trip basis only.
-    costPerKilometer: 0.25, // Estimated based on short lagoon crossing distances (~4km).
+    costPerDay: null,
+    costPerKilometer: 0.25,
     budget: 'Budget',
-    availableIn: ['Abidjan']
+    availableIn: ['Abidjan'],
+    travelScope: ['Intra-city']
   },
   {
     type: 'Woro-Woro (Shared Taxi)',
     costPerTrip: 2,
-    costPerDay: null, // Operates on fixed routes, not hired by the day.
-    costPerKilometer: 0.08, // Price is very low; based on a longer shared route (~25km).
+    costPerDay: null,
+    costPerKilometer: 0.08,
     budget: 'Budget',
-    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro']
+    availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro'],
+    travelScope: ['Intra-city']
   },
 ];
 
