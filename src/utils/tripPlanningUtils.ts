@@ -1,6 +1,6 @@
 // Trip planning utilities and logic
 
-import { travelTimes, domesticFlights } from '../data';
+import { travelTimes, domesticFlights, getCityById, getCityByName } from '../data';
 import type { Hotel, Activity, Restaurant, DomesticFlight } from '../data';
 
 export interface ItineraryItem {
@@ -76,6 +76,7 @@ export const shouldStayOvernight = (
 
 /**
  * Helper function to plan the route through cities (prioritizing beach destinations)
+ * Now uses the City interface for more intelligent planning
  */
 export const planCitiesRoute = (duration: number): string[] => {
   const route: string[] = [];
@@ -88,29 +89,53 @@ export const planCitiesRoute = (duration: number): string[] => {
       if (duration === 2) {
         route.push(baseCity); // Stay in Abidjan for 2-day trip
       } else {
-        route.push('Grand-Bassam'); // Beach day
+        route.push('Grand-Bassam'); // Historic beach town - close to Abidjan
         route.push(baseCity); // Return to Abidjan for departure
       }
     }
   } else if (duration <= 7) {
-    // Medium trip: Mix of beaches, nightlife, and culture
+    // Medium trip: Mix of beaches, culture, and mountains
     route.push(baseCity); // Start in Abidjan
-    route.push('Grand-Bassam'); // Historic beach town
-    route.push('Assinie'); // Luxury beach resort
-    if (duration > 3) route.push('Yamoussoukro'); // Cultural experience
-    if (duration > 4) route.push('Sassandra'); // More beaches
-    if (duration > 5) route.push('Man'); // Mountain experience
+    
+    // Plan route based on city types (coastal, cultural, mountain)
+    
+    // Plan route based on duration
+    const destinations: string[] = [];
+    destinations.push('Grand-Bassam'); // Always include historic beach town
+    if (duration > 3) destinations.push('Assinie'); // Luxury beach resort
+    if (duration > 4) destinations.push('Yamoussoukro'); // Political capital
+    if (duration > 5) destinations.push('Sassandra'); // More beaches
+    if (duration > 6) destinations.push('Man'); // Mountain experience
+    
+    // Add destinations to route
+    for (let i = 1; i < duration - 1; i++) {
+      if (destinations[i - 1]) {
+        route.push(destinations[i - 1]);
+      }
+    }
+    
     // Always end in Abidjan for departure
-    route[duration - 1] = baseCity;
+    route.push(baseCity);
   } else {
-    // Long trip: Comprehensive tour
-    const destinations = ['Grand-Bassam', 'Assinie', 'Yamoussoukro', 'Sassandra', 'Man', 'Korhogo', 'Bouaké'];
+    // Long trip: Comprehensive tour using city types
     route.push(baseCity); // Start in Abidjan
+    
+    // Create a balanced itinerary with different city types
+    const prioritizedDestinations = [
+      'Grand-Bassam', // Historic coastal
+      'Assinie',      // Beach resort
+      'Yamoussoukro', // Political capital
+      'Sassandra',    // Coastal
+      'Man',          // Mountain
+      'Korhogo',      // Cultural
+      'Bouaké',       // Commercial hub
+      'San-Pédro'     // Port city
+    ];
     
     // Fill middle days with destinations
     for (let i = 1; i < duration - 1; i++) {
-      const destIndex = (i - 1) % destinations.length;
-      route.push(destinations[destIndex]);
+      const destIndex = (i - 1) % prioritizedDestinations.length;
+      route.push(prioritizedDestinations[destIndex]);
     }
     
     // Always end in Abidjan for departure
@@ -134,15 +159,34 @@ export const planCitiesRoute = (duration: number): string[] => {
 
 /**
  * Helper function to find available domestic flight between two cities
+ * Now supports both city names and city IDs
  */
 export const findDomesticFlight = (
   fromCity: string, 
   toCity: string
 ): DomesticFlight | null => {
+  // Get city data to handle both IDs and names
+  const fromCityData = getCityById(fromCity) || getCityByName(fromCity);
+  const toCityData = getCityById(toCity) || getCityByName(toCity);
+  
+  if (!fromCityData || !toCityData) {
+    // Fallback to original string matching for backward compatibility
+    return domesticFlights.find(
+      flight => flight.departureCity === fromCity && flight.arrivalCity === toCity
+    ) || domesticFlights.find(
+      flight => flight.departureCity === toCity && flight.arrivalCity === fromCity
+    ) || null;
+  }
+  
+  // Search using city IDs (preferred) and names (fallback)
   return domesticFlights.find(
-    flight => flight.departureCity === fromCity && flight.arrivalCity === toCity
+    flight => 
+      (flight.departureCityId === fromCityData.id && flight.arrivalCityId === toCityData.id) ||
+      (flight.departureCity === fromCityData.name && flight.arrivalCity === toCityData.name)
   ) || domesticFlights.find(
-    flight => flight.departureCity === toCity && flight.arrivalCity === fromCity
+    flight => 
+      (flight.departureCityId === toCityData.id && flight.arrivalCityId === fromCityData.id) ||
+      (flight.departureCity === toCityData.name && flight.arrivalCity === fromCityData.name)
   ) || null;
 };
 

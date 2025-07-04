@@ -3,6 +3,29 @@ export interface Geolocation {
   lng: number;
 }
 
+export interface City {
+  id: string;
+  name: string;
+  nameEn: string;
+  nameFr: string;
+  region: string;
+  description: string;
+  descriptionEn: string;
+  descriptionFr: string;
+  type: 'coastal' | 'inland' | 'capital' | 'cultural' | 'mountain' | 'beach_resort';
+  population: number;
+  isCapital: boolean;
+  hasAirport: boolean;
+  geolocation: Geolocation;
+  attractions: string[];
+  bestTimeToVisit: string[];
+  averageTemperature: {
+    min: number;
+    max: number;
+  };
+  imageUrl: string;
+}
+
 export interface Hotel {
   name:string;
   city: string;
@@ -47,12 +70,248 @@ export interface Transportation {
 }
 
 export interface DomesticFlight {
-  departureCity: string;
-  arrivalCity: string;
+  departureCityId: string;
+  arrivalCityId: string;
+  departureCity: string; // Keep for backward compatibility
+  arrivalCity: string; // Keep for backward compatibility
   priceUSD: number; // Estimated one-way cost
   durationMinutes: number;
   airline: string;
 }
+
+/**
+ * Comprehensive city data for Ivory Coast destinations
+ */
+export const cities: City[] = [
+  {
+    id: 'abidjan',
+    name: 'Abidjan',
+    nameEn: 'Abidjan',
+    nameFr: 'Abidjan',
+    region: 'Lagunes',
+    description: 'Economic capital and largest city of Ivory Coast',
+    descriptionEn: 'The economic capital and largest city of Ivory Coast, known for its modern skyline, vibrant nightlife, and cultural diversity.',
+    descriptionFr: 'La capitale économique et plus grande ville de Côte d\'Ivoire, connue pour son horizon moderne, sa vie nocturne animée et sa diversité culturelle.',
+    type: 'capital',
+    population: 4395243,
+    isCapital: false, // Yamoussoukro is the political capital
+    hasAirport: true,
+    geolocation: { lat: 5.3600, lng: -4.0083 },
+    attractions: ['St. Paul\'s Cathedral', 'Banco National Park', 'Plateau District', 'Zone 4 Nightlife'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 23, max: 30 },
+    imageUrl: 'https://picsum.photos/seed/abidjan/800/600'
+  },
+  {
+    id: 'yamoussoukro',
+    name: 'Yamoussoukro',
+    nameEn: 'Yamoussoukro',
+    nameFr: 'Yamoussoukro',
+    region: 'Lacs',
+    description: 'Political capital of Ivory Coast',
+    descriptionEn: 'The political capital of Ivory Coast, famous for the Basilica of Our Lady of Peace, one of the largest churches in the world.',
+    descriptionFr: 'La capitale politique de la Côte d\'Ivoire, célèbre pour la Basilique Notre-Dame de la Paix, l\'une des plus grandes églises du monde.',
+    type: 'capital',
+    population: 355573,
+    isCapital: true,
+    hasAirport: true,
+    geolocation: { lat: 6.8276, lng: -5.2893 },
+    attractions: ['Basilica of Our Lady of Peace', 'Sacred Crocodile Lake', 'Presidential Palace'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 21, max: 32 },
+    imageUrl: 'https://picsum.photos/seed/yamoussoukro/800/600'
+  },
+  {
+    id: 'grand-bassam',
+    name: 'Grand-Bassam',
+    nameEn: 'Grand-Bassam',
+    nameFr: 'Grand-Bassam',
+    region: 'Sud-Comoé',
+    description: 'Historic coastal town and UNESCO World Heritage site',
+    descriptionEn: 'A historic coastal town and UNESCO World Heritage site, known for its colonial architecture and beautiful beaches.',
+    descriptionFr: 'Une ville côtière historique et site du patrimoine mondial de l\'UNESCO, connue pour son architecture coloniale et ses belles plages.',
+    type: 'coastal',
+    population: 73772,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 5.2009, lng: -3.7380 },
+    attractions: ['Historic Quarter', 'National Costume Museum', 'Colonial Architecture', 'Beach'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 24, max: 29 },
+    imageUrl: 'https://picsum.photos/seed/grand-bassam/800/600'
+  },
+  {
+    id: 'assinie',
+    name: 'Assinie',
+    nameEn: 'Assinie',
+    nameFr: 'Assinie',
+    region: 'Sud-Comoé',
+    description: 'Luxury beach resort destination',
+    descriptionEn: 'A luxury beach resort destination known for its pristine beaches, lagoons, and upscale accommodations.',
+    descriptionFr: 'Une destination de villégiature de luxe connue pour ses plages immaculées, ses lagunes et ses hébergements haut de gamme.',
+    type: 'beach_resort',
+    population: 12000,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 5.1340, lng: -3.2845 },
+    attractions: ['Assinie-Mafia Beach', 'Aby Lagoon', 'La Passe', 'Water Sports'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 24, max: 29 },
+    imageUrl: 'https://picsum.photos/seed/assinie/800/600'
+  },
+  {
+    id: 'man',
+    name: 'Man',
+    nameEn: 'Man',
+    nameFr: 'Man',
+    region: 'Montagnes',
+    description: 'Mountain city in western Ivory Coast',
+    descriptionEn: 'A mountain city in western Ivory Coast, known for its cool climate, waterfalls, and Mount Tonkoui hiking.',
+    descriptionFr: 'Une ville de montagne dans l\'ouest de la Côte d\'Ivoire, connue pour son climat frais, ses cascades et la randonnée au Mont Tonkoui.',
+    type: 'mountain',
+    population: 139341,
+    isCapital: false,
+    hasAirport: true,
+    geolocation: { lat: 7.4125, lng: -7.5547 },
+    attractions: ['Mount Tonkoui', 'La Cascade de Man', 'Gbêpleu Monkey Forest', 'Traditional Villages'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 18, max: 28 },
+    imageUrl: 'https://picsum.photos/seed/man/800/600'
+  },
+  {
+    id: 'korhogo',
+    name: 'Korhogo',
+    nameEn: 'Korhogo',
+    nameFr: 'Korhogo',
+    region: 'Poro',
+    description: 'Cultural center of the Senufo people',
+    descriptionEn: 'The cultural center of the Senufo people in northern Ivory Coast, famous for traditional crafts and textiles.',
+    descriptionFr: 'Le centre culturel du peuple Sénoufo dans le nord de la Côte d\'Ivoire, célèbre pour l\'artisanat traditionnel et les textiles.',
+    type: 'cultural',
+    population: 243048,
+    isCapital: false,
+    hasAirport: true,
+    geolocation: { lat: 9.4581, lng: -5.6297 },
+    attractions: ['Village des Tisserands', 'Senufo Artisan Villages', 'Traditional Markets', 'Cultural Centers'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 20, max: 35 },
+    imageUrl: 'https://picsum.photos/seed/korhogo/800/600'
+  },
+  {
+    id: 'bouake',
+    name: 'Bouaké',
+    nameEn: 'Bouaké',
+    nameFr: 'Bouaké',
+    region: 'Gbêkê',
+    description: 'Second largest city and commercial hub',
+    descriptionEn: 'The second largest city in Ivory Coast and an important commercial hub in the center of the country.',
+    descriptionFr: 'La deuxième plus grande ville de Côte d\'Ivoire et un important centre commercial au centre du pays.',
+    type: 'inland',
+    population: 536719,
+    isCapital: false,
+    hasAirport: true,
+    geolocation: { lat: 7.6943, lng: -5.0332 },
+    attractions: ['Grand Marché de Bouaké', 'Cultural Sites', 'Traditional Markets'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 21, max: 33 },
+    imageUrl: 'https://picsum.photos/seed/bouake/800/600'
+  },
+  {
+    id: 'san-pedro',
+    name: 'San-Pédro',
+    nameEn: 'San-Pédro',
+    nameFr: 'San-Pédro',
+    region: 'San-Pédro',
+    description: 'Major port city on the Atlantic coast',
+    descriptionEn: 'A major port city on the Atlantic coast, known for its beaches and as a gateway to Taï National Park.',
+    descriptionFr: 'Une grande ville portuaire sur la côte atlantique, connue pour ses plages et comme porte d\'entrée du Parc National de Taï.',
+    type: 'coastal',
+    population: 164944,
+    isCapital: false,
+    hasAirport: true,
+    geolocation: { lat: 4.7467, lng: -6.6364 },
+    attractions: ['Monogaga Beach', 'Port Area', 'Taï National Park Access'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 23, max: 30 },
+    imageUrl: 'https://picsum.photos/seed/san-pedro/800/600'
+  },
+  {
+    id: 'sassandra',
+    name: 'Sassandra',
+    nameEn: 'Sassandra',
+    nameFr: 'Sassandra',
+    region: 'Gbôklé',
+    description: 'Historic coastal town with beautiful beaches',
+    descriptionEn: 'A historic coastal town known for its stunning beaches, traditional fishing villages, and colonial heritage.',
+    descriptionFr: 'Une ville côtière historique connue pour ses plages magnifiques, ses villages de pêcheurs traditionnels et son patrimoine colonial.',
+    type: 'coastal',
+    population: 25846,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 4.9500, lng: -6.0800 },
+    attractions: ['Sassandra Beaches', 'Fanti Fishermen Village', 'Colonial Architecture'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 23, max: 29 },
+    imageUrl: 'https://picsum.photos/seed/sassandra/800/600'
+  },
+  {
+    id: 'daloa',
+    name: 'Daloa',
+    nameEn: 'Daloa',
+    nameFr: 'Daloa',
+    region: 'Haut-Sassandra',
+    description: 'Important commercial center in central-west region',
+    descriptionEn: 'An important commercial center in the central-west region, known for its bustling markets and cultural diversity.',
+    descriptionFr: 'Un important centre commercial de la région centre-ouest, connu pour ses marchés animés et sa diversité culturelle.',
+    type: 'inland',
+    population: 245360,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 6.8773, lng: -6.4502 },
+    attractions: ['Marché Central de Daloa', 'Cultural Sites', 'Regional Markets'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 20, max: 32 },
+    imageUrl: 'https://picsum.photos/seed/daloa/800/600'
+  },
+  {
+    id: 'bondoukou',
+    name: 'Bondoukou',
+    nameEn: 'Bondoukou',
+    nameFr: 'Bondoukou',
+    region: 'Gontougo',
+    description: 'Historic trading town in eastern Ivory Coast',
+    descriptionEn: 'A historic trading town in eastern Ivory Coast, known for its traditional Sudanese-style architecture and cultural heritage.',
+    descriptionFr: 'Une ville commerciale historique dans l\'est de la Côte d\'Ivoire, connue pour son architecture traditionnelle de style soudanais et son patrimoine culturel.',
+    type: 'cultural',
+    population: 58297,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 8.0416, lng: -2.8000 },
+    attractions: ['La Mosquée de Samatiguila', 'Traditional Architecture', 'Historic Sites'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February'],
+    averageTemperature: { min: 21, max: 34 },
+    imageUrl: 'https://picsum.photos/seed/bondoukou/800/600'
+  },
+  {
+    id: 'aboisso',
+    name: 'Aboisso',
+    nameEn: 'Aboisso',
+    nameFr: 'Aboisso',
+    region: 'Sud-Comoé',
+    description: 'Gateway to southeastern coastal region',
+    descriptionEn: 'A gateway town to the southeastern coastal region, close to the border with Ghana.',
+    descriptionFr: 'Une ville-porte de la région côtière du sud-est, proche de la frontière avec le Ghana.',
+    type: 'inland',
+    population: 37654,
+    isCapital: false,
+    hasAirport: false,
+    geolocation: { lat: 5.4710, lng: -3.2100 },
+    attractions: ['Regional Markets', 'Border Culture', 'Traditional Sites'],
+    bestTimeToVisit: ['November', 'December', 'January', 'February', 'March'],
+    averageTemperature: { min: 23, max: 30 },
+    imageUrl: 'https://picsum.photos/seed/aboisso/800/600'
+  }
+];
 
 /**
  * Represents a collection of hotels in Ivory Coast, categorized by city and budget.
@@ -302,12 +561,48 @@ export const transportationOptions: Transportation[] = [
 ];
 
 /**
+ * Utility functions for working with city data
+ */
+export const getCityById = (id: string): City | undefined => {
+  return cities.find(city => city.id === id);
+};
+
+export const getCityByName = (name: string): City | undefined => {
+  return cities.find(city => 
+    city.name === name || 
+    city.nameEn === name || 
+    city.nameFr === name
+  );
+};
+
+export const getCitiesByType = (type: City['type']): City[] => {
+  return cities.filter(city => city.type === type);
+};
+
+export const getCitiesWithAirports = (): City[] => {
+  return cities.filter(city => city.hasAirport);
+};
+
+export const getCoastalCities = (): City[] => {
+  return cities.filter(city => city.type === 'coastal' || city.type === 'beach_resort');
+};
+
+export const getCityName = (cityIdentifier: string, language: 'en' | 'fr' = 'en'): string => {
+  const city = getCityById(cityIdentifier) || getCityByName(cityIdentifier);
+  if (!city) return cityIdentifier;
+  
+  return language === 'fr' ? city.nameFr : city.nameEn;
+};
+
+/**
  * Represents common domestic flight routes in Ivory Coast.
  * Prices are estimates for a one-way ticket and can vary based on season and booking time.
  * Durations are approximate flight times.
  */
 export const domesticFlights: DomesticFlight[] = [
   {
+    departureCityId: 'abidjan',
+    arrivalCityId: 'korhogo',
     departureCity: 'Abidjan',
     arrivalCity: 'Korhogo',
     priceUSD: 130,
@@ -315,6 +610,8 @@ export const domesticFlights: DomesticFlight[] = [
     airline: 'Air Côte d\'Ivoire'
   },
   {
+    departureCityId: 'abidjan',
+    arrivalCityId: 'san-pedro',
     departureCity: 'Abidjan',
     arrivalCity: 'San-Pédro',
     priceUSD: 110,
@@ -322,6 +619,8 @@ export const domesticFlights: DomesticFlight[] = [
     airline: 'Air Côte d\'Ivoire'
   },
   {
+    departureCityId: 'abidjan',
+    arrivalCityId: 'bouake',
     departureCity: 'Abidjan',
     arrivalCity: 'Bouaké',
     priceUSD: 95,
@@ -329,6 +628,8 @@ export const domesticFlights: DomesticFlight[] = [
     airline: 'Air Côte d\'Ivoire'
   },
   {
+    departureCityId: 'abidjan',
+    arrivalCityId: 'man',
     departureCity: 'Abidjan',
     arrivalCity: 'Man',
     priceUSD: 140,
@@ -336,13 +637,8 @@ export const domesticFlights: DomesticFlight[] = [
     airline: 'Air Côte d\'Ivoire'
   },
   {
-    departureCity: 'Abidjan',
-    arrivalCity: 'Odienné',
-    priceUSD: 160,
-    durationMinutes: 90,
-    airline: 'Air Côte d\'Ivoire'
-  },
-    {
+    departureCityId: 'abidjan',
+    arrivalCityId: 'yamoussoukro',
     departureCity: 'Abidjan',
     arrivalCity: 'Yamoussoukro',
     priceUSD: 85,

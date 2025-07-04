@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { getCityInfo, getLocalizedCityName, getCityDescription } from '../utils/cityUtils';
 import { useCurrency } from '../contexts/CurrencyContext';
 import type { Hotel, Activity, Restaurant, Transportation, Geolocation } from '../data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -107,7 +108,9 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
   };
 
   const translateCity = (city: string) => {
-    return t(`cities.${city}`, city);
+    const { i18n } = useTranslation();
+    const currentLanguage = i18n.language as 'en' | 'fr';
+    return getLocalizedCityName(city, currentLanguage) || t(`cities.${city}`, city);
   };
 
 
@@ -227,9 +230,30 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                       <span className="text-lg md:text-xl font-bold">
                         {t('plan.day')} {dailyPlan.day} - {translateCity(dailyPlan.city)}
                       </span>
-                      <Badge variant="outline" className="text-blue-600 border-blue-600 w-fit">
-                        📍 {translateCity(dailyPlan.city)}
-                      </Badge>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="outline" className="text-blue-600 border-blue-600 w-fit">
+                          📍 {translateCity(dailyPlan.city)}
+                        </Badge>
+                        {(() => {
+                          const cityInfo = getCityInfo(dailyPlan.city);
+                          if (cityInfo) {
+                            const typeEmojis = {
+                              'coastal': '🏖️',
+                              'beach_resort': '🏝️', 
+                              'capital': '🏛️',
+                              'cultural': '🎭',
+                              'mountain': '⛰️',
+                              'inland': '🏘️'
+                            };
+                            return (
+                              <Badge variant="secondary" className="w-fit">
+                                {typeEmojis[cityInfo.type]} {cityInfo.type.replace('_', ' ')}
+                              </Badge>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </div>
                     </CardTitle>
                     <CardDescription className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm md:text-base">
                       <span className="flex items-center gap-2">
@@ -240,7 +264,31 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                         <DollarSign className="h-4 w-4 text-green-500" />
                         {formatPrice(dailyPlan.totalCost)}
                       </span>
+                      {(() => {
+                        const cityInfo = getCityInfo(dailyPlan.city);
+                        if (cityInfo && cityInfo.population) {
+                          return (
+                            <span className="flex items-center gap-2 text-gray-600">
+                              👥 {cityInfo.population.toLocaleString()}
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
                     </CardDescription>
+                    {(() => {
+                      const { i18n } = useTranslation();
+                      const currentLanguage = i18n.language as 'en' | 'fr';
+                      const cityDescription = getCityDescription(dailyPlan.city, currentLanguage);
+                      if (cityDescription) {
+                        return (
+                          <div className="mt-3 p-3 bg-blue-50/50 rounded-lg">
+                            <p className="text-sm text-gray-700 italic">{cityDescription}</p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                   </CardHeader>
                   <CardContent className="p-0">
                     <div className="space-y-0">
