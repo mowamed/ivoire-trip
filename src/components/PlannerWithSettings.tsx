@@ -19,7 +19,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
   const { currency, setCurrency } = useCurrency();
   const [duration, setDuration] = React.useState(7);
   const [budget, setBudget] = React.useState(1000);
-  const [transportationModes, setTransportationModes] = React.useState<string[]>(['Woro-Woro (Shared Taxi)']);
+  const [transportationModes, setTransportationModes] = React.useState<string[]>(['VTC (Ride-sharing e.g. Yango)', 'Inter-city Coach (UTB, etc.)', 'Taxi (Metered)', 'Sotra Bateau-Bus (Abidjan Lagoon)']);
 
   const changeCurrency = (newCurrency: Currency) => {
     setCurrency(newCurrency);
@@ -42,7 +42,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
         setTransportationModes(['Private Car with Driver']);
       } else {
         // If private car is deselected, default to shared taxi
-        setTransportationModes(['Woro-Woro (Shared Taxi)']);
+        setTransportationModes(['VTC (Ride-sharing e.g. Yango)', 'Inter-city Coach (UTB, etc.)', 'Taxi (Metered)', 'Sotra Bateau-Bus (Abidjan Lagoon)']);
       }
     } else {
       if (transportationModes.includes('Private Car with Driver')) {
