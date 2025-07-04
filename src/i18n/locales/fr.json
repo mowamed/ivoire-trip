@@ -112,6 +112,21 @@
     "exceeded": "Budget Dépassé",
     "exceededDesc": "Ce plan a été optimisé pour s'adapter à votre budget. Certaines activités ont pu être supprimées."
   },
+  "hero": {
+    "title": "Découvrez la Magie de la",
+    "subtitle": "Créez votre voyage parfait à travers la Perle de l'Afrique de l'Ouest avec notre planificateur de voyage intelligent",
+    "smartItineraries": "Itinéraires Intelligents",
+    "smartItinerariesDesc": "Planification alimentée par l'IA pour le voyage parfait",
+    "budgetFriendly": "Respectueux du Budget",
+    "budgetFriendlyDesc": "Optimisé pour votre budget et vos préférences",
+    "flexibleDuration": "Durée Flexible",
+    "flexibleDurationDesc": "Des escapades de week-end aux aventures prolongées"
+  },
+  "footer": {
+    "copyright": "© 2024 Planificateur de Voyage Côte d'Ivoire. Fait avec ❤️ par",
+    "forTravelers": "pour les voyageurs explorant la Côte d'Ivoire.",
+    "proudlySupporting": "🇨🇮 Fièrement soutenir le tourisme ivoirien"
+  },
   "common": {
     "generating": "Génération...",
     "closeToLocation": "Proche du précédent ({{distance}}km)",

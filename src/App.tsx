@@ -6,6 +6,7 @@ import { Loading } from './components/ui/loading';
 import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext';
 import { MapPin, Calendar, DollarSign } from 'lucide-react';
 import flagIcon from './assets/flag.png';
+import LanguageSwitcher from './components/ui/language-switcher';
 import { hotels, restaurants, transportationOptions } from './data';
 import { convertToUSD } from './utils/currencyUtils';
 import { 
@@ -154,18 +155,19 @@ const AppContent: React.FC = () => {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50 shadow-lg">
         <div className="container mx-auto px-4 py-4 max-w-6xl">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 group">
               <div className="p-2 bg-gradient-to-r from-orange-500 to-green-500 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                 <MapPin className="h-6 w-6 text-white" />
               </div>
-              <div className="text-center">
+              <div>
                 <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 via-green-600 to-orange-600 bg-clip-text text-transparent">
                   {t('app.title')}
                 </h1>
                 <p className="text-xs md:text-sm text-gray-600">{t('app.subtitle')}</p>
               </div>
             </div>
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
@@ -177,12 +179,12 @@ const AppContent: React.FC = () => {
             <div className="space-y-6 md:space-y-8">
               <div className="space-y-4">
                 <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-green-600 to-orange-600 bg-clip-text text-transparent leading-tight">
-                  Discover the Magic of
+                  {t('hero.title')}
                   <br />
-                  <span className="text-green-600">Côte d'Ivoire</span> <img src={flagIcon} alt="Côte d'Ivoire flag" className="inline-block w-8 h-6 ml-2" />
+                  <span className="text-green-600">Côte d'Ivoire</span> <img src={flagIcon} alt="Côte d'Ivoire flag" className="inline-block w-12 h-10 ml-2" />
                 </h2>
                 <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                  Create your perfect journey through the Pearl of West Africa with our intelligent trip planner
+                  {t('hero.subtitle')}
                 </p>
               </div>
               
@@ -192,24 +194,24 @@ const AppContent: React.FC = () => {
                   <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
                     <MapPin className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Smart Itineraries</h3>
-                  <p className="text-sm text-gray-600">AI-powered planning for the perfect trip</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">{t('hero.smartItineraries')}</h3>
+                  <p className="text-sm text-gray-600">{t('hero.smartItinerariesDesc')}</p>
                 </div>
                 
                 <div className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-green-100/50 hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
                     <DollarSign className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Budget Friendly</h3>
-                  <p className="text-sm text-gray-600">Optimized for your budget and preferences</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">{t('hero.budgetFriendly')}</h3>
+                  <p className="text-sm text-gray-600">{t('hero.budgetFriendlyDesc')}</p>
                 </div>
                 
                 <div className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-orange-100/50 hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
                   <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-green-500 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
                     <Calendar className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Flexible Duration</h3>
-                  <p className="text-sm text-gray-600">From weekend getaways to extended adventures</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">{t('hero.flexibleDuration')}</h3>
+                  <p className="text-sm text-gray-600">{t('hero.flexibleDurationDesc')}</p>
                 </div>
               </div>
             </div>
@@ -242,15 +244,15 @@ const AppContent: React.FC = () => {
           <div className="border-t border-gray-200 mt-6 pt-6 text-center">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <p className="text-sm text-gray-600">
-                © 2024 Ivory Coast Trip Planner. Made with ❤️ by <a 
+                {t('footer.copyright')} <a 
                   href="mailto:mowamedbakus@gmail.com" 
                   className="gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   Moh
-                </a> for travelers exploring Côte d'Ivoire.
+                </a> {t('footer.forTravelers')}
               </p>
               <div className="flex items-center justify-center gap-4 text-xs text-gray-500">
-                <span>🇨🇮 Proudly supporting Ivorian tourism</span>
+                <span>{t('footer.proudlySupporting')}</span>
               </div>
             </div>
           </div>

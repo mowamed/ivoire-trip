@@ -7,7 +7,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { MapPin, Calendar, DollarSign, Loader2, Settings, Globe, Car } from 'lucide-react';
+import { MapPin, Calendar, DollarSign, Loader2, Settings, Car } from 'lucide-react';
 
 interface Props {
   onPlanRequest: (duration: number, budget: number, transportationModes: string[]) => void;
@@ -15,15 +15,11 @@ interface Props {
 }
 
 const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { currency, setCurrency } = useCurrency();
   const [duration, setDuration] = React.useState(7);
   const [budget, setBudget] = React.useState(1000);
   const [transportationModes, setTransportationModes] = React.useState<string[]>(['Woro-Woro (Shared Taxi)']);
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
 
   const changeCurrency = (newCurrency: Currency) => {
     setCurrency(newCurrency);
@@ -97,23 +93,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
             </div>
             <h3 className="text-lg font-semibold text-gray-800">{t('settings')}</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-            <div className="space-y-3">
-              <Label className="flex items-center gap-2 text-sm md:text-base font-medium">
-                <Globe className="h-4 w-4 text-orange-500" />
-                {t('language')}
-              </Label>
-              <Select value={i18n.language} onValueChange={changeLanguage}>
-                <SelectTrigger className="h-11 md:h-12 text-base">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en" className="text-base">🇺🇸 English</SelectItem>
-                  <SelectItem value="fr" className="text-base">🇫🇷 Français</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
+          <div className="grid grid-cols-1 gap-4 md:gap-6">
             <div className="space-y-3">
               <Label className="flex items-center gap-2 text-sm md:text-base font-medium">
                 <DollarSign className="h-4 w-4 text-green-600" />

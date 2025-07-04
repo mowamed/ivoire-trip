@@ -116,6 +116,21 @@
     "exceeded": "Budget Exceeded",
     "exceededDesc": "This plan has been optimized to fit your budget. Some activities may have been removed."
   },
+  "hero": {
+    "title": "Discover the Magic of",
+    "subtitle": "Create your perfect journey through the Pearl of West Africa with our intelligent trip planner",
+    "smartItineraries": "Smart Itineraries",
+    "smartItinerariesDesc": "AI-powered planning for the perfect trip",
+    "budgetFriendly": "Budget Friendly",
+    "budgetFriendlyDesc": "Optimized for your budget and preferences",
+    "flexibleDuration": "Flexible Duration",
+    "flexibleDurationDesc": "From weekend getaways to extended adventures"
+  },
+  "footer": {
+    "copyright": "© 2024 Ivory Coast Trip Planner. Made with ❤️ by",
+    "forTravelers": "for travelers exploring Côte d'Ivoire.",
+    "proudlySupporting": "🇨🇮 Proudly supporting Ivorian tourism"
+  },
   "common": {
     "generating": "Generating...",
     "closeToLocation": "Close to previous ({{distance}}km)",
