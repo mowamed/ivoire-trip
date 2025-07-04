@@ -46,6 +46,18 @@ export interface Transportation {
   travelScope: ('Intra-city' | 'Inter-city')[];
 }
 
+export interface DomesticFlight {
+  departureCity: string;
+  arrivalCity: string;
+  priceUSD: number; // Estimated one-way cost
+  durationMinutes: number;
+  airline: string;
+}
+
+/**
+ * Represents a collection of hotels in Ivory Coast, categorized by city and budget.
+ * Each hotel includes details such as name, city, budget category, description, cost per night, and geolocation coordinates.
+ */
 export const hotels: Hotel[] = [
   // Abidjan
   { name: 'Sofitel Abidjan Hotel Ivoire', city: 'Abidjan', budget: 'Luxury', description: 'An iconic hotel with luxurious rooms, a spa, 3D cinema, and multiple restaurants.', cost: 400, geolocation: { lat: 5.3285, lng: -4.0415 } },
@@ -286,6 +298,56 @@ export const transportationOptions: Transportation[] = [
     budget: 'Budget',
     availableIn: ['Abidjan', 'Assinie', 'Yamoussoukro', 'Man', 'Taï', 'Sassandra', 'Bouna', 'Korhogo', 'Bouaké', 'Tiassalé', 'Daloa', 'Bondoukou', 'Aboisso', 'Grand-Bassam', 'San-Pédro'],
     travelScope: ['Intra-city']
+  },
+];
+
+/**
+ * Represents common domestic flight routes in Ivory Coast.
+ * Prices are estimates for a one-way ticket and can vary based on season and booking time.
+ * Durations are approximate flight times.
+ */
+export const domesticFlights: DomesticFlight[] = [
+  {
+    departureCity: 'Abidjan',
+    arrivalCity: 'Korhogo',
+    priceUSD: 130,
+    durationMinutes: 75,
+    airline: 'Air Côte d\'Ivoire'
+  },
+  {
+    departureCity: 'Abidjan',
+    arrivalCity: 'San-Pédro',
+    priceUSD: 110,
+    durationMinutes: 60,
+    airline: 'Air Côte d\'Ivoire'
+  },
+  {
+    departureCity: 'Abidjan',
+    arrivalCity: 'Bouaké',
+    priceUSD: 95,
+    durationMinutes: 55,
+    airline: 'Air Côte d\'Ivoire'
+  },
+  {
+    departureCity: 'Abidjan',
+    arrivalCity: 'Man',
+    priceUSD: 140,
+    durationMinutes: 80,
+    airline: 'Air Côte d\'Ivoire'
+  },
+  {
+    departureCity: 'Abidjan',
+    arrivalCity: 'Odienné',
+    priceUSD: 160,
+    durationMinutes: 90,
+    airline: 'Air Côte d\'Ivoire'
+  },
+    {
+    departureCity: 'Abidjan',
+    arrivalCity: 'Yamoussoukro',
+    priceUSD: 85,
+    durationMinutes: 45,
+    airline: 'Air Côte d\'Ivoire'
   },
 ];
 
