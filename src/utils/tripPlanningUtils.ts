@@ -1,7 +1,7 @@
 // Trip planning utilities and logic
 
-import { travelTimes } from '../data';
-import type { Hotel, Activity, Restaurant } from '../data';
+import { travelTimes, domesticFlights } from '../data';
+import type { Hotel, Activity, Restaurant, DomesticFlight } from '../data';
 
 export interface ItineraryItem {
   time: string;
@@ -133,6 +133,20 @@ export const planCitiesRoute = (duration: number): string[] => {
 };
 
 /**
+ * Helper function to find available domestic flight between two cities
+ */
+export const findDomesticFlight = (
+  fromCity: string, 
+  toCity: string
+): DomesticFlight | null => {
+  return domesticFlights.find(
+    flight => flight.departureCity === fromCity && flight.arrivalCity === toCity
+  ) || domesticFlights.find(
+    flight => flight.departureCity === toCity && flight.arrivalCity === fromCity
+  ) || null;
+};
+
+/**
  * Calculate travel cost based on distance and transportation mode
  */
 export const calculateTravelCost = (
@@ -142,6 +156,17 @@ export const calculateTravelCost = (
   totalBudget: number
 ): { cost: number; mode: string } => {
   const distance = travelTimes[fromCity]?.[toCity] || 2;
+  
+  // Check for domestic flights if that mode is selected
+  if (transportationModes.includes('Domestic Flight (Air Côte d\'Ivoire)')) {
+    const flight = findDomesticFlight(fromCity, toCity);
+    if (flight) {
+      return { 
+        cost: flight.priceUSD, 
+        mode: `Domestic Flight (${flight.airline})` 
+      };
+    }
+  }
   
   if (transportationModes.includes('Private Car with Driver')) {
     return { cost: distance * 25, mode: 'Private Car with Driver' };
