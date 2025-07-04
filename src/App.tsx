@@ -5,12 +5,14 @@ import TripPlan from './components/TripPlan';
 import { Loading } from './components/ui/loading';
 import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext';
 import { MapPin, Calendar, DollarSign } from 'lucide-react';
+import flagIcon from './assets/flag.png';
 import { hotels, restaurants, transportationOptions } from './data';
 import { convertToUSD } from './utils/currencyUtils';
 import { 
   planCitiesRoute,
   getBudgetCategory,
-  type TripPlan as TripPlanType
+  type TripPlan as TripPlanType,
+  type ItineraryItem
 } from './utils/tripPlanningUtils';
 import { generateDayPlanWithBudget } from './utils/dayPlanningUtils';
 import { planAccommodations, optimizeAccommodationsForBudget } from './utils/accommodationUtils';
@@ -59,7 +61,7 @@ const AppContent: React.FC = () => {
       
       // Select primary hotel (base hotel in Abidjan)
       const availableHotels = hotels.filter(h => h.city === 'Abidjan').sort((a, b) => a.cost - b.cost);
-      let selectedHotel = availableHotels.find(h => h.budget === budgetCategory) || availableHotels[0];
+      const selectedHotel = availableHotels.find(h => h.budget === budgetCategory) || availableHotels[0];
       
       let remainingBudget = adjustedBudget;
       const dailyBudget = remainingBudget / duration;
@@ -101,7 +103,7 @@ const AppContent: React.FC = () => {
         remainingBudget -= dayPlan.totalCost;
         
         // Add visited activities to avoid repetition
-        dayPlan.schedule.forEach((item: any) => {
+        dayPlan.schedule.forEach((item: ItineraryItem) => {
           if (item.type === 'Activity' && item.details) {
             visitedActivities.push(item.details.name);
           }
@@ -177,7 +179,7 @@ const AppContent: React.FC = () => {
                 <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-green-600 to-orange-600 bg-clip-text text-transparent leading-tight">
                   Discover the Magic of
                   <br />
-                  <span className="text-green-600">Côte d'Ivoire</span> 🇨🇮
+                  <span className="text-green-600">Côte d'Ivoire</span> <img src={flagIcon} alt="Côte d'Ivoire flag" className="inline-block w-8 h-6 ml-2" />
                 </h2>
                 <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                   Create your perfect journey through the Pearl of West Africa with our intelligent trip planner
