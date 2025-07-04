@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertTriangle, CheckCircle, Info } from 'lucide-react';
 import { Card, CardContent } from './card';
 
@@ -9,6 +10,7 @@ interface BudgetAlertProps {
 }
 
 export const BudgetAlert: React.FC<BudgetAlertProps> = ({ totalCost, budget }) => {
+  const { t } = useTranslation();
   const percentage = (totalCost / budget) * 100;
   
   if (percentage <= 80) {
@@ -18,9 +20,9 @@ export const BudgetAlert: React.FC<BudgetAlertProps> = ({ totalCost, budget }) =
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-600" />
             <div>
-              <h3 className="font-semibold text-green-800">Budget Optimized</h3>
+              <h3 className="font-semibold text-green-800">{t('budgetAlert.optimized')}</h3>
               <p className="text-sm text-green-700">
-                Your trip is well within budget at {percentage.toFixed(1)}% of your total budget.
+                {t('budgetAlert.optimizedDesc', { percentage: percentage.toFixed(1) })}
               </p>
             </div>
           </div>
@@ -36,9 +38,9 @@ export const BudgetAlert: React.FC<BudgetAlertProps> = ({ totalCost, budget }) =
           <div className="flex items-center gap-3">
             <Info className="h-5 w-5 text-yellow-600" />
             <div>
-              <h3 className="font-semibold text-yellow-800">Near Budget Limit</h3>
+              <h3 className="font-semibold text-yellow-800">{t('budgetAlert.nearLimit')}</h3>
               <p className="text-sm text-yellow-700">
-                Your trip uses {percentage.toFixed(1)}% of your budget. Consider some optional activities.
+                {t('budgetAlert.nearLimitDesc', { percentage: percentage.toFixed(1) })}
               </p>
             </div>
           </div>
@@ -53,9 +55,9 @@ export const BudgetAlert: React.FC<BudgetAlertProps> = ({ totalCost, budget }) =
         <div className="flex items-center gap-3">
           <AlertTriangle className="h-5 w-5 text-red-600" />
           <div>
-            <h3 className="font-semibold text-red-800">Budget Exceeded</h3>
+            <h3 className="font-semibold text-red-800">{t('budgetAlert.exceeded')}</h3>
             <p className="text-sm text-red-700">
-              This plan has been optimized to fit your budget. Some activities may have been removed.
+              {t('budgetAlert.exceededDesc')}
             </p>
           </div>
         </div>

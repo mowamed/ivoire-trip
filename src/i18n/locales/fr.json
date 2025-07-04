@@ -42,7 +42,8 @@
     "Travel": "Voyage",
     "Transportation": "Transport",
     "Airport": "Aéroport",
-    "Hotel": "Hôtel"
+    "Hotel": "Hôtel",
+    "Return": "Retour"
   },
   "time": {
     "Morning": "Matin",
@@ -72,5 +73,38 @@
     "filename": "Plan de Voyage Côte d'Ivoire",
     "switchToStyled": "Passer à l'exportation stylée",
     "switchToSimple": "Passer à l'exportation simple"
+  },
+  "budgetAlert": {
+    "optimized": "Budget Optimisé",
+    "optimizedDesc": "Votre voyage est bien dans les limites du budget à {{percentage}}% de votre budget total.",
+    "nearLimit": "Proche de la Limite du Budget",
+    "nearLimitDesc": "Votre voyage utilise {{percentage}}% de votre budget. Considérez quelques activités optionnelles.",
+    "exceeded": "Budget Dépassé",
+    "exceededDesc": "Ce plan a été optimisé pour s'adapter à votre budget. Certaines activités ont pu être supprimées."
+  },
+  "common": {
+    "generating": "Génération...",
+    "closeToLocation": "Proche du précédent ({{distance}}km)",
+    "generatedBy": "Généré par Planificateur de Voyage Côte d'Ivoire",
+    "arrival": "Arrivée à l'Aéroport International Félix-Houphouët-Boigny",
+    "departure": "Départ de l'Aéroport International Félix-Houphouët-Boigny",
+    "transferToHotel": "Transfert vers l'hôtel",
+    "hotelCheckin": "Enregistrement à l'hôtel",
+    "hotelCheckout": "Départ de l'hôtel",
+    "transferToAirport": "Transfert vers l'Aéroport International Félix-Houphouët-Boigny",
+    "returnTrip": "Voyage de retour vers {{city}} via {{mode}}",
+    "checkinAt": "Enregistrement au {{hotel}} à {{city}}",
+    "transportationWithin": "Transport dans {{city}}",
+    "totalCostLabel": "Coût Total : {{cost}} $",
+    "totalDurationLabel": "Durée Totale : {{duration}} heures",
+    "budgetUtilization": "Utilisation du Budget : {{percentage}}% de {{budget}} $",
+    "generatedOn": "Généré le : {{date}}",
+    "location": "Lieu : {{city}}",
+    "category": "Catégorie : {{budget}}",
+    "costPerNight": "Coût : {{cost}} $ par nuit",
+    "description": "Description : {{description}}",
+    "dailyCost": "Coût Quotidien : {{cost}} $ | Durée : {{duration}} heures",
+    "cuisine": "Cuisine : {{cuisine}} | Meilleur Moment : {{time}}",
+    "budgetCategory": "Catégorie Budget : {{budget}} | Coût : {{cost}} $"
   }
 }

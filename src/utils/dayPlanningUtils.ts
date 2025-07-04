@@ -58,7 +58,7 @@ export const generateDayPlanWithBudget = (
   if (day === 1) {
     schedule.push({
       time: '08:00',
-      description: 'Arrival at Félix-Houphouët-Boigny International Airport',
+      description: 'common.arrival',
       type: 'Airport',
       duration: 2,
       cost: 0,
@@ -70,7 +70,7 @@ export const generateDayPlanWithBudget = (
     // Transfer to hotel
     schedule.push({
       time: '10:00',
-      description: 'Transfer to hotel',
+      description: 'common.transferToHotel',
       type: 'Transportation',
       duration: 1,
       cost: 30,
@@ -83,7 +83,7 @@ export const generateDayPlanWithBudget = (
     // Hotel check-in
     schedule.push({
       time: '11:00',
-      description: 'Hotel check-in',
+      description: 'common.hotelCheckin',
       type: 'Hotel',
       duration: 1,
       cost: 0,
@@ -469,7 +469,7 @@ export const generateDayPlanWithBudget = (
     // Hotel checkout
     schedule.push({
       time: `${Math.max(currentTime, 11)}:00`,
-      description: 'Hotel checkout',
+      description: 'common.hotelCheckout',
       type: 'Hotel',
       duration: 1,
       cost: 0,
@@ -481,7 +481,7 @@ export const generateDayPlanWithBudget = (
     // Transfer to airport
     schedule.push({
       time: `${currentTime}:00`,
-      description: 'Transfer to Félix-Houphouët-Boigny International Airport',
+      description: 'common.transferToAirport',
       type: 'Transportation',
       duration: 1,
       cost: 30,
@@ -494,7 +494,7 @@ export const generateDayPlanWithBudget = (
     // Airport departure
     schedule.push({
       time: `${currentTime}:00`,
-      description: 'Departure from Félix-Houphouët-Boigny International Airport',
+      description: 'common.departure',
       type: 'Airport',
       duration: 2,
       cost: 0,

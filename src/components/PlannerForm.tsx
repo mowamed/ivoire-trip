@@ -95,7 +95,7 @@ const PlannerForm: React.FC<Props> = ({ onPlanRequest, isLoading = false }) => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Generating...
+                  {t('common.generating')}
                 </>
               ) : (
                 <>

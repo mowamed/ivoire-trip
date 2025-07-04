@@ -118,6 +118,33 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
     return t(`time.${time}`, time);
   };
 
+  const translateDescription = (description: string) => {
+    // Handle translation keys from utility functions
+    if (description.startsWith('common.')) {
+      return t(description);
+    }
+    
+    // Handle specific patterns for translation
+    if (description.includes('Transportation within')) {
+      const city = description.replace('Transportation within ', '');
+      return t('common.transportationWithin', { city });
+    }
+    if (description.includes('Return trip to')) {
+      const match = description.match(/Return trip to (.+) via (.+)/);
+      if (match) {
+        return t('common.returnTrip', { city: match[1], mode: match[2] });
+      }
+    }
+    if (description.includes('Check-in at')) {
+      const match = description.match(/Check-in at (.+) in (.+)/);
+      if (match) {
+        return t('common.checkinAt', { hotel: match[1], city: match[2] });
+      }
+    }
+    
+    return description;
+  };
+
   return (
     <div className="space-y-6 md:space-y-8">
       <div className="text-center">
@@ -308,7 +335,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                                   <span className="font-bold text-blue-600 text-sm md:text-base">{item.time}</span>
                                   <span className="hidden sm:inline text-gray-400">•</span>
-                                  <span className="font-semibold text-gray-900 text-sm md:text-base break-words">{item.description}</span>
+                                  <span className="font-semibold text-gray-900 text-sm md:text-base break-words">{translateDescription(item.description)}</span>
                                 </div>
                                 {item.details && 'description' in item.details && (
                                   <p className="text-xs md:text-sm text-gray-600 mt-1 leading-relaxed">{item.details.description}</p>
@@ -325,7 +352,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                                         return (
                                           <p className="text-xs text-green-600 mt-2 flex items-center gap-1 bg-green-50 px-2 py-1 rounded-lg w-fit">
                                             <MapPin className="h-3 w-3" />
-                                            Close to previous ({distance.toFixed(1)}km)
+                                            {t('common.closeToLocation', { distance: distance.toFixed(1) })}
                                           </p>
                                         );
                                       }
