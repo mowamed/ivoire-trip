@@ -256,7 +256,7 @@ export const generateDayPlanWithBudget = (
 
   // Afternoon activity (continue beach or cultural activities, consider proximity)
   if (currentTime < 17 && canAddActivity(1)) { // Check if we have time for afternoon activity
-    let afternoonActivities = activities.filter(a => 
+    const afternoonActivities = activities.filter(a => 
       a.city === city && 
       a.bestTime === 'Afternoon' && 
       !visitedActivities.includes(a.name) &&

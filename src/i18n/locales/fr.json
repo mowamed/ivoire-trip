@@ -45,6 +45,36 @@
     "Hotel": "Hôtel",
     "Return": "Retour"
   },
+  "activityTypes": {
+    "Beach": "Plage",
+    "Mountain": "Montagne",
+    "Culture": "Culture",
+    "Nightlife": "Vie Nocturne",
+    "Exploration": "Exploration",
+    "Fun": "Divertissement"
+  },
+  "cuisineTypes": {
+    "French": "Française",
+    "Seafood": "Fruits de Mer",
+    "Lebanese": "Libanaise",
+    "African": "Africaine",
+    "International": "Internationale",
+    "Ivorian": "Ivoirienne",
+    "Japanese": "Japonaise",
+    "American-Asian Fusion": "Fusion Américano-Asiatique",
+    "Italian": "Italienne",
+    "Chinese": "Chinoise",
+    "Street Food": "Cuisine de Rue"
+  },
+  "transportation": {
+    "Domestic Flight (Air Côte d'Ivoire)": "Vol Domestique (Air Côte d'Ivoire)",
+    "Private Car with Driver": "Voiture Privée avec Chauffeur",
+    "VTC (Ride-sharing e.g. Yango)": "VTC (Covoiturage ex. Yango)",
+    "Inter-city Coach (UTB, etc.)": "Car Inter-urbain (UTB, etc.)",
+    "Taxi (Metered)": "Taxi (Compteur)",
+    "Sotra Bateau-Bus (Abidjan Lagoon)": "Sotra Bateau-Bus (Lagune d'Abidjan)",
+    "Woro-Woro (Shared Taxi)": "Woro-Woro (Taxi Partagé)"
+  },
   "time": {
     "Morning": "Matin",
     "Afternoon": "Après-midi",
@@ -105,6 +135,24 @@
     "description": "Description : {{description}}",
     "dailyCost": "Coût Quotidien : {{cost}} $ | Durée : {{duration}} heures",
     "cuisine": "Cuisine : {{cuisine}} | Meilleur Moment : {{time}}",
-    "budgetCategory": "Catégorie Budget : {{budget}} | Coût : {{cost}} $"
+    "budgetCategory": "Catégorie Budget : {{budget}} | Coût : {{cost}} $",
+    "travelTo": "Voyage vers {{destination}}",
+    "via": "via {{mode}}",
+    "duration": "{{duration}}h",
+    "cost": "{{amount}} $",
+    "perPerson": "par personne",
+    "included": "inclus",
+    "travelDay": "Jour de voyage : {{from}} vers {{to}} (long trajet)",
+    "lunchAt": "Déjeuner au {{restaurant}}",
+    "dinnerAt": "Dîner au {{restaurant}}",
+    "checkinAtHotel": "Enregistrement au {{hotel}}",
+    "selectLanguage": "Sélectionner la Langue",
+    "selectCurrency": "Sélectionner la Devise",
+    "transportationModes": "Modes de Transport",
+    "selectTransportation": "Sélectionnez vos modes de transport préférés",
+    "privateCarRecommended": "Voiture privée recommandée pour le confort et la flexibilité",
+    "sharedTaxiEconomical": "Taxi partagé (Woro-Woro) - option économique",
+    "planYourTrip": "Planifiez Votre Voyage",
+    "customizeYourJourney": "Personnalisez votre voyage parfait à travers la Côte d'Ivoire"
   }
 }

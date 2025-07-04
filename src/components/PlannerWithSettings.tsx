@@ -136,7 +136,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
           <div className="mt-6 space-y-3">
             <Label className="flex items-center gap-2 text-sm md:text-base font-medium">
               <Car className="h-4 w-4 text-purple-500" />
-              Transportation Preferences
+              {t('common.transportationModes')}
             </Label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {availableTransportationModes.map((mode) => (
@@ -163,7 +163,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
                         : 'text-gray-700'
                     }`}
                   >
-                    {mode}
+                    {t(`transportation.${mode}`, mode)}
                   </label>
                 </div>
               ))}
@@ -171,8 +171,8 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
             <p className="text-xs text-gray-500 flex items-start gap-2">
               <span className="text-purple-500 mt-0.5">🚗</span>
               {transportationModes.includes('Private Car with Driver') 
-                ? 'Private car selected - driver available for entire trip duration'
-                : 'Multiple transportation modes can be selected for flexibility'
+                ? t('common.privateCarRecommended')
+                : t('common.selectTransportation')
               }
             </p>
           </div>

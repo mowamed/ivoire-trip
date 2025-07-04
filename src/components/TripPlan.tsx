@@ -118,6 +118,18 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
     return t(`time.${time}`, time);
   };
 
+  const translateCuisine = (cuisine: string) => {
+    return t(`cuisineTypes.${cuisine}`, cuisine);
+  };
+
+  // const translateActivityType = (type: string) => {
+  //   return t(`activityTypes.${type}`, type);
+  // };
+
+  const translateTransportation = (mode: string) => {
+    return t(`transportation.${mode}`, mode);
+  };
+
   const translateDescription = (description: string) => {
     // Handle translation keys from utility functions
     if (description.startsWith('common.')) {
@@ -129,16 +141,52 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       const city = description.replace('Transportation within ', '');
       return t('common.transportationWithin', { city });
     }
+    if (description.includes('Travel from') && description.includes(' to ') && description.includes(' via ')) {
+      const match = description.match(/Travel from (.+) to (.+) via (.+)/);
+      if (match) {
+        return `${t('common.travelTo', { destination: match[2] })} ${t('common.via', { mode: translateTransportation(match[3]) })}`;
+      }
+    }
+    if (description.includes('Travel to') && description.includes(' via ')) {
+      const match = description.match(/Travel to (.+) via (.+)/);
+      if (match) {
+        return `${t('common.travelTo', { destination: match[1] })} ${t('common.via', { mode: translateTransportation(match[2]) })}`;
+      }
+    }
     if (description.includes('Return trip to')) {
       const match = description.match(/Return trip to (.+) via (.+)/);
       if (match) {
-        return t('common.returnTrip', { city: match[1], mode: match[2] });
+        return t('common.returnTrip', { city: match[1], mode: translateTransportation(match[2]) });
       }
     }
-    if (description.includes('Check-in at')) {
+    if (description.includes('Travel day:')) {
+      const match = description.match(/Travel day: (.+) to (.+) \(long journey\)/);
+      if (match) {
+        return t('common.travelDay', { from: match[1], to: match[2] });
+      }
+    }
+    if (description.includes('Lunch at')) {
+      const match = description.match(/Lunch at (.+)/);
+      if (match) {
+        return t('common.lunchAt', { restaurant: match[1] });
+      }
+    }
+    if (description.includes('Dinner at')) {
+      const match = description.match(/Dinner at (.+)/);
+      if (match) {
+        return t('common.dinnerAt', { restaurant: match[1] });
+      }
+    }
+    if (description.includes('Check-in at') && description.includes(' in ')) {
       const match = description.match(/Check-in at (.+) in (.+)/);
       if (match) {
         return t('common.checkinAt', { hotel: match[1], city: match[2] });
+      }
+    }
+    if (description.includes('Check-in at') && !description.includes(' in ')) {
+      const match = description.match(/Check-in at (.+)/);
+      if (match) {
+        return t('common.checkinAtHotel', { hotel: match[1] });
       }
     }
     
@@ -409,7 +457,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm md:text-base text-gray-700">
-                      <span className="font-medium text-orange-600">{t('plan.cuisine')}:</span> {restaurant.cuisine}
+                      <span className="font-medium text-orange-600">{t('plan.cuisine')}:</span> {translateCuisine(restaurant.cuisine)}
                     </p>
                     <p className="text-sm md:text-base text-gray-700">
                       <span className="font-medium text-orange-600">{t('plan.bestTime')}:</span> {translateTime(restaurant.bestTime)}

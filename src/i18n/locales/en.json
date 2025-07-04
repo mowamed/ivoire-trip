@@ -49,6 +49,36 @@
     "Hotel": "Hotel",
     "Return": "Return"
   },
+  "activityTypes": {
+    "Beach": "Beach",
+    "Mountain": "Mountain",
+    "Culture": "Culture",
+    "Nightlife": "Nightlife",
+    "Exploration": "Exploration",
+    "Fun": "Fun"
+  },
+  "cuisineTypes": {
+    "French": "French",
+    "Seafood": "Seafood",
+    "Lebanese": "Lebanese",
+    "African": "African",
+    "International": "International",
+    "Ivorian": "Ivorian",
+    "Japanese": "Japanese",
+    "American-Asian Fusion": "American-Asian Fusion",
+    "Italian": "Italian",
+    "Chinese": "Chinese",
+    "Street Food": "Street Food"
+  },
+  "transportation": {
+    "Domestic Flight (Air Côte d'Ivoire)": "Domestic Flight (Air Côte d'Ivoire)",
+    "Private Car with Driver": "Private Car with Driver",
+    "VTC (Ride-sharing e.g. Yango)": "VTC (Ride-sharing e.g. Yango)",
+    "Inter-city Coach (UTB, etc.)": "Inter-city Coach (UTB, etc.)",
+    "Taxi (Metered)": "Taxi (Metered)",
+    "Sotra Bateau-Bus (Abidjan Lagoon)": "Sotra Bateau-Bus (Abidjan Lagoon)",
+    "Woro-Woro (Shared Taxi)": "Woro-Woro (Shared Taxi)"
+  },
   "time": {
     "Morning": "Morning",
     "Afternoon": "Afternoon",
@@ -109,6 +139,24 @@
     "description": "Description: {{description}}",
     "dailyCost": "Daily Cost: ${{cost}} | Duration: {{duration}} hours",
     "cuisine": "Cuisine: {{cuisine}} | Best Time: {{time}}",
-    "budgetCategory": "Budget Category: {{budget}} | Cost: ${{cost}}"
+    "budgetCategory": "Budget Category: {{budget}} | Cost: ${{cost}}",
+    "travelTo": "Travel to {{destination}}",
+    "via": "via {{mode}}",
+    "duration": "{{duration}}h",
+    "cost": "${{amount}}",
+    "perPerson": "per person",
+    "included": "included",
+    "travelDay": "Travel day: {{from}} to {{to}} (long journey)",
+    "lunchAt": "Lunch at {{restaurant}}",
+    "dinnerAt": "Dinner at {{restaurant}}",
+    "checkinAtHotel": "Check-in at {{hotel}}",
+    "selectLanguage": "Select Language",
+    "selectCurrency": "Select Currency",
+    "transportationModes": "Transportation Modes",
+    "selectTransportation": "Select preferred transportation modes",
+    "privateCarRecommended": "Private car recommended for comfort and flexibility",
+    "sharedTaxiEconomical": "Shared taxi (Woro-Woro) - economical option",
+    "planYourTrip": "Plan Your Trip",
+    "customizeYourJourney": "Customize your perfect journey through Ivory Coast"
   }
 }
