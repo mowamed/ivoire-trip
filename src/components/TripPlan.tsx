@@ -194,9 +194,9 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
   };
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6 md:space-y-8 animate-slide-in-left">
       <div className="text-center">
-        <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+        <h2 className="text-2xl md:text-3xl font-bold gradient-text-animated mb-3">
           {t('plan.title')}
         </h2>
         <p className="text-sm md:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
@@ -209,7 +209,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
             plan={plan} 
             variant="outline" 
             size="lg"
-            className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-blue-200 hover:border-blue-300"
+            className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-blue-200 hover:border-blue-300 card-hover"
           />
         </div>
       </div>
@@ -226,28 +226,28 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       <div id="trip-plan-content" className="space-y-6 md:space-y-8 bg-white p-6 rounded-2xl">
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-0 shadow-lg card-hover rounded-2xl overflow-hidden group">
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl">
+              <div className="p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="h-6 w-6 md:h-8 md:w-8 text-white" />
               </div>
               <div>
                 <h3 className="text-sm md:text-lg font-semibold text-gray-700">{t('plan.totalCost')}</h3>
-                <p className="text-xl md:text-2xl font-bold text-green-600">{formatPrice(plan.totalCost)}</p>
+                <p className="text-xl md:text-2xl font-bold text-green-600 group-hover:scale-105 transition-transform duration-300">{formatPrice(plan.totalCost)}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-0 shadow-lg card-hover rounded-2xl overflow-hidden group">
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl">
+              <div className="p-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
                 <Clock className="h-6 w-6 md:h-8 md:w-8 text-white" />
               </div>
               <div>
                 <h3 className="text-sm md:text-lg font-semibold text-gray-700">{t('plan.totalDuration')}</h3>
-                <p className="text-xl md:text-2xl font-bold text-blue-600">{plan.totalDuration} {t('plan.hours')}</p>
+                <p className="text-xl md:text-2xl font-bold text-orange-600 group-hover:scale-105 transition-transform duration-300">{plan.totalDuration} {t('plan.hours')}</p>
               </div>
             </div>
           </CardContent>
@@ -255,10 +255,10 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
       </div>
 
       {plan.hotel && (
-        <Card className="bg-gradient-to-br from-purple-50 to-pink-100 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 pb-4">
+        <Card className="bg-gradient-to-br from-orange-50 to-green-50 border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-orange-500/10 to-green-500/10 pb-4">
             <CardTitle className="flex items-center gap-3 text-lg md:text-xl">
-              <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+              <div className="p-2 bg-gradient-to-r from-orange-500 to-green-500 rounded-lg">
                 <HotelIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />
               </div>
               {t('plan.accommodation')}
@@ -269,7 +269,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
               <div>
                 <h4 className="text-lg md:text-xl font-semibold text-gray-900">{plan.hotel.name}</h4>
                 <p className="text-sm md:text-base text-gray-600 flex items-center gap-2 mt-1">
-                  <MapPin className="h-4 w-4 text-purple-500" />
+                  <MapPin className="h-4 w-4 text-orange-500" />
                   {translateCity(plan.hotel.city)}
                 </p>
               </div>
@@ -278,7 +278,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                 <Badge variant={getBudgetVariant(plan.hotel.budget)} className="w-fit">
                   {translateBudget(plan.hotel.budget)}
                 </Badge>
-                <span className="text-base md:text-lg font-semibold text-purple-600">
+                <span className="text-base md:text-lg font-semibold text-green-600">
                   {formatPrice(plan.hotel.cost)} {t('plan.perNight')}
                 </span>
               </div>
@@ -289,7 +289,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
 
       <div className="space-y-6">
         <h3 className="text-xl md:text-2xl font-bold text-gray-900 flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+          <div className="p-2 bg-gradient-to-r from-orange-500 to-green-500 rounded-lg">
             <Calendar className="h-5 w-5 md:h-6 md:w-6 text-white" />
           </div>
           {t('plan.dailyItinerary')}
@@ -297,16 +297,16 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
         <div className="timeline">
           {plan.dailyPlans.map((dailyPlan) => (
             <div className="timeline-item" key={dailyPlan.day}>
-              <div className="timeline-marker bg-gradient-to-r from-blue-500 to-purple-500 border-white shadow-lg"></div>
+              <div className="timeline-marker bg-gradient-to-r from-orange-500 to-green-500 border-white shadow-lg"></div>
               <div className="timeline-content">
                 <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300">
-                  <CardHeader className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 pb-4">
+                  <CardHeader className="bg-gradient-to-r from-orange-500/10 to-green-500/10 pb-4">
                     <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <span className="text-lg md:text-xl font-bold">
                         {t('plan.day')} {dailyPlan.day} - {translateCity(dailyPlan.city)}
                       </span>
                       <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" className="text-blue-600 border-blue-600 w-fit">
+                        <Badge variant="outline" className="text-orange-600 border-orange-600 w-fit">
                           📍 {translateCity(dailyPlan.city)}
                         </Badge>
                         {(() => {
@@ -442,8 +442,8 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
           {t('plan.diningRecommendations')}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {plan.restaurants.map((restaurant) => (
-            <Card key={restaurant.name} className="h-full hover:shadow-xl transition-all duration-300 border-0 bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden group">
+          {plan.restaurants.map((restaurant, index) => (
+            <Card key={restaurant.name} className="h-full card-hover border-0 bg-white/95 backdrop-blur-md rounded-2xl overflow-hidden group" style={{animationDelay: `${index * 0.1}s`}}>
               <CardContent className="p-4 md:p-6">
                 <div className="space-y-4">
                   <div>

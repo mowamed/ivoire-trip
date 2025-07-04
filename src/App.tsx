@@ -4,6 +4,7 @@ import PlannerWithSettings from './components/PlannerWithSettings';
 import TripPlan from './components/TripPlan';
 import { Loading } from './components/ui/loading';
 import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext';
+import { MapPin, Calendar, DollarSign } from 'lucide-react';
 import { hotels, restaurants, transportationOptions } from './data';
 import { convertToUSD } from './utils/currencyUtils';
 import { 
@@ -140,24 +141,83 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50 relative overflow-hidden">
+      {/* Animated Background Elements - Côte d'Ivoire Colors */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-orange-400/20 to-orange-300/15 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/20 to-green-300/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-orange-300/10 to-green-300/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-md border-b border-white/20 sticky top-0 z-50 shadow-lg">
         <div className="container mx-auto px-4 py-4 max-w-6xl">
-          <div className="text-center">
-            <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-              {t('app.title')}
-            </h1>
-            <p className="text-sm md:text-lg text-gray-600 max-w-3xl mx-auto">
-              {t('app.subtitle')}
-            </p>
+          <div className="flex items-center justify-center">
+            <div className="flex items-center gap-3 group">
+              <div className="p-2 bg-gradient-to-r from-orange-500 to-green-500 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <MapPin className="h-6 w-6 text-white" />
+              </div>
+              <div className="text-center">
+                <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 via-green-600 to-orange-600 bg-clip-text text-transparent">
+                  {t('app.title')}
+                </h1>
+                <p className="text-xs md:text-sm text-gray-600">{t('app.subtitle')}</p>
+              </div>
+            </div>
           </div>
         </div>
       </header>
 
+      {/* Hero Section */}
+      {!plan && !isLoading && (
+        <section className="relative py-12 md:py-20 text-center">
+          <div className="container mx-auto px-4 max-w-4xl relative z-10">
+            <div className="space-y-6 md:space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-orange-600 via-green-600 to-orange-600 bg-clip-text text-transparent leading-tight">
+                  Discover the Magic of
+                  <br />
+                  <span className="text-green-600">Côte d'Ivoire</span> 🇨🇮
+                </h2>
+                <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                  Create your perfect journey through the Pearl of West Africa with our intelligent trip planner
+                </p>
+              </div>
+              
+              {/* Feature highlights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                <div className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-orange-100/50 hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                    <MapPin className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">Smart Itineraries</h3>
+                  <p className="text-sm text-gray-600">AI-powered planning for the perfect trip</p>
+                </div>
+                
+                <div className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-green-100/50 hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                    <DollarSign className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">Budget Friendly</h3>
+                  <p className="text-sm text-gray-600">Optimized for your budget and preferences</p>
+                </div>
+                
+                <div className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-orange-100/50 hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+                  <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-green-500 rounded-xl flex items-center justify-center mb-4 group-hover:rotate-6 transition-transform duration-300">
+                    <Calendar className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">Flexible Duration</h3>
+                  <p className="text-sm text-gray-600">From weekend getaways to extended adventures</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6 md:py-8 max-w-6xl">
-        <div className="space-y-6 md:space-y-8">
+      <main className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
+        <div className="space-y-8 md:space-y-12">
           <section aria-label="Trip Planning with Settings">
             <PlannerWithSettings onPlanRequest={generatePlan} isLoading={isLoading} />
           </section>
