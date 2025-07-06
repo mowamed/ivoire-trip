@@ -18,11 +18,20 @@ import {
 import { generateDayPlanWithBudget } from './utils/dayPlanningUtils';
 import { planAccommodations, optimizeAccommodationsForBudget } from './utils/accommodationUtils';
 import { optimizePlanForBudget, generateBasicPlan } from './utils/planOptimizationUtils';
+import { useAnalytics, useTripPlanningAnalytics } from './hooks/useAnalytics';
 import './App.css';
 
 const AppContent: React.FC = () => {
   const { t } = useTranslation();
   const { currency } = useCurrency();
+  
+  // Initialize analytics
+  useAnalytics();
+  const {
+    trackPlanGeneration,
+    trackPlanExport,
+    trackBudgetChange,
+  } = useTripPlanningAnalytics();
   
   // Helper function to convert from selected currency to USD for internal calculations
   const convertToUSDLocal = (amount: number): number => {
@@ -32,8 +41,17 @@ const AppContent: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [plan, setPlan] = useState<TripPlanType | null>(null);
 
-  const generatePlan = async (duration: number, budget: number, transportationModes: string[]) => {
+  const generatePlan = async (duration: number, budget: number, transportationModes: string[], interests: string[] = []) => {
     setIsLoading(true);
+    
+    // Track plan generation
+    trackPlanGeneration({
+      cities: ['Abidjan'], // Will be updated with actual cities
+      duration,
+      budget,
+      currency,
+      interests,
+    });
     
     // Add a small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -223,7 +241,11 @@ const AppContent: React.FC = () => {
       <main className="container mx-auto px-4 py-8 max-w-6xl relative z-10">
         <div className="space-y-8 md:space-y-12">
           <section aria-label="Trip Planning with Settings">
-            <PlannerWithSettings onPlanRequest={generatePlan} isLoading={isLoading} />
+            <PlannerWithSettings 
+              onPlanRequest={generatePlan} 
+              isLoading={isLoading}
+              onBudgetChange={trackBudgetChange}
+            />
           </section>
           {isLoading ? (
             <section aria-label="Loading" aria-live="polite">
@@ -231,7 +253,7 @@ const AppContent: React.FC = () => {
             </section>
           ) : (
             <section aria-label="Trip Itinerary">
-              <TripPlan plan={plan} />
+              <TripPlan plan={plan} onExport={trackPlanExport} />
             </section>
           )}
         </div>

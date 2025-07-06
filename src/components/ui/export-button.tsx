@@ -5,17 +5,20 @@ import { Download, FileText, Loader2 } from 'lucide-react';
 import { exportTripPlanToPDF, exportTripPlanToAdvancedPDF } from '../../utils/pdfExport';
 
 interface ExportButtonProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   plan: any;
   className?: string;
   variant?: 'default' | 'outline' | 'secondary';
   size?: 'default' | 'sm' | 'lg';
+  onExport?: (format: 'pdf' | 'image') => void;
 }
 
 export const ExportButton: React.FC<ExportButtonProps> = ({ 
   plan, 
   className = '',
   variant = 'default',
-  size = 'default'
+  size = 'default',
+  onExport
 }) => {
   const { t } = useTranslation();
   const [isExporting, setIsExporting] = useState(false);
@@ -25,6 +28,12 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
     if (!plan) return;
 
     setIsExporting(true);
+    
+    // Track export event
+    if (onExport) {
+      onExport('pdf');
+    }
+    
     try {
       const baseFilename = t('export.filename', 'Ivory Coast Trip Plan');
       const filename = `${baseFilename.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;

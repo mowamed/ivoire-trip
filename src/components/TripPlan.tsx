@@ -38,10 +38,11 @@ interface Props {
     budget?: number;
     accommodations?: { [key: string]: Hotel };
   } | null;
+  onExport?: (format: 'pdf' | 'image') => void;
 }
 
-const TripPlan: React.FC<Props> = ({ plan }) => {
-  const { t } = useTranslation();
+const TripPlan: React.FC<Props> = ({ plan, onExport }) => {
+  const { t, i18n } = useTranslation();
   const { formatPrice } = useCurrency();
   
   if (!plan) {
@@ -61,6 +62,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
     return R * c; // Distance in kilometers
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getIcon = (type: string, details?: any) => {
     // Check if it's a beach or nightlife activity
     if (details && details.type === 'Beach') {
@@ -108,7 +110,6 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
   };
 
   const translateCity = (city: string) => {
-    const { i18n } = useTranslation();
     const currentLanguage = i18n.language as 'en' | 'fr';
     return getLocalizedCityName(city, currentLanguage) || t(`cities.${city}`, city);
   };
@@ -210,6 +211,7 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
             variant="outline" 
             size="lg"
             className="bg-white/80 backdrop-blur-sm hover:bg-white/90 border-2 border-blue-200 hover:border-blue-300 card-hover"
+            onExport={onExport}
           />
         </div>
       </div>
@@ -352,7 +354,6 @@ const TripPlan: React.FC<Props> = ({ plan }) => {
                       })()}
                     </CardDescription>
                     {(() => {
-                      const { i18n } = useTranslation();
                       const currentLanguage = i18n.language as 'en' | 'fr';
                       const cityDescription = getCityDescription(dailyPlan.city, currentLanguage);
                       if (cityDescription) {

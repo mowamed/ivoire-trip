@@ -10,19 +10,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { MapPin, Calendar, DollarSign, Loader2, Settings, Car } from 'lucide-react';
 
 interface Props {
-  onPlanRequest: (duration: number, budget: number, transportationModes: string[]) => void;
+  onPlanRequest: (duration: number, budget: number, transportationModes: string[], interests?: string[]) => void;
   isLoading?: boolean;
+  onBudgetChange?: (budget: number, currency: string) => void;
+  onInterestSelection?: (interests: string[]) => void;
 }
 
-const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false }) => {
+const PlannerWithSettings: React.FC<Props> = ({ 
+  onPlanRequest, 
+  isLoading = false, 
+  onBudgetChange
+}) => {
   const { t } = useTranslation();
   const { currency, setCurrency } = useCurrency();
   const [duration, setDuration] = React.useState(7);
   const [budget, setBudget] = React.useState(1000);
   const [transportationModes, setTransportationModes] = React.useState<string[]>(['VTC (Ride-sharing e.g. Yango)', 'Inter-city Coach (UTB, etc.)', 'Taxi (Metered)', 'Sotra Bateau-Bus (Abidjan Lagoon)']);
+  const [interests] = React.useState<string[]>([]);
 
   const changeCurrency = (newCurrency: Currency) => {
     setCurrency(newCurrency);
+    // Track currency change
+    if (onBudgetChange) {
+      onBudgetChange(budget, newCurrency);
+    }
   };
 
   const availableTransportationModes = [
@@ -67,7 +78,15 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoading) {
-      onPlanRequest(duration, budget, transportationModes);
+      onPlanRequest(duration, budget, transportationModes, interests);
+    }
+  };
+
+  // Track budget changes
+  const handleBudgetChange = (newBudget: number) => {
+    setBudget(newBudget);
+    if (onBudgetChange) {
+      onBudgetChange(newBudget, currency);
     }
   };
 
@@ -190,7 +209,7 @@ const PlannerWithSettings: React.FC<Props> = ({ onPlanRequest, isLoading = false
                 type="number"
                 id="budget"
                 value={budget}
-                onChange={(e) => setBudget(parseInt(e.target.value))}
+                onChange={(e) => handleBudgetChange(parseInt(e.target.value))}
                 min="100"
                 step="50"
                 className="h-12 md:h-14 text-base md:text-lg border-2 border-gray-200 hover:border-green-300 focus:border-green-600 transition-colors rounded-xl"
